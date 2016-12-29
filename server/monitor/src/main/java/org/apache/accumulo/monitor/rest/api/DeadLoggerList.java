@@ -21,13 +21,13 @@ import java.util.List;
 
 public class DeadLoggerList {
 
-  public List<DeadLoggerInformation> deadLogger;
+  public List<DeadServerInformation> deadLogger;
 
   public DeadLoggerList() {
     deadLogger = new ArrayList<>();
   }
 
-  public void addDeadLogger(DeadLoggerInformation deadLogger) {
+  public void addDeadLogger(DeadServerInformation deadLogger) {
     this.deadLogger.add(deadLogger);
   }
 

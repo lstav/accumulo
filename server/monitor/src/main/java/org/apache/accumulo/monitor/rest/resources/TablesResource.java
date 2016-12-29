@@ -27,8 +27,6 @@ import java.util.TreeSet;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.accumulo.core.client.Instance;
 import org.apache.accumulo.core.client.impl.Namespaces;
@@ -52,9 +50,7 @@ import org.apache.accumulo.server.tables.TableManager;
 import org.apache.accumulo.server.util.TableInfoUtil;
 import org.apache.hadoop.io.Text;
 
-@Path("/tables")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class TablesResource {
+public class TablesResource extends BasicResource {
 
   private static final TabletServerStatus NO_STATUS = new TabletServerStatus();
 
@@ -111,8 +107,8 @@ public class TablesResource {
     return tableNamespace;
   }
 
-  @Path("/{tableId}")
   @GET
+  @Path("/{tableId}")
   public TabletServers getParticipatingTabletServers(@PathParam("tableId") String tableId) throws Exception {
     Instance instance = Monitor.getContext().getInstance();
 

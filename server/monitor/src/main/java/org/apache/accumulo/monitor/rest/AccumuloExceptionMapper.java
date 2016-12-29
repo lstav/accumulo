@@ -22,9 +22,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
-/**
- *
- */
 @Provider
 public class AccumuloExceptionMapper implements ExceptionMapper<Exception> {
   @Override

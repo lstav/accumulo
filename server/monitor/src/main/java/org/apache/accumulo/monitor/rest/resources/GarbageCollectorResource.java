@@ -18,8 +18,6 @@ package org.apache.accumulo.monitor.rest.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.accumulo.core.gc.thrift.GCStatus;
 import org.apache.accumulo.monitor.Monitor;
@@ -30,17 +28,15 @@ import org.apache.accumulo.monitor.rest.api.GarbageCollectorStatus;
 /**
  * GarbageCollector metrics
  */
-@Path("/gc")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class GarbageCollectorResource {
+public class GarbageCollectorResource extends BasicResource {
 
   @GET
   public GarbageCollectorStatus getStatus() {
     return new GarbageCollectorStatus(Monitor.getGcStatus());
   }
 
-  @Path("/files")
   @GET
+  @Path("/files")
   public GarbageCollection getFileStatus() {
     GCStatus gcStatus = Monitor.getGcStatus();
     if (null == gcStatus) {
@@ -49,8 +45,8 @@ public class GarbageCollectorResource {
     return new GarbageCollection(gcStatus.last, gcStatus.current);
   }
 
-  @Path("/files/last")
   @GET
+  @Path("/files/last")
   public GarbageCollectorCycle getLastCycle() {
     GCStatus status = Monitor.getGcStatus();
     if (null == status) {
@@ -59,8 +55,8 @@ public class GarbageCollectorResource {
     return new GarbageCollectorCycle(status.last);
   }
 
-  @Path("/files/current")
   @GET
+  @Path("/files/current")
   public GarbageCollectorCycle getCurrentCycle() {
     GCStatus status = Monitor.getGcStatus();
     if (null == status) {
@@ -69,8 +65,8 @@ public class GarbageCollectorResource {
     return new GarbageCollectorCycle(status.current);
   }
 
-  @Path("/wals")
   @GET
+  @Path("/wals")
   public GarbageCollection getWalStatus() {
     GCStatus gcStatus = Monitor.getGcStatus();
     if (null == gcStatus) {
@@ -79,8 +75,8 @@ public class GarbageCollectorResource {
     return new GarbageCollection(gcStatus.lastLog, gcStatus.currentLog);
   }
 
-  @Path("/wals/last")
   @GET
+  @Path("/wals/last")
   public GarbageCollectorCycle getLastWalCycle() {
     GCStatus status = Monitor.getGcStatus();
     if (null == status) {
@@ -89,8 +85,8 @@ public class GarbageCollectorResource {
     return new GarbageCollectorCycle(status.lastLog);
   }
 
-  @Path("/wals/current")
   @GET
+  @Path("/wals/current")
   public GarbageCollectorCycle getCurrentWalCycle() {
     GCStatus status = Monitor.getGcStatus();
     if (null == status) {

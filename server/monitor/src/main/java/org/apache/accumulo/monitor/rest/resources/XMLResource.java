@@ -17,7 +17,6 @@
 package org.apache.accumulo.monitor.rest.resources;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -29,7 +28,6 @@ import org.apache.accumulo.monitor.Monitor;
 import org.apache.accumulo.monitor.rest.api.TabletServer;
 import org.apache.accumulo.monitor.rest.api.XMLInformation;
 
-@Path("/xml")
 public class XMLResource {
 
   @GET

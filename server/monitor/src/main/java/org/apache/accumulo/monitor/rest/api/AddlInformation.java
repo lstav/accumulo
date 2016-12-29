@@ -19,6 +19,9 @@ package org.apache.accumulo.monitor.rest.api;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to add the JSON object for the data and annotations arrays
+ */
 public class AddlInformation {
 
   public List<DataInformation> data;

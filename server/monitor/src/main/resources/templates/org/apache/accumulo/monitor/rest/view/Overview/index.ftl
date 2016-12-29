@@ -48,7 +48,7 @@
         <div id='main' style='bottom:0'>
         <#--
           <br />
-          <h2 class='warning'><a href='/log'>Log Events: 0 Errors, 3 Warnings, 3 Total</a></h2>
+          <h2 class='warning'><a href='/logs'>Log Events: 0 Errors, 3 Warnings, 3 Total</a></h2>
           <div>
             <a name='masterStatus'>&nbsp;</a>
             <table id='masterStatus' class='sortable'>

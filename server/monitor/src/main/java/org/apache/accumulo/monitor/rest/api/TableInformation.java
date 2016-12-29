@@ -29,7 +29,12 @@ public class TableInformation {
 
   public CompactionsList majorCompactions, minorCompactions, scans;
 
-  private int queuedMajorCompactions, runningMajorCompactions, queuedMinorCompactions, runningMinorCompactions, queuedScans, runningScans;
+  private int queuedMajorCompactions = 0;
+  private int runningMajorCompactions = 0;
+  private int queuedMinorCompactions = 0;
+  private int runningMinorCompactions = 0;
+  private int queuedScans = 0;
+  private int runningScans = 0;
 
   public double entriesRead, entriesReturned;
   public Double holdTime;
@@ -69,25 +74,16 @@ public class TableInformation {
     if (null != info.scans) {
       this.queuedScans = info.scans.queued;
       this.runningScans = info.scans.running;
-    } else {
-      this.queuedScans = 0;
-      this.runningScans = 0;
     }
 
     if (null != info.minors) {
       this.queuedMinorCompactions = info.minors.queued;
       this.runningMinorCompactions = info.minors.running;
-    } else {
-      this.queuedMinorCompactions = 0;
-      this.runningMinorCompactions = 0;
     }
 
     if (null != info.majors) {
       this.queuedMajorCompactions = info.majors.queued;
       this.runningMajorCompactions = info.majors.running;
-    } else {
-      this.queuedMajorCompactions = 0;
-      this.runningMajorCompactions = 0;
     }
 
     this.majorCompactions = new CompactionsList(runningMajorCompactions, queuedMajorCompactions);

@@ -26,9 +26,7 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.accumulo.core.client.impl.ClientContext;
@@ -57,9 +55,7 @@ import org.apache.accumulo.server.util.ActionStatsUpdator;
 
 import com.google.common.net.HostAndPort;
 
-@Path("/{parameter: tservers|json}")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class TabletServerResource {
+public class TabletServerResource extends BasicResource {
 
   private TabletStats total, historical;
 
@@ -78,8 +74,8 @@ public class TabletServerResource {
     return tserverInfo;
   }
 
-  @Path("/{address}")
   @GET
+  @Path("/{address}")
   public TabletServerSummary getTserverDetails(@PathParam("address") String tserverAddr) throws Exception {
 
     String tserverAddress = tserverAddr;
@@ -163,8 +159,8 @@ public class TabletServerResource {
 
   private static final int concurrentScans = Monitor.getContext().getConfiguration().getCount(Property.TSERV_READ_AHEAD_MAXCONCURRENT);
 
-  @Path("/serverStats")
   @GET
+  @Path("/serverStats")
   public ServerStats getServerStats() {
 
     ServerStats stats = new ServerStats();

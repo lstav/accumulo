@@ -32,8 +32,6 @@ import java.util.TreeMap;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
@@ -71,12 +69,10 @@ import org.apache.accumulo.tracer.thrift.RemoteSpan;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.UserGroupInformation;
 
-@Path("/trace")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class TracesResource {
+public class TracesResource extends BasicResource {
 
-  @Path("/summary/{minutes}")
   @GET
+  @Path("/summary/{minutes}")
   public RecentTracesList getTraces(@PathParam("minutes") int minutes) throws Exception {
 
     RecentTracesList recentTraces = new RecentTracesList();
@@ -111,8 +107,8 @@ public class TracesResource {
     return recentTraces;
   }
 
-  @Path("/listType/{type}/{minutes}")
   @GET
+  @Path("/listType/{type}/{minutes}")
   public TraceType getTracesType(@PathParam("type") String type, @PathParam("minutes") int minutes) throws Exception {
 
     TraceType typeTraces = new TraceType(type);
@@ -154,8 +150,8 @@ public class TracesResource {
     return typeTraces;
   }
 
-  @Path("/show/{id}")
   @GET
+  @Path("/show/{id}")
   public TraceList getTracesType(@PathParam("id") String id) throws Exception {
     TraceList traces = new TraceList(id);
 
@@ -209,19 +205,16 @@ public class TracesResource {
 
     AddlInformation addlData = new AddlInformation();
 
-    if (hasData || hasAnnotations) {
-
-      if (hasData) {
-        for (Entry<String,String> entry : node.data.entrySet()) {
-          DataInformation data = new DataInformation(entry.getKey(), entry.getValue());
-          addlData.addData(data);
-        }
+    if (hasData) {
+      for (Entry<String,String> entry : node.data.entrySet()) {
+        DataInformation data = new DataInformation(entry.getKey(), entry.getValue());
+        addlData.addData(data);
       }
-      if (hasAnnotations) {
-        for (Annotation entry : node.annotations) {
-          AnnotationInformation annotations = new AnnotationInformation(entry.getMsg(), entry.getTime() - finalStart);
-          addlData.addAnnotations(annotations);
-        }
+    }
+    if (hasAnnotations) {
+      for (Annotation entry : node.annotations) {
+        AnnotationInformation annotations = new AnnotationInformation(entry.getMsg(), entry.getTime() - finalStart);
+        addlData.addAnnotations(annotations);
       }
     }
 

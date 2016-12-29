@@ -27,14 +27,14 @@
           <a href='/trace/summary/10'>Recent&nbsp;Traces</a><br />
           <a href='/replication'>Replication</a><br />
           <#if num_logs gt 0>
-            <span class='<#if logsHaveError>error<#else>warning</#if>'><a href='/log'>Recent&nbsp;Logs&nbsp;<span class='smalltext'>(${num_logs})</span></a></span><br />
+            <span class='<#if logsHaveError>error<#else>warning</#if>'><a href='/logs'>Recent&nbsp;Logs&nbsp;<span class='smalltext'>(${num_logs})</span></a></span><br />
           </#if>
           <#if num_problems gt 0>
             <span class='error'><a href='/problems'>Table&nbsp;Problems&nbsp;<span class='smalltext'>(${num_problems}")</span></a></span><br />
           </#if>
           <hr />
-          <a href='/xml'>XML</a><br />
-          <a href='/json'>JSON</a><hr />
+          <a href='/rest/xml'>XML</a><br />
+          <a href='/rest/json'>JSON</a><hr />
           <#if is_ssl>
             <a href='/shell'>Shell</a><hr />
           </#if>

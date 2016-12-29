@@ -18,6 +18,7 @@ package org.apache.accumulo.monitor.rest.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -62,6 +63,8 @@ public class TabletServerInformation {
   }
 
   public void updateTabletServerInfo(TabletServerStatus thriftStatus, TableInfo summary) {
+
+    Objects.requireNonNull(summary);
 
     long now = System.currentTimeMillis();
 
