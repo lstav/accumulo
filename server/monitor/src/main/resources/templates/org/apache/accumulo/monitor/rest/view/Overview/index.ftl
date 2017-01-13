@@ -67,13 +67,7 @@
     <div id='content-wrapper'>
       <div id='content'>
         <div id='header'>
-          <div id='headertitle'>
-            <h1>${title}</h1>
-          </div>
-          <div id='subheader'>Instance&nbsp;Name:&nbsp;${instance_name}&nbsp;&nbsp;&nbsp;Version:&nbsp;${version}
-            <br><span class='smalltext'>Instance&nbsp;ID:&nbsp;${instance_id}</span>
-            <br><span class='smalltext'>${current_date}</span>
-          </div>
+          <#include "/templates/header.ftl">
         </div>
 
         <#include "/templates/sidebar.ftl">
