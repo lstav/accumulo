@@ -29,7 +29,7 @@ import org.apache.accumulo.monitor.rest.api.BulkImport;
 import org.apache.accumulo.monitor.rest.api.BulkImportInformation;
 import org.apache.accumulo.monitor.rest.api.TabletServerBulkImportInformation;
 
-@Path("/bulkImports")
+@Path("/rest/bulkImports")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class BulkImportResource {
 

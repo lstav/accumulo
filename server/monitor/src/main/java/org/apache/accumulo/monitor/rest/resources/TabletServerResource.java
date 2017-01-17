@@ -57,7 +57,7 @@ import org.apache.accumulo.server.util.ActionStatsUpdator;
 
 import com.google.common.net.HostAndPort;
 
-@Path("/{parameter: tservers|json}")
+@Path("/rest/{parameter: tservers|json}")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class TabletServerResource {
 

@@ -32,35 +32,19 @@
 
   <body>
   	<script type="text/javascript">
-  		$.getJSON("rest/master", function(data) {
+  		$.getJSON("rest/scans", function(data) {
   			var items = [];
-  			items.push("<tr><th colspan='2'><a href='/master'>Accumulo&nbsp;Master</a></th></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tables'>Tables</a></td><td class='right'>" + data.tables + "</td></tr>");
-  			items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'>" + data.totalTabletServers + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'>" + data.deadTabletServersCount + "</td></tr>");
-  			items.push("<tr><td class='left'>Tablets</td><td class='right'>" + data.tablets + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Entries</td><td class='right'>" + data.numentries + "</td></tr>");
-  			items.push("<tr><td class='left'>Lookups</td><td class='right'>" + data.lookups + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Uptime</td><td class='right'>" + data.uptime + "</td></tr>");
- 
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#master");
-		});
-		
-		$.getJSON("zk", function(data) {
-			var items = [];
-			items.push("<tr><th colspan='3'>Zookeeper</th></tr>");
-			items.push("<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>");
-			$.each(data.zkServers, function(key, val) {
-				items.push("<tr class='highlight'><td class='left'>" + val.server + "</td>");
-				items.push("<td class='left'>" + val.mode + "</td>");
-				items.push("<td class='right'>" + val.clients + "</td></tr>");
+  			
+  			$.each(data.scans, function(key, val) {
+  			  items.push("<td class='firstcell left'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
+  			  items.push("<td class='right'>" + val.scanCount + "</td>");
+			  items.push("<td class='right'>" + ((val.oldestScan !== null) ? val.oldestScan : "-") + "</td>");
 			});
-			
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#zookeeper");
+  			
+  			$("<tr/>", {
+   			 html: items.join(""),
+   			 class: "highlight"
+  			}).appendTo("#scanStatus");
 		});
 		
   	</script>  	
@@ -73,12 +57,16 @@
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
-          <table class='noborder'>
-        	<tr>
-        	  <td class='noborder' id='master'></td>
-        	  <td class='noborder' id='zookeeper'></td>
-        	</tr>
-       	  </table>
+          <div>
+			<a name='scanStatus'>&nbsp;</a>
+			<table id='scanStatus' class='sortable'>
+			  <caption>
+                <span class='table-caption'>Scan&nbsp;Status</span><br />
+				<a href='/op?action=toggleLegend&redir=%2Fscans&page=/scans&table=scanStatus&show=true'>Show&nbsp;Legend</a>
+			  </caption>
+			<tr><th class='firstcell'>Server</th><th>#</th><th>Oldest&nbsp;Age</th></tr>
+			</table>
+		  </div>
         </div>
       </div>    
     </div>
