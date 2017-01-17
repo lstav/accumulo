@@ -34,33 +34,23 @@
   	<script type="text/javascript">
   		$.getJSON("rest/master", function(data) {
   			var items = [];
-  			items.push("<tr><th colspan='2'><a href='/master'>Accumulo&nbsp;Master</a></th></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tables'>Tables</a></td><td class='right'>" + data.tables + "</td></tr>");
-  			items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'>" + data.totalTabletServers + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'>" + data.deadTabletServersCount + "</td></tr>");
-  			items.push("<tr><td class='left'>Tablets</td><td class='right'>" + data.tablets + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Entries</td><td class='right'>" + data.numentries + "</td></tr>");
-  			items.push("<tr><td class='left'>Lookups</td><td class='right'>" + data.lookups + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Uptime</td><td class='right'>" + data.uptime + "</td></tr>");
- 
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#master");
-		});
-		
-		$.getJSON("zk", function(data) {
-			var items = [];
-			items.push("<tr><th colspan='3'>Zookeeper</th></tr>");
-			items.push("<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>");
-			$.each(data.zkServers, function(key, val) {
-				items.push("<tr class='highlight'><td class='left'>" + val.server + "</td>");
-				items.push("<td class='left'>" + val.mode + "</td>");
-				items.push("<td class='right'>" + val.clients + "</td></tr>");
-			});
-			
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#zookeeper");
+  			items.push("<td class='firstcell left'>" + data.master + "</td>");
+  			items.push("<td class='right'>" + data.onlineTabletServers + "</td>");
+  			items.push("<td class='right'>" + data.totalTabletServers + "</td>");
+  			items.push("<td class='left'><a href='/gc'>" + data.lastGC + "</a></td>");
+  			items.push("<td class='right'>" + data.tablets + "</td>");
+  			items.push("<td class='right'>" + data.unassignedTablets + "</td>");
+  			items.push("<td class='right'>" + data.numentries + "</td>");
+  			items.push("<td class='right'>" + data.ingestrate + "</td>");
+  			items.push("<td class='right'>" + data.entriesRead + "</td>");
+  			items.push("<td class='right'>" + data.queryrate + "</td>");
+  			items.push("<td class='right'>" + data.holdTime + "</td>");
+  			items.push("<td class='right'>" + data.osload + "</td>");
+  			
+  			$("<tr/>", {
+   			 html: items.join(""),
+   			 class: "highlight"
+  			}).appendTo("#masterStatus");
 		});
 		
   	</script>  	
@@ -73,12 +63,16 @@
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
-          <table class='noborder'>
-        	<tr>
-        	  <td class='noborder' id='master'></td>
-        	  <td class='noborder' id='zookeeper'></td>
-        	</tr>
-       	  </table>
+          <div>
+		    <a name='masterStatus'>&nbsp;</a>
+			<table id='masterStatus' class='sortable'>
+			  <caption>
+				<span class='table-caption'>Master&nbsp;Status</span><br />
+				<a href='/op?action=toggleLegend&redir=%2Fmaster&page=/master&table=masterStatus&show=true'>Show&nbsp;Legend</a>
+			  </caption>
+			  <tr><th class='firstcell'>Master</th><th>#&nbsp;Online<br />Tablet&nbsp;Servers</th><th>#&nbsp;Total<br />Tablet&nbsp;Servers</th><th>Last&nbsp;GC</th><th>#&nbsp;Tablets</th><th>#&nbsp;Unassigned<br />Tablets</th><th>Entries</th><th>Ingest</th><th>Entries<br />Read</th><th>Entries<br />Returned</th><th>Hold&nbsp;Time</th><th>OS&nbsp;Load</th></tr>
+			</table>
+		  </div>
         </div>
       </div>    
     </div>

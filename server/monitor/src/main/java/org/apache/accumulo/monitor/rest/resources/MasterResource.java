@@ -44,7 +44,7 @@ import org.apache.accumulo.monitor.rest.api.ServerShuttingDownInformation;
 import org.apache.accumulo.monitor.rest.api.ServersShuttingDown;
 import org.apache.accumulo.server.master.state.TabletServerState;
 
-@Path("/master")
+@Path("/rest/master")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class MasterResource {
   public static final String NO_MASTERS = "No Masters running";

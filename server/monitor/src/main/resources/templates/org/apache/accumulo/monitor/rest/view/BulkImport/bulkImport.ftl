@@ -32,35 +32,41 @@
 
   <body>
   	<script type="text/javascript">
-  		$.getJSON("rest/master", function(data) {
+  		$.getJSON("rest/bulkImports", function(data) {
   			var items = [];
-  			items.push("<tr><th colspan='2'><a href='/master'>Accumulo&nbsp;Master</a></th></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tables'>Tables</a></td><td class='right'>" + data.tables + "</td></tr>");
-  			items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'>" + data.totalTabletServers + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'>" + data.deadTabletServersCount + "</td></tr>");
-  			items.push("<tr><td class='left'>Tablets</td><td class='right'>" + data.tablets + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Entries</td><td class='right'>" + data.numentries + "</td></tr>");
-  			items.push("<tr><td class='left'>Lookups</td><td class='right'>" + data.lookups + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Uptime</td><td class='right'>" + data.uptime + "</td></tr>");
+  			
+  			if (data.bulkImport.length === 0) {
+  			  items.push("<td class='center' colspan='3'><i>Empty</i></td>");
+  			  
+  			  $("<tr/>", {
+   			 	html: items.join("")
+  			  }).appendTo("#masterBulkImportStatus");
+  			  
+  			} else {
+  			  $.each(data.bulkImport, function(key, val) {
+  			  	items.push("<td class='firstcell left'>" + val.filename + "</td>");
+  			  	items.push("<td class='right'>" + val.age + "</td>");
+  			  	items.push("<td class='right'>" + val.state + "</td>");
+  			  });
+  			  
+  			  $("<tr/>", {
+   			 	html: items.join(""),
+   			 	class: "highlight"
+  			  }).appendTo("#masterBulkImportStatus");
+  			}
  
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#master");
-		});
-		
-		$.getJSON("zk", function(data) {
-			var items = [];
-			items.push("<tr><th colspan='3'>Zookeeper</th></tr>");
-			items.push("<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>");
-			$.each(data.zkServers, function(key, val) {
-				items.push("<tr class='highlight'><td class='left'>" + val.server + "</td>");
-				items.push("<td class='left'>" + val.mode + "</td>");
-				items.push("<td class='right'>" + val.clients + "</td></tr>");
+ 			var items2 = [];
+			$.each(data.tabletServerBulkImport, function(key, val) {
+			  items2.push("<td class='firstcell left'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
+			  items2.push("<td class='right'>" + val.importSize + "</td>");
+			  items2.push("<td class='right'>" + (val.oldestAge > 0 ? val.oldestAge : "&mdash;") + "</td>");
 			});
 			
-  			$("<table/>", {
-   			 html: items.join("")
-  			}).appendTo("#zookeeper");
+  			$("<tr/>", {
+   			 html: items2.join(""),
+   			 class: "highlight"
+  			}).appendTo("#bulkImportStatus");
+  			
 		});
 		
   	</script>  	
@@ -73,12 +79,27 @@
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
-          <table class='noborder'>
-        	<tr>
-        	  <td class='noborder' id='master'></td>
-        	  <td class='noborder' id='zookeeper'></td>
-        	</tr>
-       	  </table>
+          <div>
+			<a name='masterBulkImportStatus'>&nbsp;</a>
+			<table id='masterBulkImportStatus' class='sortable'>
+			  <caption>
+				<span class='table-caption'>Bulk&nbsp;Import&nbsp;Status</span><br />
+				<a href='/op?action=toggleLegend&redir=%2FbulkImports&page=/bulkImports&table=masterBulkImportStatus&show=true'>Show&nbsp;Legend</a>
+			  </caption>
+			  <tr><th class='firstcell'>Directory</th><th>Age</th><th>State</th></tr>
+			</table>
+		  </div>
+
+		  <div>
+			<a name='bulkImportStatus'>&nbsp;</a>
+			<table id='bulkImportStatus' class='sortable'>
+			  <caption>
+				<span class='table-caption'>TabletServer&nbsp;Bulk&nbsp;Import&nbsp;Status</span><br />
+				<a href='/op?action=toggleLegend&redir=%2FbulkImports&page=/bulkImports&table=bulkImportStatus&show=true'>Show&nbsp;Legend</a>
+			  </caption>
+			  <tr><th class='firstcell'>Server</th><th>#</th><th>Oldest&nbsp;Age</th></tr>
+			</table>
+		  </div>
         </div>
       </div>    
     </div>

@@ -30,7 +30,7 @@ import org.apache.accumulo.monitor.rest.api.Scans;
 
 import com.google.common.net.HostAndPort;
 
-@Path("/scans")
+@Path("/rest/scans")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class ScansResource {
 
