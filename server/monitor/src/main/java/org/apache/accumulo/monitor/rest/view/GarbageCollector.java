@@ -28,7 +28,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 
 import org.apache.accumulo.core.Constants;
-import org.apache.accumulo.core.util.AddressUtil;
 import org.apache.accumulo.monitor.Monitor;
 import org.apache.accumulo.server.monitor.DedupedLogEvent;
 import org.apache.accumulo.server.monitor.LogService;
@@ -36,8 +35,8 @@ import org.apache.log4j.Level;
 import org.eclipse.jetty.server.Request;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/master")
-public class Master {
+@Path("/gc")
+public class GarbageCollector {
 
   @Context
   private Request request;
@@ -63,11 +62,9 @@ public class Master {
     String redir = request.getRequestURI();
     if (request.getQueryString() != null)
       redir += "?" + request.getQueryString();
-    
-    List<String> masters = Monitor.getContext().getInstance().getMasterLocations();
 
     Map<String,Object> model = new HashMap<>();
-    model.put("title", "Master Server" + (masters.size() == 0 ? "" : ":" + AddressUtil.parseAddress(masters.get(0), false).getHostText()));
+    model.put("title", "Garbage Collector Status");
     model.put("version", Constants.VERSION);
     model.put("refresh", refresh);
     model.put("instance_name", Monitor.cachedInstanceName.get());
@@ -79,7 +76,6 @@ public class Master {
     model.put("is_ssl", false);
     model.put("redirect", redir);
 
-    return new Viewable("master.ftl", model);
-  }
-
+    return new Viewable("gc.ftl", model);
+  }  
 }

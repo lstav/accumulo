@@ -25,10 +25,12 @@ import javax.ws.rs.CookieParam;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 
 import org.apache.accumulo.core.Constants;
-import org.apache.accumulo.core.util.AddressUtil;
+import org.apache.accumulo.core.client.TableNotFoundException;
+import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.monitor.Monitor;
 import org.apache.accumulo.server.monitor.DedupedLogEvent;
 import org.apache.accumulo.server.monitor.LogService;
@@ -36,8 +38,8 @@ import org.apache.log4j.Level;
 import org.eclipse.jetty.server.Request;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/master")
-public class Master {
+@Path("/tables")
+public class TablesStatus {
 
   @Context
   private Request request;
@@ -63,11 +65,9 @@ public class Master {
     String redir = request.getRequestURI();
     if (request.getQueryString() != null)
       redir += "?" + request.getQueryString();
-    
-    List<String> masters = Monitor.getContext().getInstance().getMasterLocations();
 
     Map<String,Object> model = new HashMap<>();
-    model.put("title", "Master Server" + (masters.size() == 0 ? "" : ":" + AddressUtil.parseAddress(masters.get(0), false).getHostText()));
+    model.put("title", "Table Status");
     model.put("version", Constants.VERSION);
     model.put("refresh", refresh);
     model.put("instance_name", Monitor.cachedInstanceName.get());
@@ -79,7 +79,50 @@ public class Master {
     model.put("is_ssl", false);
     model.put("redirect", redir);
 
-    return new Viewable("master.ftl", model);
+    return new Viewable("tables.ftl", model);
   }
 
+  @Path("{tableID}")
+  @GET
+  public Viewable getServer(@PathParam("tableID") String tableID, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) throws TableNotFoundException {
+    int refresh = -1;
+    try {
+      refresh = Integer.parseInt(refreshValue);
+    } catch (NumberFormatException e) {}
+
+    List<DedupedLogEvent> logs = LogService.getInstance().getEvents();
+    boolean logsHaveError = false;
+    for (DedupedLogEvent dedupedLogEvent : logs) {
+      if (dedupedLogEvent.getEvent().getLevel().isGreaterOrEqual(Level.ERROR)) {
+        logsHaveError = true;
+        break;
+      }
+    }
+
+    int numProblems = Monitor.getProblemSummary().entrySet().size();
+
+    String redir = request.getRequestURI();
+    if (request.getQueryString() != null)
+      redir += "?" + request.getQueryString();
+    
+    String table = Tables.getTableName(Monitor.getContext().getInstance(), tableID);
+
+    Map<String,Object> model = new HashMap<>();
+    model.put("title", "Table Status");
+    model.put("version", Constants.VERSION);
+    model.put("refresh", refresh);
+    model.put("instance_name", Monitor.cachedInstanceName.get());
+    model.put("instance_id", Monitor.getContext().getInstance().getInstanceID());
+    model.put("current_date", new Date().toString().replace(" ", "&nbsp;"));
+    model.put("num_logs", logs.size());
+    model.put("logs_have_error", logsHaveError);
+    model.put("num_problems", numProblems);
+    model.put("is_ssl", false);
+    model.put("tableID", tableID);
+    model.put("table", table);
+    model.put("redirect", redir);
+
+    return new Viewable("table.ftl", model);
+  }
+  
 }

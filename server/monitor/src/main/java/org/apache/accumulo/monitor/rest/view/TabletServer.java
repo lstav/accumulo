@@ -25,10 +25,10 @@ import javax.ws.rs.CookieParam;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 
 import org.apache.accumulo.core.Constants;
-import org.apache.accumulo.core.util.AddressUtil;
 import org.apache.accumulo.monitor.Monitor;
 import org.apache.accumulo.server.monitor.DedupedLogEvent;
 import org.apache.accumulo.server.monitor.LogService;
@@ -80,4 +80,44 @@ public class TabletServer {
     return new Viewable("tservers.ftl", model);
   }
 
+  @Path("{server}")
+  @GET
+  public Viewable getServer(@PathParam("server") String server, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {
+    int refresh = -1;
+    try {
+      refresh = Integer.parseInt(refreshValue);
+    } catch (NumberFormatException e) {}
+
+    List<DedupedLogEvent> logs = LogService.getInstance().getEvents();
+    boolean logsHaveError = false;
+    for (DedupedLogEvent dedupedLogEvent : logs) {
+      if (dedupedLogEvent.getEvent().getLevel().isGreaterOrEqual(Level.ERROR)) {
+        logsHaveError = true;
+        break;
+      }
+    }
+
+    int numProblems = Monitor.getProblemSummary().entrySet().size();
+
+    String redir = request.getRequestURI();
+    if (request.getQueryString() != null)
+      redir += "?" + request.getQueryString();
+
+    Map<String,Object> model = new HashMap<>();
+    model.put("title", "Tablet Server Status");
+    model.put("version", Constants.VERSION);
+    model.put("refresh", refresh);
+    model.put("instance_name", Monitor.cachedInstanceName.get());
+    model.put("instance_id", Monitor.getContext().getInstance().getInstanceID());
+    model.put("current_date", new Date().toString().replace(" ", "&nbsp;"));
+    model.put("num_logs", logs.size());
+    model.put("logs_have_error", logsHaveError);
+    model.put("num_problems", numProblems);
+    model.put("is_ssl", false);
+    model.put("server", server);
+    model.put("redirect", redir);
+
+    return new Viewable("server.ftl", model);
+  }
+  
 }
