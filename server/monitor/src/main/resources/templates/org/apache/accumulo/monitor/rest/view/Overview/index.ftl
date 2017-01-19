@@ -35,20 +35,20 @@
   		$.getJSON("rest/master", function(data) {
   			var items = [];
   			items.push("<tr><th colspan='2'><a href='/master'>Accumulo&nbsp;Master</a></th></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tables'>Tables</a></td><td class='right'>" + data.tables + "</td></tr>");
-  			items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'>" + data.totalTabletServers + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'>" + data.deadTabletServersCount + "</td></tr>");
-  			items.push("<tr><td class='left'>Tablets</td><td class='right'>" + data.tablets + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Entries</td><td class='right'>" + data.numentries + "</td></tr>");
-  			items.push("<tr><td class='left'>Lookups</td><td class='right'>" + data.lookups + "</td></tr>");
-  			items.push("<tr class='highlight'><td class='left'>Uptime</td><td class='right'>" + data.uptime + "</td></tr>");
+  			items.push("<tr class='highlight'><td class='left'><a href='/tables'>Tables</a></td><td class='right'>" + bigNumberForQuantity(data.tables) + "</td></tr>");
+  			items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'>" + bigNumberForQuantity(data.totalTabletServers) + "</td></tr>");
+  			items.push("<tr class='highlight'><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'>" + bigNumberForQuantity(data.deadTabletServersCount) + "</td></tr>");
+  			items.push("<tr><td class='left'>Tablets</td><td class='right'>" + bigNumberForQuantity(data.tablets) + "</td></tr>");
+  			items.push("<tr class='highlight'><td class='left'>Entries</td><td class='right'>" + bigNumberForQuantity(data.numentries) + "</td></tr>");
+  			items.push("<tr><td class='left'>Lookups</td><td class='right'>" + bigNumberForQuantity(data.lookups) + "</td></tr>");
+  			items.push("<tr class='highlight'><td class='left'>Uptime</td><td class='right'>" + timeDuration(data.uptime) + "</td></tr>");
  
   			$("<table/>", {
    			 html: items.join("")
   			}).appendTo("#master");
 		});
 		
-		$.getJSON("zk", function(data) {
+		$.getJSON("rest/zk", function(data) {
 			var items = [];
 			items.push("<tr><th colspan='3'>Zookeeper</th></tr>");
 			items.push("<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>");

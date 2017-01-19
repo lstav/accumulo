@@ -36,9 +36,9 @@
   			var items = [];
   			
   			$.each(data.scans, function(key, val) {
-  			  items.push("<td class='firstcell left'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
+  			  items.push("<td class='firstcell left'><a href='/tservers/" + val.server + "'>" + val.server + "</a></td>");
   			  items.push("<td class='right'>" + val.scanCount + "</td>");
-			  items.push("<td class='right'>" + ((val.oldestScan !== null) ? val.oldestScan : "-") + "</td>");
+			  items.push("<td class='right'>" + timeDuration(val.oldestScan) + "</td>");
 			});
   			
   			$("<tr/>", {

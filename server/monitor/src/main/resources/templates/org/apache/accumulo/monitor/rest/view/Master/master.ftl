@@ -37,15 +37,16 @@
   			items.push("<td class='firstcell left'>" + data.master + "</td>");
   			items.push("<td class='right'>" + data.onlineTabletServers + "</td>");
   			items.push("<td class='right'>" + data.totalTabletServers + "</td>");
-  			items.push("<td class='left'><a href='/gc'>" + data.lastGC + "</a></td>");
-  			items.push("<td class='right'>" + data.tablets + "</td>");
-  			items.push("<td class='right'>" + data.unassignedTablets + "</td>");
-  			items.push("<td class='right'>" + data.numentries + "</td>");
-  			items.push("<td class='right'>" + data.ingestrate + "</td>");
-  			items.push("<td class='right'>" + data.entriesRead + "</td>");
-  			items.push("<td class='right'>" + data.queryrate + "</td>");
-  			items.push("<td class='right'>" + data.holdTime + "</td>");
-  			items.push("<td class='right'>" + data.osload + "</td>");
+  			var date = new Date(parseInt(data.lastGC));
+  			items.push("<td class='left'><a href='/gc'>" + date.toLocaleString() + "</a></td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(data.tablets) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(data.unassignedTablets) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(data.numentries) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.ingestrate)) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.entriesRead)) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.queryrate)) + "</td>");
+  			items.push("<td class='right'>" + timeDuration(data.holdTime) + "</td>");
+  			items.push("<td class='right'>" + bigNumberForQuantity(data.osload) + "</td>");
   			
   			$("<tr/>", {
    			 html: items.join(""),

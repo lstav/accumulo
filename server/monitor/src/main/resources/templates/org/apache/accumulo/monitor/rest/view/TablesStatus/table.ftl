@@ -32,9 +32,9 @@
 
   <body>
   	<script type="text/javascript">
-  		$.getJSON("rest/tservers", function(data) {
-  			var count = 0;
-            
+  		$.getJSON("../rest/tables/${tableID}", function(data) {
+            var count = 0;
+  			
   			$.each(data.servers, function(key, val) {
               var items = [];
   			  items.push("<td class='firstcell left'><a href='/tservers/" + val.id + "'>" + val.hostname + "</a></td>");
@@ -55,11 +55,11 @@
                 $("<tr/>", {
                   html: items.join(""),
                   class: "highlight"
-                }).appendTo("#tservers");
+                }).appendTo("#participatingTServers");
               } else {
                 $("<tr/>", {
                   html: items.join("")
-                }).appendTo("#tservers");
+                }).appendTo("#participatingTServers");
               }
               count += 1;
               
@@ -77,16 +77,16 @@
 
         <div id='main' style='bottom:0'>
           <div>
-			<a name='tservers'>&nbsp;</a>
-			<table id='tservers' class='sortable'>
-			  <caption>
-				<span class='table-caption'>Tablet&nbsp;Servers</span><br />
-				<span class='table-subcaption'>Click on the <span style='color: #0000ff;'>server address</span> to view detailed performance statistics for that server.</span><br />
-				  <a href='/op?action=toggleLegend&redir=%2Ftservers&page=/tservers&table=tservers&show=true'>Show&nbsp;Legend</a>
-			  </caption>
-			  <tr><th class='firstcell'>Server</th><th>Hosted&nbsp;Tablets</th><th>Last&nbsp;Contact</th><th>Entries</th><th>Ingest</th><th>Query</th><th>Hold&nbsp;Time</th><th>Running<br />Scans</th><th>Minor<br />Compactions</th><th>Major<br />Compactions</th><th>Index Cache<br />Hit Rate</th><th>Data Cache<br />Hit Rate</th><th>OS&nbsp;Load</th></tr>
-			</table>
-		  </div>
+            <a name='participatingTServers'>&nbsp;</a>
+            <table id='participatingTServers' class='sortable'>
+              <caption>
+                <span class='table-caption'>Participating&nbsp;Tablet&nbsp;Servers</span><br />
+                <span class='table-subcaption'>${table}</span><br />
+                <a href='/op?action=toggleLegend&redir=%2Ftables%3Ft%3D1&page=/tables&table=participatingTServers&show=true'>Show&nbsp;Legend</a>
+              </caption>
+              <tr><th class='firstcell'>Server</th><th>Hosted&nbsp;Tablets</th><th>Last&nbsp;Contact</th><th>Entries</th><th>Ingest</th><th>Query</th><th>Hold&nbsp;Time</th><th>Running<br />Scans</th><th>Minor<br />Compactions</th><th>Major<br />Compactions</th><th>Index Cache<br />Hit Rate</th><th>Data Cache<br />Hit Rate</th><th>OS&nbsp;Load</th></tr>
+            </table>
+          </div>
         </div>
       </div>    
     </div>
