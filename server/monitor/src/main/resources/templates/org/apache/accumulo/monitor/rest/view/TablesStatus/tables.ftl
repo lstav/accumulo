@@ -36,7 +36,23 @@
             
             var count = 0;
             
+            var namespace = [];
+            namespace.push("<a>*&nbsp;(All&nbsp;Tables)</a>");
+            
+            $("<li/>", {
+                html: namespace.join(""),
+                class: "active"
+              }).appendTo("#namespaces"); 
+            
             $.each(data.tables, function(keyT, tab) {
+              var namespace = [];
+              
+              namespace.push("<a>" + (tab.namespace === "" ? "-&nbsp;(DEFAULT)" : tab.namespace) + "</a>");
+              
+              $("<li/>", {
+                html: namespace.join("")
+              }).appendTo("#namespaces"); 
+              
               $.each(tab.table, function(key, val) {
                 
                 var row = [];
@@ -94,6 +110,16 @@
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
+          <div id="filters">
+			<div class="table-caption">Namespaces</div>
+			<hr />
+			<div class='left show'>
+			  <dl>
+			    <ul id="namespaces">
+			    </ul>
+			  </dl>
+			</div>
+		  </div>
           <div id="tables">
             <a name='tableList'>&nbsp;</a>
             <table id='tableList' class='sortable'>
