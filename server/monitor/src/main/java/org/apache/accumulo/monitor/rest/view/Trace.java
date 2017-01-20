@@ -45,7 +45,8 @@ public class Trace {
 
   @Path("/summary")
   @GET
-  public Viewable getSummary(@QueryParam("minutes") @DefaultValue("10") String minutes, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {
+  public Viewable getSummary(@QueryParam("minutes") @DefaultValue("10") String minutes,
+      @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {
     int refresh = -1;
     try {
       refresh = Integer.parseInt(refreshValue);
@@ -86,7 +87,7 @@ public class Trace {
   @Path("/listType")
   @GET
   public Viewable getType(@QueryParam("type") String type, @QueryParam("minutes") @DefaultValue("10") String minutes,
-		  @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {
+      @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {
     int refresh = -1;
     try {
       refresh = Integer.parseInt(refreshValue);
@@ -124,7 +125,7 @@ public class Trace {
 
     return new Viewable("listType.ftl", model);
   }
-  
+
   @Path("/show")
   @GET
   public Viewable getID(@QueryParam("id") String id, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) {

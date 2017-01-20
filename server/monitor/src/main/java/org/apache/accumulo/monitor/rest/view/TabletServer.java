@@ -119,5 +119,5 @@ public class TabletServer {
 
     return new Viewable("server.ftl", model);
   }
-  
+
 }

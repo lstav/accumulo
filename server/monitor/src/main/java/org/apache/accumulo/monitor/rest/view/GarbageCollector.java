@@ -77,5 +77,5 @@ public class GarbageCollector {
     model.put("redirect", redir);
 
     return new Viewable("gc.ftl", model);
-  }  
+  }
 }
