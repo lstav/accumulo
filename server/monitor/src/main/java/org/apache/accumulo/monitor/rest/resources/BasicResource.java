@@ -29,70 +29,70 @@ public class BasicResource {
 
     return new MasterResource();
   }
-  
+
   @Path("/bulkImports")
   public BulkImportResource getBulkImportResource() {
-    
+
     return new BulkImportResource();
   }
-  
+
   @Path("/gc")
   public GarbageCollectorResource getGarbageCollectorResource() {
-    
+
     return new GarbageCollectorResource();
   }
-  
+
   @Path("/logs")
   public LogResource getLogResource() {
-    
+
     return new LogResource();
   }
 
   @Path("/problems")
   public ProblemsResource getProblemsResource() {
-    
+
     return new ProblemsResource();
   }
-  
+
   @Path("/replication")
   public ReplicationResource getReplicationResource() {
-    
+
     return new ReplicationResource();
   }
-  
+
   @Path("/scans")
   public ScansResource getScansResource() {
-    
+
     return new ScansResource();
   }
-  
+
   @Path("/statistics")
   public StatisticsResource getStatisticsResource() {
-    
+
     return new StatisticsResource();
   }
-  
+
   @Path("/tables")
   public TablesResource getTablesResource() {
-    
+
     return new TablesResource();
   }
-  
+
   @Path("/{parameter: tservers|json}")
   public TabletServerResource getTabletServerResource() {
-    
+
     return new TabletServerResource();
   }
-  
+
   @Path("/trace")
   public TracesResource getTracesResource() {
-    
+
     return new TracesResource();
   }
-  
+
   @Path("/zk")
   public ZookeeperResource getZookeeperResource() {
-    
+
     return new ZookeeperResource();
   }
 }

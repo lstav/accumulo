@@ -180,7 +180,7 @@ public class TracesResource extends BasicResource {
     } else {
       start = addSpans(scanner, tree, Long.MAX_VALUE);
     }
-    
+
     traces.addStartTime(start);
 
     final long finalStart = start;

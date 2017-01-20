@@ -84,7 +84,8 @@ public class TablesStatus {
 
   @Path("{tableID}")
   @GET
-  public Viewable getServer(@PathParam("tableID") String tableID, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue) throws TableNotFoundException {
+  public Viewable getServer(@PathParam("tableID") String tableID, @CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue)
+      throws TableNotFoundException {
     int refresh = -1;
     try {
       refresh = Integer.parseInt(refreshValue);
@@ -104,7 +105,7 @@ public class TablesStatus {
     String redir = request.getRequestURI();
     if (request.getQueryString() != null)
       redir += "?" + request.getQueryString();
-    
+
     String table = Tables.getTableName(Monitor.getContext().getInstance(), tableID);
 
     Map<String,Object> model = new HashMap<>();
@@ -124,5 +125,5 @@ public class TablesStatus {
 
     return new Viewable("table.ftl", model);
   }
-  
+
 }

@@ -28,7 +28,7 @@ import org.apache.accumulo.monitor.rest.api.GarbageCollectorStatus;
 /**
  * GarbageCollector metrics
  */
-public class GarbageCollectorResource extends BasicResource  {
+public class GarbageCollectorResource extends BasicResource {
 
   @GET
   public GarbageCollectorStatus getStatus() {

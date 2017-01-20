@@ -63,7 +63,7 @@ public class Master {
     String redir = request.getRequestURI();
     if (request.getQueryString() != null)
       redir += "?" + request.getQueryString();
-    
+
     List<String> masters = Monitor.getContext().getInstance().getMasterLocations();
 
     Map<String,Object> model = new HashMap<>();
