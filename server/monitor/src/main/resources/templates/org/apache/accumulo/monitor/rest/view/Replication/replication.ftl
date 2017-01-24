@@ -32,26 +32,30 @@
 
   <body>
   	<script type="text/javascript">
-  		$.getJSON("rest/master", function(data) {
-  			var items = [];
-  			items.push("<td class='firstcell left'>" + data.master + "</td>");
-  			items.push("<td class='right'>" + data.onlineTabletServers + "</td>");
-  			items.push("<td class='right'>" + data.totalTabletServers + "</td>");
-  			var date = new Date(parseInt(data.lastGC));
-  			items.push("<td class='left'><a href='/gc'>" + date.toLocaleString() + "</a></td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(data.tablets) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(data.unassignedTablets) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(data.numentries) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.ingestrate)) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.entriesRead)) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(Math.round(data.queryrate)) + "</td>");
-  			items.push("<td class='right'>" + timeDuration(data.holdTime) + "</td>");
-  			items.push("<td class='right'>" + bigNumberForQuantity(data.osload) + "</td>");
+  		$.getJSON("../rest/tables/${tableID}", function(data) {
+            var count = 0;
   			
-  			$("<tr/>", {
-   			 html: items.join(""),
-   			 class: "highlight"
-  			}).appendTo("#masterStatus");
+  			$.each(data.servers, function(key, val) {
+              var items = [];
+  			  items.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tableName + "</a></td>");
+  			  items.push("<td class='right'>" + val.peerName + "</td>");
+			  items.push("<td class='right'>" + val.remoteIdentifier + "</td>");
+			  items.push("<td class='right'>" + val.replicaSystemType + "</td>");
+			  items.push("<td class='right'>" + bigNumberForQuantity(val.filesNeedingReplication) + "</td>");
+              
+              if (count % 2 == 0) {
+                $("<tr/>", {
+                  html: items.join(""),
+                  class: "highlight"
+                }).appendTo("#participatingTServers");
+              } else {
+                $("<tr/>", {
+                  html: items.join("")
+                }).appendTo("#participatingTServers");
+              }
+              count += 1;
+              
+			});
 		});
 		
   	</script>  	
@@ -64,18 +68,17 @@
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
-			
           <div>
-		    <a name='masterStatus'>&nbsp;</a>
-			<table id='masterStatus' class='sortable'>
-			  <caption>
-				<span class='table-caption'>Master&nbsp;Status</span><br />
-				<a href='/op?action=toggleLegend&redir=%2Fmaster&page=/master&table=masterStatus&show=true'>Show&nbsp;Legend</a>
-			  </caption>
-			  <tr><th class='firstcell'>Master</th><th>#&nbsp;Online<br />Tablet&nbsp;Servers</th><th>#&nbsp;Total<br />Tablet&nbsp;Servers</th><th>Last&nbsp;GC</th><th>#&nbsp;Tablets</th><th>#&nbsp;Unassigned<br />Tablets</th><th>Entries</th><th>Ingest</th><th>Entries<br />Read</th><th>Entries<br />Returned</th><th>Hold&nbsp;Time</th><th>OS&nbsp;Load</th></tr>
-			</table>
-		  </div>
-		  
+            <a name='participatingTServers'>&nbsp;</a>
+            <table id='participatingTServers' class='sortable'>
+              <caption>
+                <span class='table-caption'>Replication Status</span><br />
+                <span class='table-subcaption'></span><br />
+                <a href='/op?action=toggleLegend&redir=%2Ftables%3Ft%3D1&page=/tables&table=participatingTServers&show=true'>Show&nbsp;Legend</a>
+              </caption>
+              <tr><th class='firstcell'>Table</th><th>Peer</th><th>remote&nbsp;Identifier</th><th>Replica System Type</th><th>Files needing replication</th></tr>
+            </table>
+          </div>
         </div>
       </div>    
     </div>
