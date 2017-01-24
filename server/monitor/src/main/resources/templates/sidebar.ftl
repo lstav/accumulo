@@ -34,7 +34,7 @@
           </#if>
           <hr />
           <a href='/xml'>XML</a><br />
-          <a href='/json'>JSON</a><hr />
+          <a href='/rest/json'>JSON</a><hr />
           <#if is_ssl>
             <a href='/shell'>Shell</a><hr />
           </#if>
