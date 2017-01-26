@@ -71,11 +71,22 @@
            $.plot($("#ingest_entries"),[{ data: d0, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
         
-        $.getJSON("rest/statistics/time/queryRate", function(data) {
+        $.getJSON("rest/statistics/time/scanEntries", function(data) {
            var d0 = [];
+           var d1 = [];
            $.each(data, function(key, val) {
-               d0.push([val.first, val.second]);
+               if (val.first == "Read") {
+                   $.each(val.second, function(key2, val2) {
+                       d0.push([val2.first, val2.second]);
+                   });
+               }
+               if (val.first == "Returned") {
+                   $.each(val.second, function(key2, val2) {
+                       d1.push([val2.first, val2.second]);
+                   })
+               }
            });
+           
            $.plot($("#scan_entries"),[{ label: "Read", data: d0, lines: { show: true }, color:"red" },{ label: "Returned", data: d1, lines: { show: true }, color:"blue" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
         
@@ -103,7 +114,7 @@
            $.plot($("#load_avg"),[{ data: d0, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
         
-        $.getJSON("rest/statistics/time/scanRate", function(data) {
+        $.getJSON("rest/statistics/time/lookups", function(data) {
            var d0 = [];
            $.each(data, function(key, val) {
                d0.push([val.first, val.second]);
@@ -127,20 +138,20 @@
            $.plot($("#major"),[{ data: d0, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
         
-        $.getJSON("rest/statistics/time/minorCompactions", function(data) {
+        $.getJSON("rest/statistics/time/indexCacheHitRate", function(data) {
            var d0 = [];
            $.each(data, function(key, val) {
                d0.push([val.first, val.second]);
            });
-           $.plot($("#index_cache"),[{ data: d0, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
+           $.plot($("#index_cache"),[{ data: d0, points: { show: true, radius: 1 }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
         
-        $.getJSON("rest/statistics/time/majorCompactions", function(data) {
+        $.getJSON("rest/statistics/time/dataCacheHitRate", function(data) {
            var d0 = [];
            $.each(data, function(key, val) {
                d0.push([val.first, val.second]);
            });
-           $.plot($("#data_cache"),[{ data: d0, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
+           $.plot($("#data_cache"),[{ data: d0, points: { show: true, radius: 1 }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />EST", ticks:3}});
         });
 		
   	</script>  	
