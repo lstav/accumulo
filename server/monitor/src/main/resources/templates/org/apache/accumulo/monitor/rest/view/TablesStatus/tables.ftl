@@ -32,25 +32,25 @@
 
   <body>
   	<script type="text/javascript">
+        
+        function populateTable(namespace) {
+            console.log(namespace);
+        }
+        
+        // Put json inside the populateTable, if the namespace matches *, then show all tables, if it only matches a specific namespace, then just show those tables
+        
   		$.getJSON("rest/tables", function(data) {
             
             var count = 0;
             
-            var namespace = [];
-            namespace.push("<a>*&nbsp;(All&nbsp;Tables)</a>");
-            
-            $("<li/>", {
-                html: namespace.join(""),
-                class: "active"
-              }).appendTo("#namespaces"); 
-            
             $.each(data.tables, function(keyT, tab) {
               var namespace = [];
               
-              namespace.push("<a>" + (tab.namespace === "" ? "-&nbsp;(DEFAULT)" : tab.namespace) + "</a>");
+              namespace.push("<a onclick=populateTable('" + (tab.namespace === "" ? "-" : tab.namespace) + "')>" + (tab.namespace === "" ? "-&nbsp;(DEFAULT)" : tab.namespace) + "</a>");
               
               $("<li/>", {
-                html: namespace.join("")
+                html: namespace.join(""),
+                id: tab.namespace === "" ? "-" : tab.namespace
               }).appendTo("#namespaces"); 
               
               $.each(tab.table, function(key, val) {
@@ -116,6 +116,7 @@
 			<div class='left show'>
 			  <dl>
 			    <ul id="namespaces">
+                    <li id='*'><a onclick=populateTable("*")>*&nbsp;(All&nbsp;Tables)</a></li>
 			    </ul>
 			  </dl>
 			</div>

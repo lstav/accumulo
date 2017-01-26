@@ -56,17 +56,23 @@
   			}
  
  			var items2 = [];
-			$.each(data.tabletServerBulkImport, function(key, val) {
-			  items2.push("<td class='firstcell left'><a href='/tservers/" + val.server + "'>" + val.server + "</a></td>");
-			  items2.push("<td class='right'>" + val.importSize + "</td>");
-			  items2.push("<td class='right'>" + (val.oldestAge > 0 ? val.oldestAge : "&mdash;") + "</td>");
-			});
-			
-  			$("<tr/>", {
-   			 html: items2.join(""),
-   			 class: "highlight"
-  			}).appendTo("#bulkImportStatus");
-  			
+            if (data.tabletServerBulkImport.length === 0) {
+                items2.push("<td class='center' colspan='3'><i>Empty</i></td>");
+                $("<tr/>", {
+                    html: items2.join("")
+                }).appendTo("#bulkImportStatus");
+            } else {
+                $.each(data.tabletServerBulkImport, function(key, val) {
+                  items2.push("<td class='firstcell left'><a href='/tservers/" + val.server + "'>" + val.server + "</a></td>");
+                  items2.push("<td class='right'>" + val.importSize + "</td>");
+                  items2.push("<td class='right'>" + (val.oldestAge > 0 ? val.oldestAge : "&mdash;") + "</td>");
+                });
+                
+                $("<tr/>", {
+                 html: items2.join(""),
+                 class: "highlight"
+                }).appendTo("#bulkImportStatus");
+            }
 		});
 		
   	</script>  	
