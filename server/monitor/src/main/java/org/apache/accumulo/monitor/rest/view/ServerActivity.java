@@ -43,10 +43,8 @@ public class ServerActivity {
   private Request request;
 
   @GET
-  public Viewable get(@CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue,
-      @QueryParam("shape") @DefaultValue("circles") String shape,
-      @QueryParam("size") @DefaultValue("40") String size,
-      @QueryParam("motion") @DefaultValue("") String motion,
+  public Viewable get(@CookieParam("page.refresh.rate ") @DefaultValue("-1") String refreshValue, @QueryParam("shape") @DefaultValue("circles") String shape,
+      @QueryParam("size") @DefaultValue("40") String size, @QueryParam("motion") @DefaultValue("") String motion,
       @QueryParam("color") @DefaultValue("allavg") String color) {
     int refresh = -1;
     try {
@@ -79,10 +77,10 @@ public class ServerActivity {
     model.put("logs_have_error", logsHaveError);
     model.put("num_problems", numProblems);
     model.put("is_ssl", false);
-    model.put("shape",  shape);
-    model.put("size",  size);
-    model.put("motion",  motion);
-    model.put("color",  color);
+    model.put("shape", shape);
+    model.put("size", size);
+    model.put("motion", motion);
+    model.put("color", color);
     model.put("redirect", redir);
 
     return new Viewable("vis.ftl", model);
