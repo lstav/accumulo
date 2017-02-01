@@ -24,46 +24,76 @@
     <link rel='shortcut icon' type='image/jpg' href='http://localhost:9995/web/favicon.png' />
     <link rel='stylesheet' type='text/css' href='http://localhost:9995/web/screen.css' media='screen' />
     <script src='http://localhost:9995/web/functions.js' type='text/javascript'></script>
-
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="http://localhost:9995/web/flot/excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="http://localhost:9995/web/flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="http://localhost:9995/web/flot/jquery.flot.js"></script>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.js'></script>
+    
     <script language="javascript" type="text/javascript">
-    function populateTable(ns) {
-        $.getJSON("rest/tables", function(data) {
+        function getData() {
+            $.getJSON("rest/tables", function(data) {
+                sessionStorage.tables = JSON.stringify(data);
+            });
+        }    
+        
+        function populateTable(ns) {
+            var data = JSON.parse(sessionStorage.tables);
+            var tmpArr = JSON.parse(sessionStorage.namespaces);
+            sessionStorage.namespaceChanged = true;
             
-        	var count = 0;
-        	var all = '<a onclick=populateTable("*")>*&nbsp;(All&nbsp;Tables)</a>';
+            if (ns !== undefined) {
+                if (tmpArr.indexOf(ns) == -1 && ns !== "*") {
+                    if (tmpArr.indexOf("*") !== -1) {
+                        tmpArr.splice(tmpArr.indexOf("*"),1);
+                    }
+                    tmpArr.push((ns === "" ? "-" : ns));                
+                } else if (ns == "*") {
+                    tmpArr = [];
+                    tmpArr.push("*");
+                } else {
+                    tmpArr.splice(tmpArr.indexOf(ns),1);
+                    if (tmpArr.length === 0) {
+                        tmpArr.push("*");
+                    }
+                }
+            }
+            
+            sessionStorage.namespaces = JSON.stringify(tmpArr);
+            
+            var all = '<a onclick=populateTable("*")>*&nbsp;(All&nbsp;Tables)</a>';
             $("#namespaces").html("");
-            $("#tableList").html("");
-                
-            createHeader();
+            clearTable("tableList");
 
-        	$("<li/>", {
-	            html:all,
-	            id: "*",
-	            class: ns === "*" ? "active" : ""
+            $("<li/>", {
+                html: all,
+                id: "*",
+                class: tmpArr.indexOf("*") !== -1 ? "active" : ""
             }).appendTo("#namespaces");
-                
+            
+            var numTables = 0;
+            
             $.each(data.tables, function(keyT, tab) {
-        		var namespace = [];
+                var namespace = [];
                   
-          		namespace.push("<a onclick=populateTable('" + (tab.namespace === "" ? "-" : tab.namespace) + "')>" + (tab.namespace === "" ? "-&nbsp;(DEFAULT)" : tab.namespace) + "</a>");
+                namespace.push("<a onclick=populateTable('" + (tab.namespace === "" ? "-" : tab.namespace) + "')>" + (tab.namespace === "" ? "-&nbsp;(DEFAULT)" : tab.namespace) + "</a>");
                   
                 $("<li/>", {
                     html: namespace.join(""),
                     id: tab.namespace === "" ? "-" : tab.namespace,
-                    class: (tab.namespace === "" ? "-" : tab.namespace) === ns ? "active" : ""
+                    class: tmpArr.indexOf(tab.namespace === "" ? "-" : tab.namespace) !== -1 ? "active" : ""
                 }).appendTo("#namespaces"); 
                   
-                if (ns === (tab.namespace === "" ? "-" : tab.namespace) || ns == "*") {
+                if (tmpArr.indexOf(tab.namespace === "" ? "-" : tab.namespace) !== -1 || tmpArr.indexOf("*") !== -1) {
                     $.each(tab.table, function(key, val) {
-		
+                        
                         var row = [];
-	                    row.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
-	                    row.push("<td class='center'><span>" + val.tableState + "</span></td>");
-	
-	                    if (val.tableState === "ONLINE") {
+                        row.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
+                        row.push("<td class='center'><span>" + val.tableState + "</span></td>");
+
+                        if (val.tableState === "ONLINE") {
                             row.push("<td class='right'>" + bigNumberForQuantity(val.tablets) + "</td>");
                             row.push("<td class='right'>" + bigNumberForQuantity(val.offlineTablets) + "</td>");
                             row.push("<td class='right'>" + bigNumberForQuantity(val.recs) + "</td>");
@@ -75,77 +105,143 @@
                             row.push("<td class='right'>" + bigNumberForQuantity(val.scans.running) + "&nbsp;(" + val.scans.queued + ")</td>");
                             row.push("<td class='right'>" + bigNumberForQuantity(val.minorCompactions.running) + "&nbsp;(" + val.minorCompactions.queued + ")</td>");
                             row.push("<td class='right'>" + bigNumberForQuantity(val.majorCompactions.running) + "&nbsp;(" + val.majorCompactions.queued + ")</td>");
-	                    } else {
-	                        row.push("<td class='right'>-</td>");
-	                        row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>&mdash;</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-		                    row.push("<td class='right'>-</td>");
-	                    }
-		
-	                    if (count % 2 == 0) {
-                            $("<tr/>", {
-		                        html: row.join(""),
-		                        class: "highlight"
-		                    }).appendTo("#tableList");
-	                    } else {
-		                    $("<tr/>", {
-		                        html: row.join("")
-	                        }).appendTo("#tableList");  
-	                    }
-	                    count += 1;
+                        } else {
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>&mdash;</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right'>-</td>");
+                        }
+        
+                        $("<tr/>", {
+                            html: row.join(""),
+                            id: tab.namespace === "" ? "-" : tab.namespace
+                        }).appendTo("#tableList");
+                        
+                        numTables++;
                     });
                 }
             });
+            $.each(data.tables, function(keyT, tab) {
+                if (numTables === 0) {
+                    if (tab.table.length === 0) {
+                        var item = "<td class='center' colspan='13'><i>Empty</i></td>";
+                        
+                        $("<tr/>", {
+                            html: item,
+                            id: tab.namespace === "" ? "-" : tab.namespace
+                        }).appendTo("#tableList");
+                    }
+                }
+            });
+            sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+        }
+        
+        function sortTable(n) {
+            if (!JSON.parse(sessionStorage.namespaceChanged)) {
+                if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
+                    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+                }
+            } else {
+                direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+            }
+            
+            sessionStorage.tableColumnSort = n;
+            
+            sortTables("tableList", direction, n);
+            sessionStorage.namespaceChanged = false;
+        }
+        
+        $(function() {
+            $(document).tooltip();
         });
-    }
 
-	function createHeader() {	
-		
-		var caption = [];
+        function createHeader() {	
+            
+            var caption = [];
 
-		caption.push("<span class='table-caption'>Table&nbsp;List</span><br />");
-		caption.push("<a>Show&nbsp;Legend</a>");
+            caption.push("<span class='table-caption'>Table&nbsp;List</span><br />");
 
-		$("<caption/>", {
-			html: caption.join("")
-		}).appendTo("#tableList");
-		
-		var items = [];
-		
-		items.push("<th class='firstcell'>Table&nbsp;Name&nbsp;</th>");
-		items.push("<th>State</th>");
-		items.push("<th>#&nbsp;Tablets</th>");
-		items.push("<th>#&nbsp;Offline<br />Tablets</th>");
-		items.push("<th>Entries</th>");
-		items.push("<th>Entries<br />In&nbsp;Memory</th>");
-		items.push("<th>Ingest</th>");
-		items.push("<th>Entries<br />Read</th>");
-		items.push("<th>Entries<br />Returned</th>");
-		items.push("<th>Hold&nbsp;Time</th>");
-		items.push("<th>Running<br />Scans</th>");
-		items.push("<th>Minor<br />Compactions</th>");
-		items.push("<th>Major<br />Compactions</th>");
-		
-		$("<tr/>", {
-		    html: items.join("")
-		 }).appendTo("#tableList");
-	}
+            $("<caption/>", {
+                html: caption.join("")
+            }).appendTo("#tableList");
+            
+            var items = [];
+                        
+            items.push("<th class='firstcell' onclick='sortTable(0)'>Table&nbsp;Name&nbsp;</th>");
+            items.push("<th onclick='sortTable(1)'>State&nbsp;</th>");
+            items.push("<th onclick='sortTable(2)' title='"+getDescription(2)+"'>#&nbsp;Tablets&nbsp;</th>");
+            items.push("<th onclick='sortTable(3)' title='"+getDescription(3)+"'>#&nbsp;Offline<br />Tablets&nbsp;</th>");
+            items.push("<th onclick='sortTable(4)' title='"+getDescription(4)+"'>Entries&nbsp;</th>");
+            items.push("<th onclick='sortTable(5)' title='"+getDescription(5)+"'>Entries<br />In&nbsp;Memory&nbsp;</th>");
+            items.push("<th onclick='sortTable(6)' title='"+getDescription(6)+"'>Ingest&nbsp;</th>");
+            items.push("<th onclick='sortTable(7)' title='"+getDescription(7)+"'>Entries<br />Read&nbsp;</th>");
+            items.push("<th onclick='sortTable(8)' title='"+getDescription(8)+"'>Entries<br />Returned&nbsp;</th>");
+            items.push("<th onclick='sortTable(9)' title='"+getDescription(9)+"'>Hold&nbsp;Time&nbsp;</th>");
+            items.push("<th onclick='sortTable(10)' title='"+getDescription(10)+"'>Running<br />Scans&nbsp;</th>");
+            items.push("<th onclick='sortTable(11)' title='"+getDescription(11)+"'>Minor<br />Compactions&nbsp;</th>");
+            items.push("<th onclick='sortTable(12)' title='"+getDescription(12)+"'>Major<br />Compactions&nbsp;</th>");
+            
+            $("<tr/>", {
+                html: items.join("")
+             }).appendTo("#tableList");
+        }
+        
+        function clearTable(tableID) {
+            
+            $("#" + tableID).find("tr:not(:first)").remove();
+        }
+        
+        function getDescription(n) {
+            
+            switch(n) {
+                case 2:
+                    return "Tables are broken down into ranges of rows called tablets.";
+                case 3:
+                    return "Tablets unavailable for query or ingest. May be a transient condition when tablets are moved for balancing.";
+                case 4:
+                    return "Key/value pairs over each instance, table or tablet.";
+                case 5:
+                    return "The total number of key/value pairs stored in memory and not yet written to disk.";
+                case 6:
+                    return "The number of Key/Value pairs inserted. Note that deletes are 'inserted'.";
+                case 7:
+                    return "The number of Key/Value pairs read on the server side. Not all key values read may be returned to client because of filtering.";
+                case 8:
+                    return "The number of Key/Value pairs returned to clients during queries. This is not the number of scans.";
+                case 9:
+                    return "The amount of time that ingest operations are suspended while waiting for data to be written to disk.";
+                case 10:
+                    return "Information about the scans threads. Shows how many threads are running and how much work is queued for the threads.";
+                case 11:
+                    return "Flushing memory to disk is called a \"Minor Compaction.\" Multiple tablets can be minor compacted simultaneously, but sometimes they must wait for resources to be available. These tablets that are waiting for compaction are \"queued\" and are indicated using parentheses. So 2 (3) indicates there are two compactions running and three queued waiting for resources.";
+                case 12:
+                    return "Gathering up many small files and rewriting them as one larger file is called a \"Major Compaction\". Major Compactions are performed as a consequence of new files created from Minor Compactions and Bulk Load operations. They reduce the number of files used during queries.";
+                default:
+                    return "Not valid";
+            }
+        }
 
-</script>
+    </script>
   </head>
 
   <body>
   	<script type="text/javascript">
 
 		$(document).ready(function() {
-			populateTable("*");
+            createHeader();
+            getData();
+            if (sessionStorage.namespaces === undefined) {
+                sessionStorage.namespaces = "[]";
+                populateTable("*");
+            }
+			populateTable(undefined);
         });        
         
   	</script>  	

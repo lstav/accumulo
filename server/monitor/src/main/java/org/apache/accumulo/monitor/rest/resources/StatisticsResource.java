@@ -102,19 +102,19 @@ public class StatisticsResource extends BasicResource {
   public List<Pair<Long,Integer>> getQueryRate() {
     return Monitor.getQueryRateOverTime();
   }
-  
+
   @GET
   @Path("time/scanEntries")
   public List<Pair<String,List<Pair<Long,Integer>>>> getScanEntries() {
-    
+
     List<Pair<String,List<Pair<Long,Integer>>>> scanEntries = new ArrayList<>();
-    
+
     Pair<String,List<Pair<Long,Integer>>> read = new Pair<>("Read", Monitor.getScanRateOverTime());
     Pair<String,List<Pair<Long,Integer>>> returned = new Pair<>("Returned", Monitor.getQueryRateOverTime());
-    
+
     scanEntries.add(read);
     scanEntries.add(returned);
-    
+
     return scanEntries;
   }
 
@@ -159,17 +159,17 @@ public class StatisticsResource extends BasicResource {
   public List<Pair<Long,Double>> getLookups() {
     return Monitor.getLookupsOverTime();
   }
-  
+
   @GET
   @Path("time/indexCacheHitRate")
-  public List<Pair<Long,Double>> getIndexCacheHitRate() { 
+  public List<Pair<Long,Double>> getIndexCacheHitRate() {
     return Monitor.getIndexCacheHitRateOverTime();
   }
-  
+
   @GET
   @Path("time/dataCacheHitRate")
-  public List<Pair<Long,Double>> getDataCacheHitRate() { 
+  public List<Pair<Long,Double>> getDataCacheHitRate() {
     return Monitor.getDataCacheHitRateOverTime();
   }
-  
+
 }
