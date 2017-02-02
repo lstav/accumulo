@@ -45,6 +45,21 @@ function bigNumber(big, suffixes, base) {
     return val.toFixed(2) + suffixes[exp];
 }
 
+function bigNumberNoSuffix(big, suffixes, base) {
+	if (big === 0) {
+		return "0";
+	} else if (suffixes.indexOf(big.substr(-1)) === -1 || suffixes.indexOf(big.substr(-3)) === -1) {
+		return big;
+	} else {
+		if (suffixes.indexOf(big.substr(-1)) !== -1) {
+			return big.subtring(0, big.length-1)*Math.pow(base,suffixes.indexOf(big.substr(-1)));
+		}
+		if (suffixes.indexOf(big.substr(-3)) !== -1) {
+			return big.subtring(0, big.length-3)*Math.pow(base,suffixes.indexOf(big.substr(-3)));
+		}
+	}
+}
+
 function timeDuration(time) {
     var ms, sec, min, hr, day, yr;
     ms = sec = min = hr = day = yr = -1;
