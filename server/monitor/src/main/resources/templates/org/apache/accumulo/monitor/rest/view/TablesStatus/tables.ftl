@@ -30,6 +30,15 @@
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
     <script language="javascript" type="text/javascript">
@@ -91,33 +100,33 @@
                     $.each(tab.table, function(key, val) {
                         
                         var row = [];
-                        row.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tablename + "<span hidden=''>" + val.tablename + "</span></a></td>");
-                        row.push("<td class='center'><span>" + val.tableState + "</span></td>");
+                        row.push("<td class='firstcell left' data-value='" + val.tablename + "'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
+                        row.push("<td class='center' data-value='" + val.tableState + "'><span>" + val.tableState + "</span></td>");
 
                         if (val.tableState === "ONLINE") {
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.tablets) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.offlineTablets) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.recs) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.recsInMemory) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(Math.floor(val.entriesRead)) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(Math.floor(val.entriesReturned)) + "</td>");
-                            row.push("<td class='right'>" + timeDuration(val.holdTime) + "</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.scans.running) + "&nbsp;(" + val.scans.queued + ")</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.minorCompactions.running) + "&nbsp;(" + val.minorCompactions.queued + ")</td>");
-                            row.push("<td class='right'>" + bigNumberForQuantity(val.majorCompactions.running) + "&nbsp;(" + val.majorCompactions.queued + ")</td>");
+                            row.push("<td class='right' data-value='" + val.tablets + "'>" + bigNumberForQuantity(val.tablets) + "</td>");
+                            row.push("<td class='right' data-value='" + val.offlineTablets + "'>" + bigNumberForQuantity(val.offlineTablets) + "</td>");
+                            row.push("<td class='right' data-value='" + val.recs + "'>" + bigNumberForQuantity(val.recs) + "</td>");
+                            row.push("<td class='right' data-value='" + val.recsInMemory + "'>" + bigNumberForQuantity(val.recsInMemory) + "</td>");
+                            row.push("<td class='right' data-value='" + val.ingest + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
+                            row.push("<td class='right' data-value='" + val.entriesRead + "'>" + bigNumberForQuantity(Math.floor(val.entriesRead)) + "</td>");
+                            row.push("<td class='right' data-value='" + val.entriesReturned + "'>" + bigNumberForQuantity(Math.floor(val.entriesReturned)) + "</td>");
+                            row.push("<td class='right' data-value='" + val.holdTime + "'>" + timeDuration(val.holdTime) + "</td>");
+                            row.push("<td class='right' data-value='" + (val.scans.running + val.scans.queued) + "'>" + bigNumberForQuantity(val.scans.running) + "&nbsp;(" + val.scans.queued + ")</td>");
+                            row.push("<td class='right' data-value='" + (val.minorCompactions.running + val.minorCompactions.queued) + "'>" + bigNumberForQuantity(val.minorCompactions.running) + "&nbsp;(" + val.minorCompactions.queued + ")</td>");
+                            row.push("<td class='right' data-value='" + (val.majorCompactions.running + val.majorCompactions.queued) + "'>" + bigNumberForQuantity(val.majorCompactions.running) + "&nbsp;(" + val.majorCompactions.queued + ")</td>");
                         } else {
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>&mdash;</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
-                            row.push("<td class='right'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>&mdash;</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
+                            row.push("<td class='right' data-value='-'>-</td>");
                         }
         
                         $("<tr/>", {
@@ -254,10 +263,7 @@
   	</script>  	
     <div id='content-wrapper'>
       <div id='content'>
-        <div id='header'>
-          <#include "/templates/header.ftl">
-        </div>
-
+        <#include "/templates/header.ftl">
         <#include "/templates/sidebar.ftl">
 
         <div id='main' style='bottom:0'>
@@ -265,16 +271,13 @@
 			<div class="table-caption">Namespaces</div>
 			<hr />
 			<div class='left show'>
-			  <dl>
-			    <ul id="namespaces">
-                    
-			    </ul>
-			  </dl>
+			  <ul id="namespaces" class="nav nav-pills nav-stacked" role="tablist">
+			    
+			  </ul>
 			</div>
 		  </div>
           <div id="tables">
-            <a name='tableList'>&nbsp;</a>
-            <table id='tableList' class='sortable'>
+            <table id='tableList' class='table table-bordered table-striped table-condensed'>
               
             </table>
           </div>
