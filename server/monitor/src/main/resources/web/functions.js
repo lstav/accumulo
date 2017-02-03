@@ -36,12 +36,6 @@ function bigNumberForQuantity(quantity) {
     return bigNumber(quantity, QUANTITY_SUFFIX, 1000);
 }
 
-function bigNumberQuantityNoSuffix(quantity) {
-	if (quantity === null)
-		quantity = 0;
-	return bigNumberNoSuffix(quantity, QUANTITY_SUFFIX, 1000);
-}
-
 function bigNumber(big, suffixes, base) {
     if (big < base) {
         return big + suffixes[0];
@@ -49,20 +43,6 @@ function bigNumber(big, suffixes, base) {
     var exp = Math.floor(Math.log(big) / Math.log(base));
     var val = big / Math.pow(base, exp);
     return val.toFixed(2) + suffixes[exp];
-}
-
-function bigNumberNoSuffix(big, suffixes, base) {
-	if (big === 0) {
-		return "0";
-	} else {
-		if (suffixes.indexOf(big.substr(-1)) !== -1) {
-			return big.substring(0, big.length-1)*Math.pow(base,suffixes.indexOf(big.substr(-1)));
-		}
-		if (suffixes.indexOf(big.substr(-3)) !== -1) {
-			return big.substring(0, big.length-3)*Math.pow(base,suffixes.indexOf(big.substr(-3)));
-		}
-		return big;
-	}
 }
 
 function timeDuration(time) {
@@ -109,7 +89,7 @@ function timeDuration(time) {
 }
 
 function sortTables(tableID, direction, n) {
-  var table, rows, switching, i, x, y, h, shouldSwitch, dir, switchcount = 0;
+  var table, rows, switching, i, x, y, h, shouldSwitch, dir, switchcount = 0, xOne, xTwo, xFinal, yOne, yTwo, yFinal;
   table = document.getElementById(tableID);
   switching = true;
   
@@ -155,18 +135,23 @@ function sortTables(tableID, direction, n) {
       shouldSwitch = false;
       /*Get the two elements you want to compare,
       one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
+      x = rows[i].getElementsByTagName("TD")[n].getAttribute("data-value");
+      xFinal = (x === "-" || x === "&mdash;" ? null : (Number(x) == x ? Number(x) : x));
+      y = rows[i + 1].getElementsByTagName("TD")[n].getAttribute("data-value");
+      yFinal = (y === "-" || y === "&mdash;" ? null : (Number(y) == y ? Number(y) : y));
+      
       /*check if the two rows should switch place,
       based on the direction, asc or desc:*/
       if (dir == "asc") {
-        if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+        //if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+        if (xFinal > yFinal || yFinal === null) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
           break;
         }
       } else if (dir == "desc") {
-        if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+        //if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+        if (xFinal < yFinal || xFinal === null) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
           break;

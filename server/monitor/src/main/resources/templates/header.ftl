@@ -14,6 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
+    <div id='header' class="navbar navbar-inverse navbar-fixed-top">
         <div id='headertitle'>
             <h1>${title}</h1>
         </div>
@@ -21,3 +22,4 @@
           <br><span class='smalltext'>Instance&nbsp;ID:&nbsp;${instance_id}</span>
           <br><span class='smalltext'>${current_date}</span>
         </div>
+    </div>
