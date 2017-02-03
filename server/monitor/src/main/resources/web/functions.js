@@ -36,6 +36,12 @@ function bigNumberForQuantity(quantity) {
     return bigNumber(quantity, QUANTITY_SUFFIX, 1000);
 }
 
+function bigNumberQuantityNoSuffix(quantity) {
+	if (quantity === null)
+		quantity = 0;
+	return bigNumberNoSuffix(quantity, QUANTITY_SUFFIX, 1000);
+}
+
 function bigNumber(big, suffixes, base) {
     if (big < base) {
         return big + suffixes[0];
@@ -48,15 +54,14 @@ function bigNumber(big, suffixes, base) {
 function bigNumberNoSuffix(big, suffixes, base) {
 	if (big === 0) {
 		return "0";
-	} else if (suffixes.indexOf(big.substr(-1)) === -1 || suffixes.indexOf(big.substr(-3)) === -1) {
-		return big;
 	} else {
 		if (suffixes.indexOf(big.substr(-1)) !== -1) {
-			return big.subtring(0, big.length-1)*Math.pow(base,suffixes.indexOf(big.substr(-1)));
+			return big.substring(0, big.length-1)*Math.pow(base,suffixes.indexOf(big.substr(-1)));
 		}
 		if (suffixes.indexOf(big.substr(-3)) !== -1) {
-			return big.subtring(0, big.length-3)*Math.pow(base,suffixes.indexOf(big.substr(-3)));
+			return big.substring(0, big.length-3)*Math.pow(base,suffixes.indexOf(big.substr(-3)));
 		}
+		return big;
 	}
 }
 

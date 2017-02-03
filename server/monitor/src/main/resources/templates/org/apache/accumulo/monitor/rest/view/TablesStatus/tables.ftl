@@ -91,7 +91,7 @@
                     $.each(tab.table, function(key, val) {
                         
                         var row = [];
-                        row.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
+                        row.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tablename + "<span hidden=''>" + val.tablename + "</span></a></td>");
                         row.push("<td class='center'><span>" + val.tableState + "</span></td>");
 
                         if (val.tableState === "ONLINE") {
