@@ -38,7 +38,7 @@
           <#if is_ssl>
             <a href='/shell'>Shell</a><hr />
           </#if>
-          <div class='smalltext'>[<a href='/op?action=refresh&value=<#if refresh < 1>5<#else>-1</#if>&redir=${redirect}'>
+          <div class='smalltext'>[<a href='/op?action=refresh&value=<#if refresh < 1>5<#else>-1</#if><#if redirect??>&redir=${redirect}</#if>'>
                 <#if refresh < 1>enable<#else>disable</#if>&nbsp;auto-refresh</a>]</div><hr />
           <div class='smalltext'><a href='https://accumulo.apache.org/' target='_blank'>Apache&nbsp;Accumulo</a></div>
         </div>

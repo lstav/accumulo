@@ -16,7 +16,6 @@
  */
 package org.apache.accumulo.monitor.rest;
 
-import java.io.IOException;
 import java.net.URI;
 
 import org.apache.accumulo.core.client.AccumuloException;
@@ -27,13 +26,15 @@ import org.apache.accumulo.server.client.HdfsZooInstance;
 import org.apache.accumulo.server.conf.ServerConfigurationFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.glassfish.jersey.filter.LoggingFilter;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.mvc.MvcFeature;
 import org.glassfish.jersey.server.mvc.freemarker.FreemarkerMvcFeature;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,9 @@ import org.slf4j.LoggerFactory;
 public class JettyMonitorApplication extends MonitorApplication {
   private static final Logger log = LoggerFactory.getLogger(JettyMonitorApplication.class);
 
-  public JettyMonitorApplication() {}
+  private JettyMonitorApplication() {}
 
+  @Override
   public void run() {
     Instance instance = HdfsZooInstance.getInstance();
     ServerConfigurationFactory config = new ServerConfigurationFactory(instance);
@@ -51,35 +53,55 @@ public class JettyMonitorApplication extends MonitorApplication {
     // Set the objects on the old monitor and start daemons to regularly poll the data
     startDataDaemons(config, instance, serverContext);
 
-    final ResourceConfig rc = new ResourceConfig().register(FreemarkerMvcFeature.class).property(MvcFeature.TEMPLATE_BASE_PATH, "/templates")
-        .packages("org.apache.accumulo.monitor.rest.api", "org.apache.accumulo.monitor.rest.resources", "org.apache.accumulo.monitor.rest.view")
-        .property(ServerProperties.TRACING, "ALL").property(ServletProperties.FILTER_FORWARD_ON_404, "true")
-        .property(ServletProperties.FILTER_STATIC_CONTENT_REGEX, "/web/.*")
-        .register(new LoggingFilter(java.util.logging.Logger.getLogger("JettyMonitorApplication"), true)).register(JacksonFeature.class)
-        .registerClasses(AccumuloExceptionMapper.class);
+    final ResourceConfig rc = new ResourceConfig().register(FreemarkerMvcFeature.class)
+        .register(new LoggingFeature(java.util.logging.Logger.getLogger(this.getClass().getSimpleName())))
+        .register(JacksonFeature.class)
+        .register(AccumuloExceptionMapper.class)
+        .packages("org.apache.accumulo.monitor.rest")
+        .property(MvcFeature.TEMPLATE_BASE_PATH, "/templates")
+        .property(ServerProperties.TRACING, "ALL")
+        .property(ServletProperties.FILTER_FORWARD_ON_404, "true")
+        .property(ServletProperties.FILTER_STATIC_CONTENT_REGEX, "/web/.*");
 
     final URI serverUri = getServerUri();
-
-    Server server = JettyHttpContainerFactory.createServer(serverUri, rc);
-
-    int port = serverUri.getPort();
-    if (0 == port) {
-      port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
-    }
-
     String hostname = serverUri.getHost();
+    int port = serverUri.getPort();
 
-    log.info("Server bound to " + hostname + ":" + port);
+    Server server = null;
 
     try {
-      advertiseHttpAddress(serverContext.getConnector().getInstance(), hostname, port);
-    } catch (AccumuloException | AccumuloSecurityException e) {
-      throw new RuntimeException("Failed to connect to Accumulo", e);
+      server = new Server(port);
+      ServletContextHandler handler = new ServletContextHandler();
+      handler.addServlet(ServletContainer.class, "/rest/*");
+      
+      JettyHttpContainerFactory.createServer(serverUri, rc);
+
+      server.start();
+      if (0 == port) {
+        port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
+      }
+      log.info("Server bound to " + hostname + ":" + port);
+
+      try {
+        advertiseHttpAddress(serverContext.getConnector().getInstance(), hostname, port);
+      } catch (AccumuloException | AccumuloSecurityException e) {
+        throw new RuntimeException("Failed to connect to Accumulo", e);
+      }
+
+      server.join();
+
+    } catch (InterruptedException e) {
+      log.info("Monitor service killed.");
+      // restore current thread interrupted status
+      Thread.currentThread().interrupt();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } finally {
+      if (server != null) {
+        server.destroy();
+      }
     }
-
-    try {
-      System.in.read();
-    } catch (IOException e) {}
 
   }
 
