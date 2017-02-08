@@ -33,7 +33,7 @@ import org.apache.accumulo.server.monitor.LogService;
 import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/gc")
+@Path("/v1/gc")
 public class GarbageCollector {
 
   @GET

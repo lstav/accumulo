@@ -204,7 +204,7 @@ public class VisServlet extends BasicServlet {
     // initialization of some javascript variables
     sb.append("<script type='text/javascript'>\n");
     sb.append("var numCores = " + ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors() + ";\n");
-    sb.append("var jsonurl = '" + cfg.url + "json';\n");
+    sb.append("var jsonurl = '" + cfg.url + "/rest/json';\n");
     sb.append("var visurl = '" + cfg.url + "vis';\n");
     sb.append("var serverurl = '" + cfg.url + "tservers?s=';\n\n");
     sb.append("// observable stats that can be connected to motion or color\n");

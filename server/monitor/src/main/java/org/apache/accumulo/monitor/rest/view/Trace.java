@@ -34,7 +34,7 @@ import org.apache.accumulo.server.monitor.LogService;
 import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/trace")
+@Path("/v1/trace")
 public class Trace {
 
   @Path("/summary")

@@ -36,7 +36,7 @@ import org.apache.accumulo.server.monitor.LogService;
 import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/tables")
+@Path("/v1/tables/")
 public class TablesStatus {
 
   @GET

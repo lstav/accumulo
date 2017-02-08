@@ -14,51 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var statNames = {}, maxStatValues = {}, adjustMax = {}, significance = {};
  
-function setOptions(shape, size, motion, color) {
-  var data = JSON.parse(sessionStorage.serverStats);
-  $("#motion").empty();
-  $("#color").empty();
-  
-  $.each(data.serverStats, function(key, val) {
-    var item = val.description;
-
-    $("#motion").append("<option " + (motion === val.name ? "selected" : "") + ">" + item + "</option>");
-    $("#color").append("<option " + (color === val.name ? "selected" : "") + ">" + item + "</option>");
-       
-  });
-  if (speedStatType === undefined) {
-    speedStatType = motion !== undefined && motion !== "" ? motion : "";
-    speedDisabled = motion !== "" ? false : true;
-  }
-  if (speedStatType !== motion && motion !== undefined && motion !== "osload" && motion !== "") {
-    speedStatType = motion;
-    speedDisabled = false;
-  }
-  if (colorStatType === undefined) {
-    colorStatType = color !== undefined ? color : "osload";
-  }
-  if (colorStatType !== color && color !== undefined) {
-    colorStatType = color;
-  }
-}
-
-function setStats() {
-  
-  var data = JSON.parse(sessionStorage.serverStats);
-  
-  $.each(data.serverStats, function(key, val) {
-    statNames[val.name] = val.derived;
-    maxStatValues[val.name] = val.max;
-    adjustMax[val.name] = val.adjustMax;
-    significance[val.name] = val.significance;
-  });
-  
-  var numNormalStats = 8;
-}
-
 // size and spacing variables
 var dotSpacing = 10; // spacing between centers of dots (radius)
 var dotPadding = 0.5; // dot padding
@@ -199,7 +155,7 @@ function getInfo(serverStats) {
 function getXML() {
   if (xmlReturned == true) {
     xmlReturned = false;
-    xmlhttp.open('GET',jsonurl,true);
+    xmlhttp.open('POST',jsonurl,true);
     xmlhttp.send();
   }
 }
@@ -375,7 +331,7 @@ function setMotion(obj) {
     setState();
     return;
   }
-  var i = 0;
+  var i = 1;
   for (var s in statNames) {
     if (i==obj.selectedIndex) {
       speedStatType = s;
@@ -436,8 +392,6 @@ function showId(e) {
 function setState() {
   var url = visurl+'?shape='+(useCircles?'circles':'squares')+'&size='+(dotSpacing*2)+(speedDisabled ? '' : '&motion='+speedStatType)+'&color='+colorStatType;
   window.history.replaceState(window.history.state,'Server Activity',url);
-  
-  setOptions(useCircles?'circles':'squares', dotSpacing*2, speedDisabled ? '' : speedStatType, colorStatType);
 }
 
 // go to server page on click
@@ -447,8 +401,9 @@ function goToServer(e) {
     window.location = serverurl + stats.servers[mousedDot].ip;
 }
 
-/*window.onload = function() {
+window.onload = function() {
   drawGrid();
   drawDots();
   getXML();
-}*/
+}
+

@@ -14,31 +14,57 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-        <div id='nav'>
-          <span id='nav-title'><a href='/'>Overview</a></span><br />
-          <hr />
-          <a href='/master'>Master&nbsp;Server</a><br />
-          <a href='/tservers'>Tablet&nbsp;Servers</a><br />
-          <a href='/scans'>Active&nbsp;Scans</a><br />
-          <a href='/bulkImports'>Bulk&nbsp;Imports</a><br />
-          <a href='/vis'>Server&nbsp;Activity</a><br />
-          <a href='/gc'>Garbage&nbsp;Collector</a><br />
-          <a href='/tables'>Tables</a><br />
-          <a href='/trace/summary?minutes=10'>Recent&nbsp;Traces</a><br />
-          <a href='/replication'>Replication</a><br />
-          <#if num_logs gt 0>
-            <span class='<#if logsHaveError?? && logsHaveError>error<#else>warning</#if>'><a href='/log'>Recent&nbsp;Logs&nbsp;<span class='smalltext'>(${num_logs})</span></a></span><br />
-          </#if>
-          <#if num_problems gt 0>
-            <span class='error'><a href='/problems'>Table&nbsp;Problems&nbsp;<span class='smalltext'>(${num_problems}")</span></a></span><br />
-          </#if>
-          <hr />
-          <a href='/xml'>XML</a><br />
-          <a href='/rest/json'>JSON</a><hr />
+      <div id='nav'>
+        <ul class="nav nav-pills">
+          <li><a href="/">Overview</a></li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              Servers <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/master">Master&nbsp;Server</a></li>
+              <li><a href="/tservers">Tablet&nbsp;Servers</a></li>
+              <li><a href="/gc">Garbage&nbsp;collector</a></li>
+            </ul>
+          </li>
+          <li><a href="/tables">Tables</a></li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              Activity <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/scans">Active&nbsp;Scans</a></li>
+              <li><a href="/bulkImports">Bulk&nbsp;Imports</a></li>
+              <li><a href="/vis">Server&nbsp;Activity</a></li>
+              <li><a href="/replication">Replication</a></li>
+            </ul>
+          </li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              Debug <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/trace/summary?minutes=10">Recent&nbsp;Traces</a></li>
+              <#if num_logs gt 0>
+                <li class='<#if logsHaveError?? && logsHaveError>error<#else>warning</#if>'><a href="/log">Recent&nbsp;Logs<span class='smalltext'>(${num_logs})</span></a></li>
+              </#if>
+              <#if num_problems gt 0>
+                <li class='error'><a href="/problems">Table&nbsp;Problems&nbsp;<span class='smalltext'>(${num_problems})</span></a></li>
+              </#if>
+            </ul>
+          </li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              API <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/xml">XML</a></li>
+              <li><a href="/rest/json">JSON</a></li>
+            </ul>
+          </li>
           <#if is_ssl>
-            <a href='/shell'>Shell</a><hr />
+            <li><a href="/shell">Shell</a></li>
           </#if>
-          <div class='smalltext'>[<a href='/op?action=refresh&value=<#if refresh < 1>5<#else>-1</#if><#if redirect??>&redir=${redirect}</#if>'>
-                <#if refresh < 1>enable<#else>disable</#if>&nbsp;auto-refresh</a>]</div><hr />
-          <div class='smalltext'><a href='https://accumulo.apache.org/' target='_blank'>Apache&nbsp;Accumulo</a></div>
-        </div>
+          
+        </ul>
+      </div>

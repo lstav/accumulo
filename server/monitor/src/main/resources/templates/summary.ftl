@@ -14,6 +14,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-      <div id='headertitle'>
-        <h1>${instance_name}</h1>
+      <script>
+        $(document).ready(function() {
+          $.ajaxSetup({
+            async: false
+          });
+          getTraceSummary("/rest/trace/summary/${minutes}");
+          $.ajaxSetup({
+            async: true
+          });
+          createHeader();
+          createTraceSummaryTable("${minutes}");
+        });
+      </script>
+            
+      <div><h3>${title}</h3></div>
+      <div class="center-block">
+        <table id='traceSummary' class='table table-bordered table-striped table-condensed'>
+          
+        </table>
       </div>
+

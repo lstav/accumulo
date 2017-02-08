@@ -101,8 +101,6 @@ public class MasterResource extends BasicResource {
       long lookups = Monitor.getTotalLookups();
       long uptime = System.currentTimeMillis() - Monitor.getStartTime(); // TODO Check that this works when starting accumulo
 
-      System.out.println(Monitor.getStartTime());
-
       masterInformation = new MasterInformation(master, onlineTabletServers, totalTabletServers, gcStatus, tablets, unassignedTablets, entries, ingest,
           entriesRead, entriesReturned, holdTime, osLoad, tables, deadTabletServers, lookups, uptime, label, getGoalState(), getState(), getNumBadTservers(),
           getServersShuttingDown(), getDeadTservers(), getDeadLoggers());

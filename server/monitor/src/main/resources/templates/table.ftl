@@ -14,6 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-      <div id='headertitle'>
-        <h1>${instance_name}</h1>
+      <script>
+        $(document).ready(function() {
+          $.ajaxSetup({
+            async: false
+          });
+          getTableServers("/rest/tables/${tableID}");
+          $.ajaxSetup({
+            async: true
+          });
+          createHeader("${table}");
+          createTableServersTable();
+        });
+      </script>
+      <div><h3>${title}</h3></div>
+      <div class="center-block">
+        <table id='participatingTServers' class='table table-bordered table-striped table-condensed'>
+
+        </table>
       </div>

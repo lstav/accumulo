@@ -17,6 +17,7 @@
 package org.apache.accumulo.monitor.rest.resources;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -54,8 +55,7 @@ public class TablesResource extends BasicResource {
 
   private static final TabletServerStatus NO_STATUS = new TabletServerStatus();
 
-  @GET
-  public TablesList getTables() {
+  private TablesList generateTables(String namespace) {
     Map<String,String> tidToNameMap = Tables.getIdToNameMap(HdfsZooInstance.getInstance());
     SortedMap<String,TableInfo> tableStats = new TreeMap<>();
 
@@ -72,7 +72,9 @@ public class TablesResource extends BasicResource {
     List<TableInformation> tables = new ArrayList<>();
 
     for (String key : namespaces.keySet()) {
-      tableNamespace.addTable(new TableNamespace(key));
+      if (namespace.equals("*") || namespace.equals(key) || (key.equals("") && namespace.equals("-"))) {
+        tableNamespace.addTable(new TableNamespace(key));
+      }
     }
 
     for (Entry<String,String> entry : Tables.getNameToIdMap(HdfsZooInstance.getInstance()).entrySet()) {
@@ -105,6 +107,18 @@ public class TablesResource extends BasicResource {
     }
 
     return tableNamespace;
+
+  }
+
+  @GET
+  public TablesList getTables() {
+    return generateTables("*");
+  }
+
+  @GET
+  @Path("/namespace/{namespace}")
+  public TablesList getTable(@PathParam("namespace") String namespace) {
+    return generateTables(namespace);
   }
 
   @Path("/{tableId}")
@@ -162,5 +176,23 @@ public class TablesResource extends BasicResource {
 
     return tabletServers;
 
+  }
+
+  @Path("namespaces")
+  @GET
+  public Map<String,List<String>> getNamespaces() {
+
+    Map<String,List<String>> jsonObj = new HashMap<String,List<String>>();
+
+    List<String> namespaces = new ArrayList<>();
+    SortedMap<String,String> ns = Namespaces.getNameToIdMap(Monitor.getContext().getInstance());
+
+    for (String key : ns.keySet()) {
+      namespaces.add(key);
+    }
+
+    jsonObj.put("namespaces", namespaces);
+
+    return jsonObj;
   }
 }

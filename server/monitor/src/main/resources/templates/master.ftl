@@ -14,6 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-      <div id='headertitle'>
-        <h1>${instance_name}</h1>
+      <div><h3>${title}</h3></div>
+      <div class="center-block">      
+        <table id='masterStatus' class='table table-bordered table-striped table-condensed'>
+          
+        </table>
       </div>

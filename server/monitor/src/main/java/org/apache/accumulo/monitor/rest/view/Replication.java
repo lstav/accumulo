@@ -33,7 +33,7 @@ import org.apache.accumulo.server.monitor.LogService;
 import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/replication")
+@Path("/v1/replication")
 public class Replication {
 
   @GET

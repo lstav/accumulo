@@ -33,7 +33,7 @@ import org.apache.accumulo.server.monitor.LogService;
 import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/")
+@Path("/v1")
 public class Overview {
 
   @GET

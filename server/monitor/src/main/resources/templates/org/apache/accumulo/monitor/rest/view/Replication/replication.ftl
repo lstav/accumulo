@@ -32,32 +32,7 @@
 
   <body>
   	<script type="text/javascript">
-  		$.getJSON("../rest/tables/${tableID}", function(data) {
-            var count = 0;
-  			
-  			$.each(data.servers, function(key, val) {
-              var items = [];
-  			  items.push("<td class='firstcell left'><a href='/tables/" + val.tableId + "'>" + val.tableName + "</a></td>");
-  			  items.push("<td class='right'>" + val.peerName + "</td>");
-			  items.push("<td class='right'>" + val.remoteIdentifier + "</td>");
-			  items.push("<td class='right'>" + val.replicaSystemType + "</td>");
-			  items.push("<td class='right'>" + bigNumberForQuantity(val.filesNeedingReplication) + "</td>");
-              
-              if (count % 2 == 0) {
-                $("<tr/>", {
-                  html: items.join(""),
-                  class: "highlight"
-                }).appendTo("#participatingTServers");
-              } else {
-                $("<tr/>", {
-                  html: items.join("")
-                }).appendTo("#participatingTServers");
-              }
-              count += 1;
-              
-			});
-		});
-		
+  		
   	</script>  	
     <div id='content-wrapper'>
       <div id='content'>
