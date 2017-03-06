@@ -25,42 +25,42 @@
       <table class="noborder">          
         <tr>
           <td>
-            <div class="plotHeading">Ingest (Entries/s)</div></br><svg id="ingest_entries" width="450px" height="200px"></svg>
+            <div class="plotHeading">Ingest (Entries/s)</div><br /><div id="ingest_entries" style="width:450px;height:200px;"></div>
           </td>
           <td>
-            <div class="plotHeading">Scan (Entries/s)</div></br><svg id="scan_entries" width="450px" height="200px"></svg>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plotHeading">Ingest (MB/s)</div></br><svg id="ingest_mb" width="450px" height="200px"></svg>
-          </td>
-          <td>
-            <div class="plotHeading">Scan (MB/s)</div></br><svg id="scan_mb" width="450px" height="200px"></svg>
+            <div class="plotHeading">Scan (Entries/s)</div><br /><div id="scan_entries" style="width:450px;height:200px;"></div>
           </td>
         </tr>
         <tr>
           <td>
-            <div class="plotHeading">Load Average</div></br><svg id="load_avg" width="450px" height= "200px"></svg>
+            <br /><div class="plotHeading">Ingest (MB/s)</div><br /><div id="ingest_mb" style="width:450px;height:200px;"></div>
           </td>
           <td>
-            <div class="plotHeading">Seeks</div></br><svg id="seeks" width="450px" height="200px"></svg>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plotHeading">Minor Compactions</div></br><svg id="minor" width="450px" height="200px"></svg>
-          </td>
-          <td>
-            <div class="plotHeading">Major Compactions</div></br><svg id="major" width="450px" height="200px"></svg>
+            <br /><div class="plotHeading">Scan (MB/s)</div><br /><div id="scan_mb" style="width:450px;height:200px;"></div>
           </td>
         </tr>
         <tr>
           <td>
-            <div class="plotHeading">Index Cache Hit Rate</div></br><svg id="index_cache" width="450px" height="200px"></svg>
+            <br /><div class="plotHeading">Load Average</div><br /><div id="load_avg" style="width:450px;height:200px;"></div>
           </td>
           <td>
-            <div class="plotHeading">Data Cache Hit Rate</div></br><svg id="data_cache" width="450px" height="200px"></svg>
+            <br /><div class="plotHeading">Seeks</div><br /><div id="seeks" style="width:450px;height:200px;"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <br /><div class="plotHeading">Minor Compactions</div><br /><div id="minor" style="width:450px;height:200px;"></div>
+          </td>
+          <td>
+            <br /><div class="plotHeading">Major Compactions</div><br /><div id="major" style="width:450px;height:200px;"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <br /><div class="plotHeading">Index Cache Hit Rate</div><br /><div id="index_cache" style="width:450px;height:200px;"></div>
+          </td>
+          <td>
+            <br /><div class="plotHeading">Data Cache Hit Rate</div><br /><div id="data_cache" style="width:450px;height:200px;"></div>
           </td>
         </tr>
       </table> 

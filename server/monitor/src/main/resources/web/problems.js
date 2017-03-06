@@ -77,8 +77,7 @@ function createHeader() {
   caption.push("<span class='table-subcaption'>Problems&nbsp;identified&nbsp;with&nbsp;tables.</span><br />");
   
   $("<caption/>", {
-    html: caption.join(""),
-    class: "error"
+    html: caption.join("")
   }).appendTo("#problemDetails");
 
   var items = [];

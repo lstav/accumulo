@@ -25,8 +25,8 @@
     <script src='/web/global.js' type='text/javascript'></script>
     <script src='/web/functions.js' type='text/javascript'></script>
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="http://localhost:9995/web/flot/excanvas.min.js"></script><![endif]-->
-    <script language="javascript" type="text/javascript" src="/web/flot/jquery.js"></script>
-    <script language="javascript" type="text/javascript" src="/web/flot/jquery.flot.js"></script>
+    <!--<script language="javascript" type="text/javascript" src="/web/flot/jquery.js"></script>-->
+    
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -37,11 +37,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
+    <script language="javascript" type="text/javascript" src="/web/flot/jquery.flot.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    
-    <script src="https://d3js.org/d3.v4.min.js"></script>
     
     <link rel='stylesheet' type='text/css' href='/web/screen.css' media='screen' />
     <#if js??>

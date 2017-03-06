@@ -41,16 +41,12 @@
           </li>
           <li role="presentation" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              Debug <span class="caret"></span>
+              Debug <span class='smalltext <#if num_logs gt 0 || num_problems gt 0><#if logsHaveError?? && logsHaveError || num_problems gt 0>error<#else>warning</#if></#if>'>(${num_logs + num_problems})</span><span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li><a href="/trace/summary?minutes=10">Recent&nbsp;Traces</a></li>
-              <#if num_logs gt 0>
-                <li class='<#if logsHaveError?? && logsHaveError>error<#else>warning</#if>'><a href="/log">Recent&nbsp;Logs<span class='smalltext'>(${num_logs})</span></a></li>
-              </#if>
-              <#if num_problems gt 0>
-                <li class='error'><a href="/problems">Table&nbsp;Problems&nbsp;<span class='smalltext'>(${num_problems})</span></a></li>
-              </#if>
+              <li><a href="/log">Recent&nbsp;Logs&nbsp;<span class='smalltext <#if  num_logs gt 0><#if logsHaveError?? && logsHaveError>error<#else>warning</#if></#if>'>(${num_logs})</span></a></li>
+              <li><a href="/problems">Table&nbsp;Problems&nbsp;<span class='smalltext <#if num_problems gt 0>error</#if>'>(${num_problems})</span></a></li>             
             </ul>
           </li>
           <li role="presentation" class="dropdown">
