@@ -18,7 +18,7 @@
 var statNames = {}, maxStatValues = {}, adjustMax = {}, significance = {};
  
 function setOptions(shape, size, motion, color) {
-  var data = JSON.parse(sessionStorage.serverStats);
+  var data = sessionStorage.serverStats === undefined ? {} : JSON.parse(sessionStorage.serverStats);
   $("#motion").empty();
   $("#color").empty();
   

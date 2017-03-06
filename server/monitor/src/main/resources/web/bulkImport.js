@@ -30,10 +30,10 @@ $(document).ready(function() {
 });
 
 function createBulkImportTable() {
-  var data = JSON.parse(sessionStorage.bulkImports);
+  var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
   var items = [];
-  			
-  if (data.bulkImport.length === 0) {
+  
+  if (sessionStorage.bulkImports === undefined || data.bulkImport.length === 0) {
     items.push("<td class='center' colspan='3'><i>Empty</i></td>");
   } else {
     $.each(data.bulkImport, function(key, val) {
@@ -49,10 +49,10 @@ function createBulkImportTable() {
 }
 
 function createServerBulkTable() {
-  var data = JSON.parse(sessionStorage.bulkImports);
+  var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
-  if (data.tabletServerBulkImport.length === 0) {
+  if (sessionStorage.bulkImports === undefined || data.tabletServerBulkImport.length === 0) {
     items.push("<td class='center' colspan='3'><i>Empty</i></td>");
   } else {
     $.each(data.tabletServerBulkImport, function(key, val) {

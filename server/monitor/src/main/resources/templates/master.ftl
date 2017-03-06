@@ -15,8 +15,12 @@
   limitations under the License.
 -->
       <div><h3>${title}</h3></div>
+      <div id='masterBanner'></div>
       <div class="center-block">      
         <table id='masterStatus' class='table table-bordered table-striped table-condensed'>
           
+        </table>
+        <table id='recoveryList' class='table table-bordered table-striped table-condensed'>
+        
         </table>
       </div>

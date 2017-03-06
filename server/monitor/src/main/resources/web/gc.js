@@ -22,8 +22,15 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createHeader();
-  createGCTable();
+  
+  var data = JSON.parse(sessionStorage.gc);
+  
+  if (data.length != 0) {
+    createHeader();
+    createGCTable();
+  } else {
+    doBanner("gcBanner", "error", "Collector is Unavailable");
+  }
 });
 
 function createGCTable() {

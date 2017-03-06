@@ -38,9 +38,9 @@ function createTServersTable() {
     items.push("<td class='right' data-value='" + val.ingest + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
     items.push("<td class='right' data-value='" + val.query + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
     items.push("<td class='right' data-value='" + val.holdtime + "'>" + timeDuration(val.holdtime) + "</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.scans.running + val.compactions.scans.queued) + "'>" + bigNumberForQuantity(val.compactions.scans.running) + "&nbsp;(" + val.compactions.scans.queued + ")</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.minor.running + val.compactions.minor.queued) + "'>" + bigNumberForQuantity(val.compactions.minor.running) + "&nbsp;(" + val.compactions.minor.queued + ")</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.major.running + val.compactions.major.queued) + "'>" + bigNumberForQuantity(val.compactions.major.running) + "&nbsp;(" + val.compactions.major.queued + ")</td>");
+    items.push("<td class='right' data-value='" + (val.compactions.scans.running + val.compactions.scans.queued) + "'>" + bigNumberForQuantity(val.compactions.scans.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.scans.queued) + ")</td>");
+    items.push("<td class='right' data-value='" + (val.compactions.minor.running + val.compactions.minor.queued) + "'>" + bigNumberForQuantity(val.compactions.minor.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.minor.queued) + ")</td>");
+    items.push("<td class='right' data-value='" + (val.compactions.major.running + val.compactions.major.queued) + "'>" + bigNumberForQuantity(val.compactions.major.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.major.queued) + ")</td>");
     items.push("<td class='right' data-value='" + val.indexCacheHitRate*100 + "'>" + Math.round(val.indexCacheHitRate*100) + "%</td>");
     items.push("<td class='right' data-value='" + val.dataCacheHitRate*100 + "'>" + Math.round(val.dataCacheHitRate*100) + "%</td>");
     items.push("<td class='right' data-value='" + val.osload + "'>" + bigNumberForQuantity(val.osload) + "</td>");

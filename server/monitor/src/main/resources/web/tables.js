@@ -14,23 +14,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-$(document).ready(function() {
-  $.ajaxSetup({
-    async: false
-  });
-  getNamespaces();
-  $.ajaxSetup({
-    async: true
-  });
-  createHeader();
-  createNamespacesDropdown();
-  if (sessionStorage.namespaces === undefined) {
-    sessionStorage.namespaces = "[]";
-    populateTable("*");
-  }
-  populateTable(undefined);
-  sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
-});
+
+function problemsBanner(numProblems) {
+  if (numProblems > 0)
+    doBanner("tablesBanner", "<a href='/problems'>Table Problems: " + numProblems + " Total</a>");
+}
 
 function namespaceChanged() {
   var $namespaceSelect = $("#namespaces");
@@ -144,9 +132,21 @@ function populateTable(ns) {
           row.push("<td class='right' data-value='" + val.entriesRead + "'>" + bigNumberForQuantity(Math.floor(val.entriesRead)) + "</td>");
           row.push("<td class='right' data-value='" + val.entriesReturned + "'>" + bigNumberForQuantity(Math.floor(val.entriesReturned)) + "</td>");
           row.push("<td class='right' data-value='" + val.holdTime + "'>" + timeDuration(val.holdTime) + "</td>");
-          row.push("<td class='right' data-value='" + (val.scans.running + val.scans.queued) + "'>" + bigNumberForQuantity(val.scans.running) + "&nbsp;(" + val.scans.queued + ")</td>"); // TODO check for null
-          row.push("<td class='right' data-value='" + (val.minorCompactions.running + val.minorCompactions.queued) + "'>" + bigNumberForQuantity(val.minorCompactions.running) + "&nbsp;(" + val.minorCompactions.queued + ")</td>");
-          row.push("<td class='right' data-value='" + (val.majorCompactions.running + val.majorCompactions.queued) + "'>" + bigNumberForQuantity(val.majorCompactions.running) + "&nbsp;(" + val.majorCompactions.queued + ")</td>");
+          if (val.scans === null) {
+            row.push("<td class='right' data-value='-'>-</td>");
+          } else {
+            row.push("<td class='right' data-value='" + (val.scans.running + val.scans.queued) + "'>" + bigNumberForQuantity(val.scans.running) + "&nbsp;(" + bigNumberForQuantity(val.scans.queued) + ")</td>");
+          }
+          if (val.minorCompactions === null) {
+            row.push("<td class='right' data-value='-'>-</td>");
+          } else {
+            row.push("<td class='right' data-value='" + (val.minorCompactions.running + val.minorCompactions.queued) + "'>" + bigNumberForQuantity(val.minorCompactions.running) + "&nbsp;(" + bigNumberForQuantity(val.minorCompactions.queued) + ")</td>");
+          }
+          if (val.majorCompactions === null) {
+            row.push("<td class='right' data-value='-'>-</td>");
+          } else {
+            row.push("<td class='right' data-value='" + (val.majorCompactions.running + val.majorCompactions.queued) + "'>" + bigNumberForQuantity(val.majorCompactions.running) + "&nbsp;(" + bigNumberForQuantity(val.majorCompactions.queued) + ")</td>");
+          }
         } else {
           row.push("<td class='right' data-value='-'>-</td>");
           row.push("<td class='right' data-value='-'>-</td>");

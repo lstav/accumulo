@@ -33,12 +33,15 @@
         <!--<div class='smalltext'>[<a href='/op?action=refresh&value=<#if refresh < 1>5<#else>-1</#if><#if redirect??>&redir=${redirect}</#if>'>
           <#if refresh < 1>enable<#else>disable</#if>&nbsp;auto-refresh</a>]
         </div>-->
-        <div>
+        <div style="float: left; width: 70%;">
           <div class='smalltext'><a href='https://accumulo.apache.org/' target='_blank'>Apache&nbsp;Accumulo</a>&nbsp;
           ${version}
           </div>
-          <div class='smalltext'>Instance&nbsp;ID:&nbsp;${instance_id}</div>
-          <div class='smalltext'>${current_date}</div> <!-- TODO change to client-based (javascript) -->
+          <div class='smalltext'>${instance_id}</div>
+          <div class='smalltext' id='currentDate'></div>
+          <script>
+            document.getElementById("currentDate").innerHTML = Date();
+          </script>
         </div>
       </div>
     </footer>

@@ -19,12 +19,47 @@ $(document).ready(function() {
     async: false
   });
   getMaster();
+  getLogs();
+  getProblems();
   $.ajaxSetup({
     async: true
   });
-  createHeader();
-  createMasterTable();
+  var data = JSON.parse(sessionStorage.master);
+  
+  logEventBanner();
+  
+  if (data.master !== "No Masters running") {
+    createHeader();
+    createMasterTable();
+  } else {
+    doBanner("masterBanner", "error", "Master Server Not Running");
+  }
+  //recoveryList(); // TODO Implement this
+  
 });
+
+function logEventBanner() {
+  var data = JSON.parse(sessionStorage.logs);
+  
+  if (data.length > 0) {
+      var error = 0, warning = 0, total = 0;
+      
+      $.each(data, function(key, val) {
+        if (val.level === "ERROR") {
+          error++;
+        } else if (val.level === "WARN") {
+          warning++;
+        }
+        total++;
+      });
+      
+      doBanner("masterBanner", error > 0 ? "error" : "warning", "<a href='/log'>Log Events: " + error + " Error" + (error == 1 ? "" : "s") + ", " + warning + " Warning" + (warning == 1 ? "" : "s") + ", " + total + " Total</a>");
+  }
+}
+
+function recoveryList() {
+  
+}
 
 function createMasterTable() {
   var data = JSON.parse(sessionStorage.master);

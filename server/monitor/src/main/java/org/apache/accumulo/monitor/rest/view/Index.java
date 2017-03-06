@@ -64,7 +64,6 @@ public class Index {
     model.put("refresh", refresh);
     model.put("instance_name", Monitor.cachedInstanceName.get());
     model.put("instance_id", Monitor.getContext().getInstance().getInstanceID());
-    model.put("current_date", new Date().toString().replace(" ", "&nbsp;"));
     model.put("num_logs", logs.size());
     model.put("logs_have_error", logsHaveError);
     model.put("num_problems", numProblems);

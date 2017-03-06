@@ -27,17 +27,27 @@ $(document).ready(function() {
 });
 
 function createScansTable() {
-  var data = JSON.parse(sessionStorage.scans);
-  var items = [];
-  $.each(data.scans, function(key, val) {
-    items.push("<td class='firstcell left' data-value='" + val.server + "'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
-    items.push("<td class='right' data-value='" + val.scanCount + "'>" + val.scanCount + "</td>");
-    items.push("<td class='right' data-value='" + val.oldestScan + "'>" + timeDuration(val.oldestScan) + "</td>");
-  });
+  var data = sessionStorage.scans === undefined ? undefined : JSON.parse(sessionStorage.scans);
   
-  $("<tr/>", {
-   html: items.join("")
-  }).appendTo("#scanStatus");
+  if (sessionStorage.scans === undefined || data.scans.length === 0) {
+    var items = "<td class='center' colspan='3'><i>Empty</i></td>";
+    
+    $("<tr/>", {
+      html: items
+    }).appendTo("#scanStatus");
+  } else {
+    $.each(data.scans, function(key, val) {
+      var items = [];
+      
+      items.push("<td class='firstcell left' data-value='" + val.server + "'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
+      items.push("<td class='right' data-value='" + val.scanCount + "'>" + val.scanCount + "</td>");
+      items.push("<td class='right' data-value='" + val.oldestScan + "'>" + timeDuration(val.oldestScan) + "</td>");
+      
+      $("<tr/>", {
+        html: items.join("")
+      }).appendTo("#scanStatus");
+    });
+  }
 }
 
 function sortTable(n) {

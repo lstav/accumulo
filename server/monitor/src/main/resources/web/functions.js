@@ -296,6 +296,13 @@ function getReplication() {
   });
 }
 
+function doBanner(id, bannerClass, text) {
+  $("<h2/>", {
+   html: text,
+   class: bannerClass
+  }).appendTo("#" + id);
+}
+
 //// Overview Plots Rest Calls
 
 function getIngestRate() {

@@ -22,12 +22,40 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createHeader();
-  createProblemsTable();
-  sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+  createSummaryHeader();
+  createProblemSummaryTable();
+  createDetailsHeader();
+  createProblemDetailsTable();
+  //sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
 });
 
-function createProblemsTable() {
+function createProblemSummaryTable() {
+  var data = JSON.parse(sessionStorage.problems);
+  
+  $.each(data, function(key, val) {
+    var items = [];
+    items.push("<td class='firstcell left'><a href='/problems/table=" + val.tableId + "'>" + val.tablename + "</a></td>");
+    items.push("<td class='right'>" + val.read + "</td>");
+    items.push("<td class='right'>" + val.write + "</td>");
+    items.push("<td class='right'>" + val.load + "</td>");
+    items.push("<a href='/op?table=%2" + val.tableId + "&amp;action=clearTableProblems&amp;redir=%2Fproblems'>clear ALL accumulo.metadata problems</a>");
+    
+    $("<tr/>", {
+      html: items.join("")
+    }).appendTo("#problemSummary");
+  });
+  
+  if (Object.keys(data).length === 0) {
+    var items = [];
+    items.push("<td class='center' colspan='5'><i>Empty</i></td>");
+    $("<tr/>", {
+      html: items.join("")
+    }).appendTo("#problemSummary");
+  }
+  
+}
+
+function createProblemDetailsTable() {
   var data = JSON.parse(sessionStorage.problems);
 
   $.each(data, function(key, val) {
@@ -36,7 +64,7 @@ function createProblemsTable() {
     items.push("<td class='right' data-value='" + val.type + "'>" + val.type + "</td>");
     items.push("<td class='right' data-value='" + val.server + "'>" + val.server + "</td>");
     var date = new Date(val.time);
-    items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocateString() + "</td>");
+    items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocaleString() + "</td>");
     items.push("<td class='right' data-value='" + val.resource + "'>" + val.resource + "</td>");
     items.push("<td class='right' data-value='" + val.exception + "'>" + val.exception + "</td>");
     items.push("<td class='right' data-value='" + val.operations + "'>" + val.operations + "</td>");
@@ -70,7 +98,29 @@ function sortTable(n) {
   sortTables("problemDetails", direction, n);
 }
 
-function createHeader() {	
+function createSummaryHeader() {
+  var caption = [];
+  
+  caption.push("<span class='table-caption'>Problem&nbsp;Summary</span><br />");
+  
+  $("<caption/>", {
+    html: caption.join("")
+  }).appendTo("#problemSummary");
+  
+  var items = [];
+  
+  items.push("<th class='firstcell'>Table&nbsp;</th>");
+  items.push("<th>FILE_READ&nbsp;</th>");
+  items.push("<th>FILE_WRITE&nbsp;</th>");
+  items.push("<th>TABLET_LOAD&nbsp;</th>");
+  items.push("<th>Operations&nbsp;</th>");
+  
+  $("<tr/>", {
+      html: items.join("")
+  }).appendTo("#problemSummary");
+}
+
+function createDetailsHeader() {	
   var caption = [];
   
   caption.push("<span class='table-caption'>Problem&nbsp;Details</span><br />");

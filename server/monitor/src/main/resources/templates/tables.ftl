@@ -14,7 +14,30 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
+      <script>
+        $(document).ready(function() {
+          $.ajaxSetup({
+            async: false
+          });
+          getNamespaces();
+          $.ajaxSetup({
+            async: true
+          });
+          
+          problemsBanner("${num_problems}");
+          
+          createHeader();
+          createNamespacesDropdown();
+          if (sessionStorage.namespaces === undefined) {
+            sessionStorage.namespaces = "[]";
+            populateTable("*");
+          }
+          populateTable(undefined);
+          sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+        });
+      </script>
       <div><h3>${title}</h3></div>
+      <div id='tablesBanner'></div>
       <div class="center-block">
 
         <div>
