@@ -16,7 +16,6 @@
 -->
       <div id='nav'>
         <ul class="nav nav-pills">
-          <li><a href="/">Overview</a></li>
           <li role="presentation" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
               Servers <span class="caret"></span>
@@ -61,6 +60,14 @@
           <#if is_ssl>
             <li><a href="/shell">Shell</a></li>
           </#if>
-          
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-option-vertical"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a>Auto-Refresh</a></li>
+              <li><a>About</a></li>
+            </ul>
+          </li>
         </ul>
       </div>

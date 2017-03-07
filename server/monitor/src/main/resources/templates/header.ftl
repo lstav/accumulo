@@ -15,5 +15,7 @@
   limitations under the License.
 -->
       <div id='headertitle'>
-        <h1>${instance_name}</h1>
+        <ul class="nav nav-pills">
+          <li><a href="/">${instance_name}</a></li>
+        </ul>
       </div>
