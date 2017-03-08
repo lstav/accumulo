@@ -25,14 +25,14 @@
             <span class='viscontrol'>Motion: <select id='motion' onchange='setMotion(this)'></select></span>
             &nbsp;&nbsp;
             <span class='viscontrol'>Color: <select id='color' onchange='setColor(this)'></select></span>
-            &nbsp;&nbsp;
-            <span class='viscontrol'>(hover for info, click for details)</span>
           </div>
           <div id='hoverable'>
             <div id='vishoverinfo'></div>
             <br />
             <canvas id='visCanvas' width='640' height='640'>Browser does not support canvas.</canvas>
-          </div>        
+          </div>
+          <br />
+          <span>Hover for info, click for details</span>
         </div>
       </div>
             
@@ -67,5 +67,3 @@
       </script>
       
       <script src="/web/vis.js"></script>
-
-     
