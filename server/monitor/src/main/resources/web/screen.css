@@ -25,6 +25,11 @@ html,body {
   text-align: center;
 }
 
+#banner {
+  height: 1.5em;
+  font-size: 1.0em;
+}
+
 #content-wrapper {
   position: relative;
   min-height: 95%;
@@ -55,17 +60,16 @@ html,body {
   text-align: center;
 }
 
-#banner {
-  height: 1.5em;
-  font-size: 1.0em;
+#headertitle {
+  /*position: absolute;
+  top: -1.0em;
+  left: 0.5em;
+  right: 1.0em;*/
+  font-size: 20pt;
 }
 
-#headertitle {
-  position: absolute;
-  /*top: -1.0em;*/
-  left: 0.5em;
-  /*right: 1.0em;*/
-  font-size: 20pt;
+#sidebar {
+  text-align: left;
 }
 
 #subheader {
@@ -94,7 +98,7 @@ html,body {
   right: 0;
   bottom: 1.5em;
   padding: 0.6em;
-  overflow: scroll;
+  /*overflow: scroll;*/
 }
 
 #nav {
@@ -190,13 +194,14 @@ table.sortable {
   border-bottom: 1px #333333 dotted;
 }
 
+/*
 table.sortable tbody tr:nth-child(2n) td {
   background: #ffffff;
 }
 
 table.sortable tbody tr:nth-child(2n+1) td {
   background: #cef4b5;
-}
+}*/
 
 td {
   border-top: 0;
@@ -307,22 +312,17 @@ pre.logevent {
   margin-right: 0;
 }
 
-.error {
+.error, .error a {
   color: #ffffff;
-  background-color: #ff0000;
+  background-color: #d9534f;
 }
 
-.error a {
-  color: #ffffff;
-  background-color: #ff0000;
+.error-inv, .error-inv a {
+  color: #d9534f;
 }
 
-.warning {
-  background-color: #ffff33;
-}
-
-.warning a {
-  background-color: #ffff33;
+.warning, .warning a {
+  background-color: #f0ad4e;
 }
 
 .highlight {
@@ -403,22 +403,13 @@ pre.logevent {
   color: red;
 }
 
-#filters {
+#filters, #tables {
   /*overflow-y: scroll;*/
   /*height: 100%;*/
   width: 80%;
   margin-left: 15%;
   /*float: left;*/
 }
-
-#tables {
-  /*overflow-y: scroll;*/
-  /*height: 100%;*/
-  margin-left: 15%;
-  width: 80%
-}
-
-
 
 #namespaces {
   list-style-type: none;

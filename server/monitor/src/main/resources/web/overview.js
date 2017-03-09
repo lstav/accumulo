@@ -94,7 +94,7 @@ function makePlots() {
   $.each(JSON.parse(sessionStorage.ingestRate), function(key, val) {
     ingestRate.push([val.first, val.second]);
   });
-  $.plot($("#ingest_entries"),[{ data: ingestRate, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#ingest_entries"),[{ data: ingestRate, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var scanEntries = {"Read":[], "Returned":[]};
   $.each(JSON.parse(sessionStorage.scanEntries), function(key, val) {
@@ -102,54 +102,54 @@ function makePlots() {
       scanEntries[val.first].push([val2.first, val2.second]);
     });           
   });
-  $.plot($("#scan_entries"),[{ label: "Read", data: scanEntries.Read, lines: { show: true }, color:"red" },{ label: "Returned", data: scanEntries.Returned, lines: { show: true }, color:"blue" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#scan_entries"),[{ label: "Read", data: scanEntries.Read, lines: { show: true }, color:"#d9534f" },{ label: "Returned", data: scanEntries.Returned, lines: { show: true }, color:"#337ab7" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var ingestMB = [];
   $.each(JSON.parse(sessionStorage.ingestMB), function(key, val) {
     ingestMB.push([val.first, val.second]);
   });
-  $.plot($("#ingest_mb"),[{ data: ingestMB, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#ingest_mb"),[{ data: ingestMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var queryMB = [];
   $.each(JSON.parse(sessionStorage.queryMB), function(key, val) {
   queryMB.push([val.first, val.second]);
   });
-  $.plot($("#scan_mb"),[{ data: queryMB, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#scan_mb"),[{ data: queryMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
 
   var loadAvg = [];
   $.each(JSON.parse(sessionStorage.loadAvg), function(key, val) {
     loadAvg.push([val.first, val.second]);
   });
-  $.plot($("#load_avg"),[{ data: loadAvg, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#load_avg"),[{ data: loadAvg, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var lookups = [];
   $.each(JSON.parse(sessionStorage.lookups), function(key, val) {
     lookups.push([val.first, val.second]);
   });
-  $.plot($("#seeks"),[{ data: lookups, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#seeks"),[{ data: lookups, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var minor = [];
   $.each(JSON.parse(sessionStorage.minorCompactions), function(key, val) {
     minor.push([val.first, val.second]);
   });
-  $.plot($("#minor"),[{ data: minor, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#minor"),[{ data: minor, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var major = [];
   $.each(JSON.parse(sessionStorage.majorCompactions), function(key, val) {
     major.push([val.first, val.second]);
   });
-  $.plot($("#major"),[{ data: major, lines: { show: true }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#major"),[{ data: major, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var indexCache = [];
   $.each(JSON.parse(sessionStorage.indexCache), function(key, val) {
     indexCache.push([val.first, val.second]);
   });
-  $.plot($("#index_cache"),[{ data: indexCache, points: { show: true, radius: 1 }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#index_cache"),[{ data: indexCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
   
   var dataCache = [];
   $.each(JSON.parse(sessionStorage.dataCache), function(key, val) {
     dataCache.push([val.first, val.second]);
   });
-  $.plot($("#data_cache"),[{ data: dataCache, points: { show: true, radius: 1 }, color:"red" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
+  $.plot($("#data_cache"),[{ data: dataCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: "%H:%M<br />UTC", ticks:3}});
 
 }

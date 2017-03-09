@@ -297,9 +297,10 @@ function getReplication() {
 }
 
 function doBanner(id, bannerClass, text) {
-  $("<h2/>", {
+  $("<div/>", {
    html: text,
-   class: bannerClass
+   class: "alert alert-" + bannerClass,
+   role: "alert"
   }).appendTo("#" + id);
 }
 

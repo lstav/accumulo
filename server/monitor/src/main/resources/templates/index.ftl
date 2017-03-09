@@ -48,19 +48,19 @@
   </head>
 
   <body>
+    <#include "/templates/modals.ftl">
     <div id='content-wrapper'>
       <div id='content'>
-        <div id='header' class="navbar navbar-inverse navbar-fixed-top">
-          <#include "/templates/header.ftl">
+        <div id="sidebar" class="navbar navbar-inverse navbar-fixed-top">
+          <!--<#include "/templates/header.ftl">-->
           <#include "/templates/sidebar.ftl">
         </div>
 
         <div id='main' style='bottom:0'>
-          <#include "/templates/${template}">        
+          <#include "/templates/${template}">
           
         </div>
-      </div>    
+      </div>
     </div>
-    <#include "/templates/footer.ftl">
   </body>
 </html>

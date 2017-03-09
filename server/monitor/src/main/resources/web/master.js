@@ -53,7 +53,7 @@ function logEventBanner() {
         total++;
       });
       
-      doBanner("masterBanner", error > 0 ? "error" : "warning", "<a href='/log'>Log Events: " + error + " Error" + (error == 1 ? "" : "s") + ", " + warning + " Warning" + (warning == 1 ? "" : "s") + ", " + total + " Total</a>");
+      doBanner("masterBanner", error > 0 ? "danger" : "warning", "<a href='/log'>Log Events: " + error + " Error" + (error == 1 ? "" : "s") + ", " + warning + " Warning" + (warning == 1 ? "" : "s") + ", " + total + " Total</a>");
   }
 }
 
