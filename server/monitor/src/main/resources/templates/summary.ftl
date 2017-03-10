@@ -16,15 +16,8 @@
 -->
       <script>
         $(document).ready(function() {
-          $.ajaxSetup({
-            async: false
-          });
-          getTraceSummary("/rest/trace/summary/${minutes}");
-          $.ajaxSetup({
-            async: true
-          });
-          createHeader();
-          createTraceSummaryTable("${minutes}");
+          createHeader("${minutes}");
+          refreshSummary();
         });
       </script>
             

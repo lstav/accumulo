@@ -14,7 +14,33 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-function createTableServersTable() {
+
+var tableID;
+function refreshTable() {
+  $.ajaxSetup({
+    async: false
+  });
+  getTableServers("/rest/tables/"+tableID);
+  $.ajaxSetup({
+    async: true
+  });
+
+  refreshTableServersTable();
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshTable()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshTableServersTable() {
+  
+  $("#participatingTServers tr:gt(0)").remove();
+  
   var data = JSON.parse(sessionStorage.tableServers);
 
   $.each(data.servers, function(key, val) {
@@ -62,7 +88,8 @@ function sortTable(n) {
   sortTables("participatingTServers", direction, n);
 }
 
-function createHeader(table) {	
+function createHeader(table, tabID) {
+  tableID = tabID;
   var caption = [];
   
   caption.push("<span class='table-caption'>Participating&nbsp;Tablet&nbsp;Servers</span><br />");

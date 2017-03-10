@@ -15,28 +15,32 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createHeader();
+  doBanner("masterBanner", "danger", "Master Server Not Running");
+  refreshMaster();
+});
+
+function refreshMaster() {
   $.ajaxSetup({
     async: false
   });
   getMaster();
-  getLogs();
-  getProblems();
   $.ajaxSetup({
     async: true
   });
-  var data = JSON.parse(sessionStorage.master);
   
-  logEventBanner();
-  
-  if (data.master !== "No Masters running") {
-    createHeader();
-    createMasterTable();
-  } else {
-    doBanner("masterBanner", "error", "Master Server Not Running");
-  }
+  refreshMasterTable();
   //recoveryList(); // TODO Implement this
-  
-});
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshMaster()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
 
 function logEventBanner() {
   var data = JSON.parse(sessionStorage.logs);
@@ -61,26 +65,39 @@ function recoveryList() {
   
 }
 
-function createMasterTable() {
+function refreshMasterTable() {
   var data = JSON.parse(sessionStorage.master);
-  var items = [];
-  items.push("<td class='firstcell left' data-value='" + data.master + "'>" + data.master + "</td>");
-  items.push("<td class='right' data-value='" + data.onlineTabletServers + "'>" + data.onlineTabletServers + "</td>");
-  items.push("<td class='right' data-value='" + data.totalTabletServers + "'>" + data.totalTabletServers + "</td>");
-  var date = new Date(parseInt(data.lastGC));
-  items.push("<td class='left' data-value='" + data.lasGC + "'><a href='/gc'>" + date.toLocaleString() + "</a></td>");
-  items.push("<td class='right' data-value='" + data.tablets + "'>" + bigNumberForQuantity(data.tablets) + "</td>");
-  items.push("<td class='right' data-value='" + data.unassignedTablets + "'>" + bigNumberForQuantity(data.unassignedTablets) + "</td>");
-  items.push("<td class='right' data-value='" + data.numentries + "'>" + bigNumberForQuantity(data.numentries) + "</td>");
-  items.push("<td class='right' data-value='" + data.ingestrate + "'>" + bigNumberForQuantity(Math.round(data.ingestrate)) + "</td>");
-  items.push("<td class='right' data-value='" + data.entriesRead + "'>" + bigNumberForQuantity(Math.round(data.entriesRead)) + "</td>");
-  items.push("<td class='right' data-value='" + data.queryrate + "'>" + bigNumberForQuantity(Math.round(data.queryrate)) + "</td>");
-  items.push("<td class='right' data-value='" + data.holdTime + "'>" + timeDuration(data.holdTime) + "</td>");
-  items.push("<td class='right' data-value='" + data.osload + "'>" + bigNumberForQuantity(data.osload) + "</td>");
+  var status = JSON.parse(sessionStorage.status).masterStatus;
   
-  $("<tr/>", {
-   html: items.join("")
-  }).appendTo("#masterStatus");
+  $("#masterBanner").hide();
+  $("#masterStatus tr:gt(0)").remove();
+  $("#masterStatus").hide();
+  
+  if (status === "ERROR") {
+    $("#masterBanner").show();
+  } else {
+    $("#masterStatus").show();
+    var data = JSON.parse(sessionStorage.master);
+    var items = [];
+    items.push("<td class='firstcell left' data-value='" + data.master + "'>" + data.master + "</td>");
+    items.push("<td class='right' data-value='" + data.onlineTabletServers + "'>" + data.onlineTabletServers + "</td>");
+    items.push("<td class='right' data-value='" + data.totalTabletServers + "'>" + data.totalTabletServers + "</td>");
+    var date = new Date(parseInt(data.lastGC));
+    date = date.toLocaleString().split(' ').join("&nbsp;");
+    items.push("<td class='left' data-value='" + data.lasGC + "'><a href='/gc'>" + date + "</a></td>");
+    items.push("<td class='right' data-value='" + data.tablets + "'>" + bigNumberForQuantity(data.tablets) + "</td>");
+    items.push("<td class='right' data-value='" + data.unassignedTablets + "'>" + bigNumberForQuantity(data.unassignedTablets) + "</td>");
+    items.push("<td class='right' data-value='" + data.numentries + "'>" + bigNumberForQuantity(data.numentries) + "</td>");
+    items.push("<td class='right' data-value='" + data.ingestrate + "'>" + bigNumberForQuantity(Math.round(data.ingestrate)) + "</td>");
+    items.push("<td class='right' data-value='" + data.entriesRead + "'>" + bigNumberForQuantity(Math.round(data.entriesRead)) + "</td>");
+    items.push("<td class='right' data-value='" + data.queryrate + "'>" + bigNumberForQuantity(Math.round(data.queryrate)) + "</td>");
+    items.push("<td class='right' data-value='" + data.holdTime + "'>" + timeDuration(data.holdTime) + "</td>");
+    items.push("<td class='right' data-value='" + data.osload + "'>" + bigNumberForQuantity(data.osload) + "</td>");
+    
+    $("<tr/>", {
+     html: items.join("")
+    }).appendTo("#masterStatus");
+  }
 }
 
 function sortTable(n) {

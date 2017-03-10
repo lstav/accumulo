@@ -15,7 +15,11 @@
 * limitations under the License.
 */
 $(document).ready(function() {
-  $.ajaxSetup({
+  createHeader();
+  doBanner("gcBanner", "danger", "Collector is Unavailable");
+  refreshGC();
+  
+  /*$.ajaxSetup({
     async: false
   });
   getGarbageCollector();
@@ -30,8 +34,132 @@ $(document).ready(function() {
     createGCTable();
   } else {
     doBanner("gcBanner", "error", "Collector is Unavailable");
-  }
+  }*/
 });
+
+function refreshGC() {
+  $.ajaxSetup({
+    async: false
+  });
+  getGarbageCollector();
+  $.ajaxSetup({
+    async: true
+  });
+  
+  refreshGCTable();
+  //recoveryList(); // TODO Implement this
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshGC()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshGCTable() {
+  var data = JSON.parse(sessionStorage.gc);
+  var status = JSON.parse(sessionStorage.status).gcStatus;
+  
+  $("#gcBanner").hide();
+  $("#gcActivity tr:gt(0)").remove();
+  $("#gcActivity").hide();
+  
+  if (status === "ERROR") {
+    $("#gcBanner").show();
+  } else {
+    $("#gcActivity").show();
+    var data = JSON.parse(sessionStorage.gc);
+    
+    if (data.files.lastCycle.finished <= 0 && data.files.currentCycle.started <= 0 &&
+        data.wals.lastCycle.finished <= 0 && data.wals.currentCycle.started <= 0) {
+      var item = "<td class='center' colspan='7'><i>No Collection Activity</i></td>";
+        
+      $("<tr/>", {
+        html: item
+      }).appendTo("#gcActivity");
+    } else {
+            
+      if (data.files.lastCycle.finished > 0) {
+        var items = [];
+          
+        var working = data.files.lastCycle;
+      
+        items.push("<td class='firstcell left' data-value='File Collection Last Cycle'>File&nbsp;Collection,&nbsp;Last&nbsp;Cycle</td>");
+        var date = new Date(working.finished);
+        items.push("<td class='right' data-value='" + working.finished + "'>" + date.toLocaleString() + "</td>");
+        items.push("<td class='right' data-value='" + working.candidates + "'>" + bigNumberForQuantity(working.candidates) + "</td>");
+        items.push("<td class='right' data-value='" + working.deleted + "'>" + bigNumberForQuantity(working.deleted) + "</td>");
+        items.push("<td class='right' data-value='" + working.inUse + "'>" + bigNumberForQuantity(working.inUse) + "</td>");
+        items.push("<td class='right' data-value='" + working.errors + "'>" + bigNumberForQuantity(working.errors) + "</td>");                
+        items.push("<td class='right' data-value='" + (working.finished - working.started) + "'>" + timeDuration(working.finished - working.started) + "</td>");
+        
+        $("<tr/>", {
+          html: items.join("")
+        }).appendTo("#gcActivity");   
+      }
+      
+      if (data.files.currentCycle.started > 0) {
+        var items = [];
+        
+        var working = data.files.currentCycle;
+
+        items.push("<td class='firstcell left' data-value='File Collection Running'>File&nbsp;Collection,&nbsp;Running</td>");
+        var date = new Date(working.finished);
+        items.push("<td class='right' data-value='" + working.finished + "'>" + date.toLocaleString() + "</td>");
+        items.push("<td class='right' data-value='" + working.candidates + "'>" + bigNumberForQuantity(working.candidates) + "</td>");
+        items.push("<td class='right' data-value='" + working.deleted + "'>" + bigNumberForQuantity(working.deleted) + "</td>");
+        items.push("<td class='right' data-value='" + working.inUse + "'>" + bigNumberForQuantity(working.inUse) + "</td>");
+        items.push("<td class='right' data-value='" + working.errors + "'>" + bigNumberForQuantity(working.errors) + "</td>");                
+        items.push("<td class='right' data-value='" + (working.finished - working.started) + "'>" + timeDuration(working.finished - working.started) + "</td>");
+        
+        $("<tr/>", {
+          html: items.join("")
+        }).appendTo("#gcActivity");   
+      }
+      
+      if (data.wals.lastCycle.finished > 0) {
+        var items = [];
+        
+        var working = data.wals.lastCycle;
+
+        items.push("<td class='firstcell left' data-value='WAL Collection Last Cycle'>WAL&nbsp;Collection,&nbsp;Last&nbsp;Cycle</td>");
+        var date = new Date(working.finished);
+        items.push("<td class='right' data-value='" + working.finished + "'>" + date.toLocaleString() + "</td>");
+        items.push("<td class='right' data-value='" + working.candidates + "'>" + bigNumberForQuantity(working.candidates) + "</td>");
+        items.push("<td class='right' data-value='" + working.deleted + "'>" + bigNumberForQuantity(working.deleted) + "</td>");
+        items.push("<td class='right' data-value='" + working.inUse + "'>" + bigNumberForQuantity(working.inUse) + "</td>");
+        items.push("<td class='right' data-value='" + working.errors + "'>" + bigNumberForQuantity(working.errors) + "</td>");                
+        items.push("<td class='right' data-value='" + (working.finished - working.started) + "'>" + timeDuration(working.finished - working.started) + "</td>");
+        
+        $("<tr/>", {
+          html: items.join("")
+        }).appendTo("#gcActivity");   
+      }
+      
+      if (data.wals.currentCycle.started > 0) {
+        var items = [];
+        
+        var working = data.wals.currentCycle;
+
+        items.push("<td class='firstcell left' data-value='WAL Collection Running'>WAL&nbsp;Collection,&nbsp;Running</td>");
+        var date = new Date(working.finished);
+        items.push("<td class='right' data-value='" + working.finished + "'>" + date.toLocaleString() + "</td>");
+        items.push("<td class='right' data-value='" + working.candidates + "'>" + bigNumberForQuantity(working.candidates) + "</td>");
+        items.push("<td class='right' data-value='" + working.deleted + "'>" + bigNumberForQuantity(working.deleted) + "</td>");
+        items.push("<td class='right' data-value='" + working.inUse + "'>" + bigNumberForQuantity(working.inUse) + "</td>");
+        items.push("<td class='right' data-value='" + working.errors + "'>" + bigNumberForQuantity(working.errors) + "</td>");                
+        items.push("<td class='right' data-value='" + (working.finished - working.started) + "'>" + timeDuration(working.finished - working.started) + "</td>");
+        
+        $("<tr/>", {
+          html: items.join("")
+        }).appendTo("#gcActivity");   
+      }
+    }
+  }
+}
 
 function createGCTable() {
   var data = JSON.parse(sessionStorage.gc);

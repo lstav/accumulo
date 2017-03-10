@@ -15,6 +15,12 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createBulkImportHeader();
+  createServerBulkHeader();
+  refreshBulkImport();
+});
+
+function refreshBulkImport() {
   $.ajaxSetup({
     async: false
   });
@@ -22,14 +28,24 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createBulkImportHeader();
-  createBulkImportTable();
+  refreshBulkImportTable();
   
-  createServerBulkHeader();
-  createServerBulkTable();
-});
+  refreshServerBulkTable();
+}
 
-function createBulkImportTable() {
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshBulkImport()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshBulkImportTable() {
+  
+  clearTable("masterBulkImportStatus");
+  
   var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
@@ -48,7 +64,10 @@ function createBulkImportTable() {
   }).appendTo("#masterBulkImportStatus");
 }
 
-function createServerBulkTable() {
+function refreshServerBulkTable() {
+  
+  clearTable("bulkImportStatus");
+  
   var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   

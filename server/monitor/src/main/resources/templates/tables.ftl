@@ -16,24 +16,8 @@
 -->
       <script>
         $(document).ready(function() {
-          $.ajaxSetup({
-            async: false
-          });
-          getNamespaces();
-          $.ajaxSetup({
-            async: true
-          });
-          
-          problemsBanner("${num_problems}");
-          
           createHeader();
-          createNamespacesDropdown();
-          if (sessionStorage.namespaces === undefined) {
-            sessionStorage.namespaces = "[]";
-            populateTable("*");
-          }
-          populateTable(undefined);
-          sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+          refreshTables();
         });
       </script>
       <div><h3>${title}</h3></div>

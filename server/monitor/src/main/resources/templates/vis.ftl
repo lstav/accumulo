@@ -53,7 +53,7 @@
           drawGrid();
           drawDots();
           getXML();
-
+          refresh();
         });
       </script>
       

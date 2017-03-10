@@ -21,15 +21,9 @@
       </style>
       <script type="text/javascript">
         $(document).ready(function() {
-          $.ajaxSetup({
-            async: false
-          });
-          getTraceShow("/rest/trace/show/${id}");
-          $.ajaxSetup({
-            async: true
-          });
           createHeader("${id}");
-          createTraceShowTable();
+          
+          refreshTraceShow();
         });
       
         function toggle(id) {
@@ -52,7 +46,7 @@
           }
         }
       
-      </script>  	
+      </script>
 
       <div><h3>${title}</h3></div>
       <div class="center-block">

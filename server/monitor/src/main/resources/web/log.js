@@ -15,6 +15,11 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createHeader();
+  refreshLogs();
+});
+
+function refreshLogs() {
   $.ajaxSetup({
     async: false
   });
@@ -24,20 +29,32 @@ $(document).ready(function() {
   });
   createHeader();
   createLogsTable();
-  sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
-});
+  //sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshLogs()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
 
 function createLogsTable() {
+  
+  clearTable("logTable");
+  
   var data = JSON.parse(sessionStorage.logs);
 
   $.each(data, function(key, val) {
     var items = [];
     var date = new Date(val.timestamp);
-    items.push("<td class='firstcell left' data-value='" + val.timestamp + "'>" + date.toLocaleString() + "</td>");
-    items.push("<td class='right' data-value='" + val.application + "'>" + val.application + "</td>");
+    items.push("<td class='firstcell left' data-value='" + val.timestamp + "'>" + date.toLocaleString().split(' ').join("&nbsp;") + "</td>");
+    items.push("<td class='center' data-value='" + val.application + "'>" + val.application + "</td>");
     items.push("<td class='right' data-value='" + val.count + "'>" + bigNumberForQuantity(val.count) + "</td>");
-    items.push("<td class='right' data-value='" + val.level + "'>" + levelFormat(val.level) + "</td>");
-    items.push("<td class='right' data-value='" + val.message + "'>" + val.message + "</td>");
+    items.push("<td class='center' data-value='" + val.level + "'>" + levelFormat(val.level) + "</td>");
+    items.push("<td class='center' data-value='" + val.message + "'>" + val.message + "</td>");
               
     $("<tr/>", {
       html: items.join("")
@@ -56,9 +73,9 @@ function createLogsTable() {
 
 function levelFormat(level) {
   if (level === "WARN") {
-    return "<div class='warning'>" + level + "</div>";
+    return "<span class='label label-warning'>" + level + "</span>";
   } else if (level === "ERROR" || level === "FATAL") {
-    return "<div class='error'>" + level + "</div>";
+    return "<span class='label label-danger'>" + level + "</span>";
   } else {
     return level;
   }

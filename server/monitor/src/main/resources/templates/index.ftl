@@ -42,9 +42,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     
     <link rel='stylesheet' type='text/css' href='/web/screen.css' media='screen' />
+    <script>
+      $(document).ready(function() {
+        setupAutoRefresh();
+      });
+    </script>
     <#if js??>
       <script src="/web/${js}"></script>
     </#if>
+    <script src="/web/sidebar.js"></script>
   </head>
 
   <body>

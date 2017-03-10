@@ -15,9 +15,31 @@
 * limitations under the License.
 */
 
-function problemsBanner(numProblems) {
-  if (numProblems > 0)
-    doBanner("tablesBanner", "<a href='/problems'>Table Problems: " + numProblems + " Total</a>");
+function refreshTables() {
+  $.ajaxSetup({
+    async: false
+  });
+  getNamespaces();
+  $.ajaxSetup({
+    async: true
+  });          
+
+  createNamespacesDropdown();
+  if (sessionStorage.namespaces === undefined) {
+    sessionStorage.namespaces = "[]";
+    populateTable(undefined);
+  }
+  populateTable(undefined);
+  sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshTables()", 5000);
+  } else {
+    clearInterval(timer);
+  }
 }
 
 function namespaceChanged() {

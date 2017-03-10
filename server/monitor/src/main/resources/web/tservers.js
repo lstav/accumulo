@@ -15,6 +15,11 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createHeader();
+  refreshTServers();
+});
+
+function refreshTServers() {
   $.ajaxSetup({
     async: false
   });
@@ -22,34 +27,56 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createHeader();
-  createTServersTable();
-});
 
-function createTServersTable() {
+  refreshTServersTable();
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshTServers()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshTServersTable() {
   var data = JSON.parse(sessionStorage.tservers);
 
-  $.each(data.servers, function(key, val) {
-    var items = [];
-    items.push("<td class='firstcell left' data-value='" + val.hostname + "'><a href='/tservers?s=" + val.id + "'>" + val.hostname + "</a></td>");
-    items.push("<td class='right' data-value='" + val.tablets + "'>" + bigNumberForQuantity(val.tablets) + "</td>");
-    items.push("<td class='right' data-value='" + val.lastContact + "'>" + timeDuration(val.lastContact) + "</td>");
-    items.push("<td class='right' data-value='" + val.entries + "'>" + bigNumberForQuantity(val.entries) + "</td>");
-    items.push("<td class='right' data-value='" + val.ingest + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
-    items.push("<td class='right' data-value='" + val.query + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
-    items.push("<td class='right' data-value='" + val.holdtime + "'>" + timeDuration(val.holdtime) + "</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.scans.running + val.compactions.scans.queued) + "'>" + bigNumberForQuantity(val.compactions.scans.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.scans.queued) + ")</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.minor.running + val.compactions.minor.queued) + "'>" + bigNumberForQuantity(val.compactions.minor.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.minor.queued) + ")</td>");
-    items.push("<td class='right' data-value='" + (val.compactions.major.running + val.compactions.major.queued) + "'>" + bigNumberForQuantity(val.compactions.major.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.major.queued) + ")</td>");
-    items.push("<td class='right' data-value='" + val.indexCacheHitRate*100 + "'>" + Math.round(val.indexCacheHitRate*100) + "%</td>");
-    items.push("<td class='right' data-value='" + val.dataCacheHitRate*100 + "'>" + Math.round(val.dataCacheHitRate*100) + "%</td>");
-    items.push("<td class='right' data-value='" + val.osload + "'>" + bigNumberForQuantity(val.osload) + "</td>");
-          
+  $("#tservers tr:gt(0)").remove();
+  
+  // TODO Add a row for no tservers
+  
+  if (data.servers.length === 0) {
+    var item = "<td class='center' colspan='13'><i>Empty</i></td>";
+    
     $("<tr/>", {
-      html: items.join("")
+      html: item
     }).appendTo("#tservers");
-              
-  });
+  } else {
+  
+    $.each(data.servers, function(key, val) {
+      var items = [];
+      items.push("<td class='firstcell left' data-value='" + val.hostname + "'><a href='/tservers?s=" + val.id + "'>" + val.hostname + "</a></td>");
+      items.push("<td class='right' data-value='" + val.tablets + "'>" + bigNumberForQuantity(val.tablets) + "</td>");
+      items.push("<td class='right' data-value='" + val.lastContact + "'>" + timeDuration(val.lastContact) + "</td>");
+      items.push("<td class='right' data-value='" + val.entries + "'>" + bigNumberForQuantity(val.entries) + "</td>");
+      items.push("<td class='right' data-value='" + val.ingest + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
+      items.push("<td class='right' data-value='" + val.query + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
+      items.push("<td class='right' data-value='" + val.holdtime + "'>" + timeDuration(val.holdtime) + "</td>");
+      items.push("<td class='right' data-value='" + (val.compactions.scans.running + val.compactions.scans.queued) + "'>" + bigNumberForQuantity(val.compactions.scans.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.scans.queued) + ")</td>");
+      items.push("<td class='right' data-value='" + (val.compactions.minor.running + val.compactions.minor.queued) + "'>" + bigNumberForQuantity(val.compactions.minor.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.minor.queued) + ")</td>");
+      items.push("<td class='right' data-value='" + (val.compactions.major.running + val.compactions.major.queued) + "'>" + bigNumberForQuantity(val.compactions.major.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.major.queued) + ")</td>");
+      items.push("<td class='right' data-value='" + val.indexCacheHitRate*100 + "'>" + Math.round(val.indexCacheHitRate*100) + "%</td>");
+      items.push("<td class='right' data-value='" + val.dataCacheHitRate*100 + "'>" + Math.round(val.dataCacheHitRate*100) + "%</td>");
+      items.push("<td class='right' data-value='" + val.osload + "'>" + bigNumberForQuantity(val.osload) + "</td>");
+            
+      $("<tr/>", {
+        html: items.join("")
+      }).appendTo("#tservers");
+                
+    });
+  }
 }
 
 function sortTable(n) {

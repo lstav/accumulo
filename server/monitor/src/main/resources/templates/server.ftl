@@ -16,26 +16,13 @@
 -->
       <script>
         $(document).ready(function() {
-        $.ajaxSetup({
-          async: false
+          createDetailHeader("${server}");
+          createHistoryHeader();
+          createCurrentHeader();
+          createResultsHeader();
+          refreshServer("${server}");
+
         });
-        getTServer("/rest/tservers/${server}");
-        $.ajaxSetup({
-          async: true
-        });
-        createDetailHeader("${server}");
-        createDetailTable();
-        
-        createHistoryHeader();
-        createHistoryTable();
-        
-        createCurrentHeader();
-        createCurrentTable();
-        
-        createResultsHeader();
-        createResultsTable();
-        sortTable(sessionStorage.tableColumn === undefined ? 0 : sessionStorage.tableColumn, sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
-      });
       </script>
       <div><h3>${title}</h3></div>
       <div class="center-block">

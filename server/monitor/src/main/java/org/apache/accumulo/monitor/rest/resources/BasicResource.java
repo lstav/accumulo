@@ -72,6 +72,12 @@ public class BasicResource {
     return new StatisticsResource();
   }
 
+  @Path("/status")
+  public StatusResource getStatusResource() {
+
+    return new StatusResource();
+  }
+
   @Path("/tables")
   public TablesResource getTablesResource() {
 

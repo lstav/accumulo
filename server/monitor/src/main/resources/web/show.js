@@ -14,12 +14,35 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-function createTraceShowTable(minutes) {
+var id;
+function refreshTraceShow() {
+  $.ajaxSetup({
+    async: false
+  });
+  getTraceShow("/rest/trace/show/"+id);
+  $.ajaxSetup({
+    async: true
+  });
+  refreshTraceShowTable();
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshTraceShow()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshTraceShowTable() {
+  clearTable("trace");
+  $("#trace caption span span").remove();
   var data = JSON.parse(sessionStorage.traceShow);
   
   var id = 101010101;
   var date = new Date(data.start);
-  $("#caption").append(date.toLocaleString());      
+  $("#caption").append("<span>"+date.toLocaleString()+"</span>");
       
   $.each(data.traces, function(key, val) {
       
@@ -83,7 +106,8 @@ $(function() {
   $(document).tooltip();
 });
 
-function createHeader(id) {	
+function createHeader(id) {
+  this.id = id;
   var caption = [];
   
   caption.push("<span id='caption' class='table-caption'>Trace " + id + " started at<br></span>");

@@ -16,15 +16,8 @@
 -->
       <script>
         $(document).ready(function() {
-          $.ajaxSetup({
-            async: false
-          });
-          getTraceOfType("/rest/trace/listType/${type}/${minutes}");
-          $.ajaxSetup({
-            async: true
-          });
-          createHeader("${type}");
-          createTypeTraceTable("${minutes}");
+          createHeader("${type}", "${minutes}");
+          refreshListType();
         });
       </script>
            

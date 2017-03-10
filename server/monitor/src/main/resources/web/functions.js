@@ -24,6 +24,30 @@ function toggle(selection) {
   p.className = style == "hide" ? "show" : "hide";
 }
 
+function setupAutoRefresh() {
+  if (!sessionStorage.autoRefresh) {
+    sessionStorage.autoRefresh = "false";
+  }
+  if (sessionStorage.autoRefresh == "false") {
+    $(".auto-refresh").parent().removeClass("active");
+  } else {
+    $(".auto-refresh").parent().addClass('active');
+  }
+  refresh();
+  refreshNavBar();
+  $('.auto-refresh').click(function(e){
+    if ($(this).parent().attr("class") == "active") {
+      $(this).parent().removeClass("active");
+      sessionStorage.autoRefresh = "false";
+    } else {
+      $(this).parent().addClass('active');
+      sessionStorage.autoRefresh = "true";
+    }
+    refresh();
+    refreshNavBar();
+  });
+}
+
 function bigNumberForSize(size) {
   if (size === null) 
     size = 0;
@@ -106,7 +130,7 @@ function sortTables(tableID, direction, n) {
     if (rows.length > 2) {
         tmpH.classList.add("sortable");
     }
-    $(tmpH.getElementsByTagName("img")).remove();
+    $(tmpH.getElementsByTagName("span")).remove();
     count += 1;
   }
   
@@ -115,9 +139,9 @@ function sortTables(tableID, direction, n) {
   } else {
     h = rows[0].getElementsByTagName("TH")[n];
     if (dir == "asc") {
-      $(h).append("<img width='10px' height='10px' src='web/up.gif' alt='v' />");
+      $(h).append("<span class='glyphicon glyphicon-chevron-up' width='10px' height='10px' />");
     } else if (dir == "desc") {
-      $(h).append("<img width='10px' height='10px' src='web/down.gif' alt='^' />");
+      $(h).append("<span class='glyphicon glyphicon-chevron-down' width='10px' height='10px' />");
     }
   }
   
@@ -363,5 +387,11 @@ function getIndexCacheHitRate() {
 function getDataCacheHitRate() {
   $.getJSON("/rest/statistics/time/dataCacheHitRate", function(data) {
     sessionStorage.dataCache = JSON.stringify(data);
+  });
+}
+
+function getStatus() {
+  $.getJSON("/rest/status", function(data) {
+    sessionStorage.status = JSON.stringify(data);
   });
 }

@@ -15,24 +15,57 @@
 * limitations under the License.
 */
 
+var serv;
+function refreshServer() {
+  $.ajaxSetup({
+    async: false
+  });
+  getTServer("/rest/tservers/"+serv);
+  $.ajaxSetup({
+    async: true
+  });
+  
+  refreshDetailTable();
+  
+  refreshHistoryTable();
+  
+  refreshCurrentTable();
+  
+  refreshResultsTable();
+}
 
-function createDetailTable() {
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshServer()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshDetailTable() {
+  
+  $("#tServerDetail tr:gt(0)").remove();
+  
   var data = JSON.parse(sessionStorage.server);
   
   var items = [];
-  			
+  
   items.push("<td class='firstcell right' data-value='" + data.details.hostedTablets + "'>" + bigNumberForQuantity(data.details.hostedTablets) + "</td>");
   items.push("<td class='right' data-value='" + data.details.entries + "'>" + bigNumberForQuantity(data.details.entries) + "</td>");
   items.push("<td class='right' data-value='" + data.details.minors + "'>" + bigNumberForQuantity(data.details.minors) + "</td>");
   items.push("<td class='right' data-value='" + data.details.majors + "'>" + bigNumberForQuantity(data.details.majors) + "</td>");
   items.push("<td class='right' data-value='" + data.details.splits + "'>" + bigNumberForQuantity(data.details.splits) + "</td>");
-  			
+  
   $("<tr/>", {
     html: items.join("")
   }).appendTo("#tServerDetail");
 }
 
-function createHistoryTable() {
+function refreshHistoryTable() {
+  
+  $("#opHistoryDetails tr:gt(0)").remove();
+
   var data = JSON.parse(sessionStorage.server);
   
   var totalTimeSpent = 0;
@@ -60,7 +93,10 @@ function createHistoryTable() {
   });
 }
 
-function createCurrentTable() {
+function refreshCurrentTable() {
+  
+  $("#currentTabletOps tr:gt(0)").remove();
+  
   var data = JSON.parse(sessionStorage.server);
   
   var items = [];
@@ -77,7 +113,10 @@ function createCurrentTable() {
   
 }
 
-function createResultsTable() {
+function refreshResultsTable() {
+  
+  $("#perTabletResults tr:gt(0)").remove();
+
   var data = JSON.parse(sessionStorage.server);
   
   $.each(data.currentOperations, function(key, val) {
@@ -118,6 +157,7 @@ function sortTable(table, n) {
 
 function createDetailHeader(server) {	
   var caption = [];
+  serv = server;
   
   caption.push("<span class='table-caption'>Details</span><br />");
   caption.push("<span class='table-subcaption'>" + server + "</span><br />");

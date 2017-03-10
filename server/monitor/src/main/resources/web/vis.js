@@ -104,7 +104,10 @@ var xmlhttp=new XMLHttpRequest(); // don't bother allowing for IE 5 or 6 since c
 xmlhttp.onreadystatechange=function() {
   handleNewData();
 }
-self.setInterval("getXML()",5000);
+
+function refresh() {
+  self.setInterval("getXML()",5000);
+}
 //self.setInterval("drawDots()",20);
 
 window.requestAnimFrame = (function(callback){

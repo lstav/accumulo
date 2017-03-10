@@ -16,15 +16,8 @@
 -->
       <script>
         $(document).ready(function() {
-          $.ajaxSetup({
-            async: false
-          });
-          getTableServers("/rest/tables/${tableID}");
-          $.ajaxSetup({
-            async: true
-          });
-          createHeader("${table}");
-          createTableServersTable();
+          createHeader("${table}", "${tableID}");
+          refreshTable();
         });
       </script>
       <div><h3>${title}</h3></div>

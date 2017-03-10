@@ -14,7 +14,30 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-function createTraceSummaryTable(minutes) {
+var minutes;
+function refreshSummary() {
+  $.ajaxSetup({
+    async: false
+  });
+  getTraceSummary("/rest/trace/summary/"+minutes);
+  $.ajaxSetup({
+    async: true
+  });
+  refreshTraceSummaryTable(minutes);
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshSummary()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshTraceSummaryTable(minutes) {
+  clearTable("traceSummary");
+  
   var data = JSON.parse(sessionStorage.traceSummary);
   
   if (data.recentTraces.length === 0) {
@@ -68,7 +91,8 @@ $(function() {
   $(document).tooltip();
 });
 
-function createHeader(type) {	
+function createHeader(min) {
+  minutes = min;
   var caption = [];
   
   caption.push("<span class='table-caption'>All Traces</span><br />");

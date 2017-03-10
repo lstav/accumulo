@@ -15,6 +15,11 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createHeader();
+  refreshReplication();
+});
+
+function refreshReplication() {
   $.ajaxSetup({
     async: false
   });
@@ -22,11 +27,22 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createHeader();
-  createReplicationsTable();
-});
+  refreshReplicationsTable();
+}
 
-function createReplicationsTable() {
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshReplication()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshReplicationsTable() {
+  
+  clearTable("replicationStats");
+  
   var data = JSON.parse(sessionStorage.replication);
 
   $.each(data, function(key, val) {

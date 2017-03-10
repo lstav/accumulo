@@ -14,7 +14,30 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-function createTypeTraceTable(minutes) {
+var type, minutes;
+function refreshListType() {
+  $.ajaxSetup({
+    async: false
+  });
+  getTraceOfType("/rest/trace/listType/"+type+"/"+minutes);
+  $.ajaxSetup({
+    async: true
+  });
+  refreshTypeTraceTable(minutes);
+}
+
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshListType()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshTypeTraceTable(minutes) {
+  clearTable("trace");
+  
   var data = JSON.parse(sessionStorage.traceType);
   
   if (data.traces.length === 0) {
@@ -56,8 +79,10 @@ $(function() {
   $(document).tooltip();
 });
 
-function createHeader(type) {	
+function createHeader(type, minutes) {	
   var caption = [];
+  this.type = type;
+  this.minutes = minutes;
   
   caption.push("<span class='table-caption'>Traces for " + type + "</span><br />");
 

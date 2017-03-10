@@ -15,6 +15,12 @@
 * limitations under the License.
 */
 $(document).ready(function() {
+  createSummaryHeader();
+  createDetailsHeader();
+  refreshProblems();
+});
+
+function refreshProblems() {
   $.ajaxSetup({
     async: false
   });
@@ -22,14 +28,22 @@ $(document).ready(function() {
   $.ajaxSetup({
     async: true
   });
-  createSummaryHeader();
-  createProblemSummaryTable();
-  createDetailsHeader();
-  createProblemDetailsTable();
+  refreshProblemSummaryTable();
+  refreshProblemDetailsTable();
   //sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
-});
+}
 
-function createProblemSummaryTable() {
+var timer;
+function refresh() {
+  if (sessionStorage.autoRefresh == "true") {
+    timer = setInterval("refreshProblems()", 5000);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function refreshProblemSummaryTable() {
+  clearTable("problemSummary");
   var data = JSON.parse(sessionStorage.problems);
   
   $.each(data, function(key, val) {
@@ -55,7 +69,8 @@ function createProblemSummaryTable() {
   
 }
 
-function createProblemDetailsTable() {
+function refreshProblemDetailsTable() {
+  clearTable("problemDetails");
   var data = JSON.parse(sessionStorage.problems);
 
   $.each(data, function(key, val) {

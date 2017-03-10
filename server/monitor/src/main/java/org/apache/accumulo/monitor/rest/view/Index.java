@@ -16,7 +16,6 @@
  */
 package org.apache.accumulo.monitor.rest.view;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,25 +47,11 @@ public class Index {
       refresh = Integer.parseInt(refreshValue);
     } catch (NumberFormatException e) {}
 
-    List<DedupedLogEvent> logs = LogService.getInstance().getEvents();
-    boolean logsHaveError = false;
-    for (DedupedLogEvent dedupedLogEvent : logs) {
-      if (dedupedLogEvent.getEvent().getLevel().isGreaterOrEqual(Level.ERROR)) {
-        logsHaveError = true;
-        break;
-      }
-    }
-
-    int numProblems = Monitor.getProblemSummary().entrySet().size();
-
     Map<String,Object> model = new HashMap<>();
     model.put("version", Constants.VERSION);
     model.put("refresh", refresh);
     model.put("instance_name", Monitor.cachedInstanceName.get());
     model.put("instance_id", Monitor.getContext().getInstance().getInstanceID());
-    model.put("num_logs", logs.size());
-    model.put("logs_have_error", logsHaveError);
-    model.put("num_problems", numProblems);
     model.put("is_ssl", false);
     model.put("redirect", null);
 

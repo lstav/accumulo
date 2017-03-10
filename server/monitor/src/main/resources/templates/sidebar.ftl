@@ -29,13 +29,12 @@
         <div class="collapse navbar-collapse" id='nav-items'>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                Servers <span class="caret"></span>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span id="statusNotification" class="icon-dot normal"></span>&nbsp;Servers&nbsp;<span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="/master">Master&nbsp;Server</a></li>
-                <li><a href="/tservers">Tablet&nbsp;Servers</a></li>
-                <li><a href="/gc">Garbage&nbsp;collector</a></li>
+                <li><a href="/master"><span id="masterStatusNotification" class="icon-dot normal"></span>&nbsp;Master&nbsp;Server&nbsp;</a></li>
+                <li><a href="/tservers"><span id="serverStatusNotification" class="icon-dot normal"></span>&nbsp;Tablet&nbsp;Servers&nbsp;</a></li>
+                <li><a href="/gc"><span id="gcStatusNotification" class="icon-dot normal"></span>&nbsp;Garbage&nbsp;collector&nbsp;</a></li>
               </ul>
             </li>
             <li><a href="/tables">Tables</a></li>
@@ -51,13 +50,12 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                Debug <span class='badge <#if num_logs gt 0 || num_problems gt 0><#if logs_have_error?? && logs_have_error || num_problems gt 0>error<#else>warning</#if></#if>'><#if num_logs + num_problems gt 99>99+<#else>${num_logs + num_problems}</#if></span><span class="caret"></span>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Debug&nbsp;<span id="errorsNotification" class='badge'></span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li><a href="/trace/summary?minutes=10">Recent&nbsp;Traces</a></li>
-                <li><a href="/log">Recent&nbsp;Logs&nbsp;<span class='badge <#if  num_logs gt 0><#if logs_have_error?? && logs_have_error>error<#else>warning</#if></#if>'><#if num_logs gt 99>99+<#else>${num_logs}</#if></span></a></li>
-                <li><a href="/problems">Table&nbsp;Problems&nbsp;<span class='badge <#if num_problems gt 0>error</#if>'><#if num_problems gt 99>99+<#else>${num_problems}</#if></span></a></li>             
+                <li><a href="/log">Recent&nbsp;Logs&nbsp;<span id="recentLogsNotifications" class='badge'></span></a></li>
+                <li><a href="/problems">Table&nbsp;Problems&nbsp;<span id="tableProblemsNotifications" class='badge'></span></a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -77,7 +75,7 @@
                 <span class="glyphicon glyphicon-option-vertical"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a>Auto-Refresh</a></li>
+                <li><a class="auto-refresh" style="cursor:pointer">Auto-Refresh</a></li>
                 <li><a data-toggle="modal" href="#aboutModal">About</a></li>
               </ul>
             </li>
