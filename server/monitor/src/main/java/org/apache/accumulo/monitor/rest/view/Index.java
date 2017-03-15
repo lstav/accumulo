@@ -32,9 +32,6 @@ import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.core.util.AddressUtil;
 import org.apache.accumulo.monitor.Monitor;
-import org.apache.accumulo.server.monitor.DedupedLogEvent;
-import org.apache.accumulo.server.monitor.LogService;
-import org.apache.log4j.Level;
 import org.glassfish.jersey.server.mvc.Template;
 
 @Path("/")

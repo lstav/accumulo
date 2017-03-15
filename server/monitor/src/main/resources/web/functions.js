@@ -309,8 +309,19 @@ function getLogs() {
 }
 
 function getProblems() {
-  $.getJSON("/rest/problems", function(data) {
-    sessionStorage.problems = JSON.stringify(data);
+  getProblemSummary();
+  getProblemDetails();
+}
+
+function getProblemSummary() {
+  $.getJSON("/rest/problems/summary", function(data) {
+    sessionStorage.problemSummary = JSON.stringify(data);
+  });
+}
+
+function getProblemDetails() {
+  $.getJSON("/rest/problems/details", function(data) {
+    sessionStorage.problemDetails = JSON.stringify(data);
   });
 }
 

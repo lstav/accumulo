@@ -95,7 +95,8 @@ function sortTable(n) {
   sortTables("logTable", direction, n);
 }
 
-function createHeader() {	
+function createHeader() {
+  $("#logTable caption").remove();
   var caption = [];
   
   caption.push("<span class='table-caption'>Recent Logs</span><br />");

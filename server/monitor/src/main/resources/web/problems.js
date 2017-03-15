@@ -44,58 +44,58 @@ function refresh() {
 
 function refreshProblemSummaryTable() {
   clearTable("problemSummary");
-  var data = JSON.parse(sessionStorage.problems);
+  var data = sessionStorage.problemSummary === undefined ? undefined : JSON.parse(sessionStorage.problemSummary);
   
-  $.each(data, function(key, val) {
-    var items = [];
-    items.push("<td class='firstcell left'><a href='/problems/table=" + val.tableId + "'>" + val.tablename + "</a></td>");
-    items.push("<td class='right'>" + val.read + "</td>");
-    items.push("<td class='right'>" + val.write + "</td>");
-    items.push("<td class='right'>" + val.load + "</td>");
-    items.push("<a href='/op?table=%2" + val.tableId + "&amp;action=clearTableProblems&amp;redir=%2Fproblems'>clear ALL accumulo.metadata problems</a>");
-    
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#problemSummary");
-  });
-  
-  if (Object.keys(data).length === 0) {
+  if (data === undefined || Object.keys(data.problemSummary).length === 0) {
     var items = [];
     items.push("<td class='center' colspan='5'><i>Empty</i></td>");
     $("<tr/>", {
       html: items.join("")
     }).appendTo("#problemSummary");
+  } else {
+    $.each(data.problemSummary, function(key, val) {
+      var items = [];
+      items.push("<td class='firstcell left'><a href='/problems?table=" + val.tableID + "'>" + val.tableName + "</a></td>");
+      items.push("<td class='right'>" + bigNumberForQuantity(val.fileRead) + "</td>");
+      items.push("<td class='right'>" + bigNumberForQuantity(val.fileWrite) + "</td>");
+      items.push("<td class='right'>" + bigNumberForQuantity(val.tableLoad) + "</td>");
+      items.push("<td><a href='/op?table=%2" + val.tableID + "&amp;action=clearTableProblems&amp;redir=%2Fproblems'>clear ALL "+val.tableName +" problems</a></td>");
+      
+      $("<tr/>", {
+        html: items.join("")
+      }).appendTo("#problemSummary");
+    });
   }
   
 }
 
 function refreshProblemDetailsTable() {
-  clearTable("problemDetails");
-  var data = JSON.parse(sessionStorage.problems);
+  clearTable("problemDetails"); // TODO This probably requires the table to be selected from the summary
+  var data = sessionStorage.problemDetails === undefined ? undefined : JSON.parse(sessionStorage.problemDetails);
 
-  $.each(data, function(key, val) {
-    var items = [];
-    items.push("<td class='firstcell left' data-value='" + val.tablename + "'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
-    items.push("<td class='right' data-value='" + val.type + "'>" + val.type + "</td>");
-    items.push("<td class='right' data-value='" + val.server + "'>" + val.server + "</td>");
-    var date = new Date(val.time);
-    items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocaleString() + "</td>");
-    items.push("<td class='right' data-value='" + val.resource + "'>" + val.resource + "</td>");
-    items.push("<td class='right' data-value='" + val.exception + "'>" + val.exception + "</td>");
-    items.push("<td class='right' data-value='" + val.operations + "'>" + val.operations + "</td>");
-              
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#problemDetails");
-              
-  });
-  
-  if (Object.keys(data).length === 0) {
+  if (data === undefined || Object.keys(data.problemDetails).length === 0) {
     var items = [];
     items.push("<td class='center' colspan='7'><i>Empty</i></td>");
     $("<tr/>", {
       html: items.join("")
     }).appendTo("#problemDetails");
+  } else {
+    $.each(data.problemDetails, function(key, val) {
+      var items = [];
+      items.push("<td class='firstcell left' data-value='" + val.tableName + "'><a href='/tables/" + val.tableID + "'>" + val.tableName + "</a></td>");
+      items.push("<td class='right' data-value='" + val.type + "'>" + val.type + "</td>");
+      items.push("<td class='right' data-value='" + val.server + "'>" + val.server + "</td>");
+      var date = new Date(val.time);
+      items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocaleString() + "</td>");
+      items.push("<td class='right' data-value='" + val.resource + "'>" + val.resource + "</td>");
+      items.push("<td class='right' data-value='" + val.exception + "'>" + val.exception + "</td>");
+      items.push("<td><a href='/op?table=" + val.tableName + "&amp;action=clearProblem&amp;redir=%2Fproblems&amp;resource=" + val.resource + "&amp;ptype=" + val.type + "'>clear this problem</a></td>");
+      
+      $("<tr/>", {
+        html: items.join("")
+      }).appendTo("#problemDetails");
+                
+    });
   }
 }
 

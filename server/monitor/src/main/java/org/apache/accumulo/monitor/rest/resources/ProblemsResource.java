@@ -16,19 +16,93 @@
  */
 package org.apache.accumulo.monitor.rest.resources;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
+import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.monitor.Monitor;
+import org.apache.accumulo.monitor.rest.api.ProblemDetailInformation;
+import org.apache.accumulo.monitor.rest.api.ProblemSummaryInformation;
+import org.apache.accumulo.server.client.HdfsZooInstance;
+import org.apache.accumulo.server.problems.ProblemReport;
+import org.apache.accumulo.server.problems.ProblemReports;
 import org.apache.accumulo.server.problems.ProblemType;
 
 public class ProblemsResource extends BasicResource {
 
   @GET
-  public Map<String,Map<ProblemType,Integer>> getSummary() {
-    return Monitor.getProblemSummary();
+  @Path("/summary")
+  public Map<String,List<ProblemSummaryInformation>> getSummary() {
+
+    Map<String,List<ProblemSummaryInformation>> jsonObj = new HashMap<String,List<ProblemSummaryInformation>>();
+
+    List<ProblemSummaryInformation> problems = new ArrayList<>();
+
+    Map<String,String> tidToNameMap = Tables.getIdToNameMap(HdfsZooInstance.getInstance());
+
+    if (Monitor.getProblemException() == null) {
+      for (Entry<String,Map<ProblemType,Integer>> entry : Monitor.getProblemSummary().entrySet()) {
+        Integer readCount = null, writeCount = null, loadCount = null;
+
+        for (ProblemType pt : ProblemType.values()) {
+          Integer pcount = entry.getValue().get(pt);
+          if (pt.equals(ProblemType.FILE_READ)) {
+            readCount = pcount;
+          } else if (pt.equals(ProblemType.FILE_WRITE)) {
+            writeCount = pcount;
+          } else if (pt.equals(ProblemType.TABLET_LOAD)) {
+            loadCount = pcount;
+          }
+        }
+
+        String tableName = Tables.getPrintableTableNameFromId(tidToNameMap, entry.getKey());
+
+        problems.add(new ProblemSummaryInformation(tableName, entry.getKey(), readCount, writeCount, loadCount));
+
+      }
+    }
+
+    jsonObj.put("problemSummary", problems);
+
+    return jsonObj;
+  }
+
+  @GET
+  @Path("/details")
+  public Map<String,List<ProblemDetailInformation>> getDetails() {
+
+    Map<String,List<ProblemDetailInformation>> jsonObj = new HashMap<String,List<ProblemDetailInformation>>();
+
+    List<ProblemDetailInformation> problems = new ArrayList<>();
+
+    Map<String,String> tidToNameMap = Tables.getIdToNameMap(HdfsZooInstance.getInstance());
+
+    if (Monitor.getProblemException() == null) {
+      for (Entry<String,Map<ProblemType,Integer>> entry : Monitor.getProblemSummary().entrySet()) {
+        ArrayList<ProblemReport> problemReports = new ArrayList<>();
+        Iterator<ProblemReport> iter = entry.getKey() == null ? ProblemReports.getInstance(Monitor.getContext()).iterator() : ProblemReports.getInstance(
+            Monitor.getContext()).iterator(entry.getKey());
+        while (iter.hasNext())
+          problemReports.add(iter.next());
+        for (ProblemReport pr : problemReports) {
+          String tableName = Tables.getPrintableTableNameFromId(tidToNameMap, pr.getTableName());
+
+          problems.add(new ProblemDetailInformation(tableName, entry.getKey(), pr.getProblemType().name(), pr.getServer(), pr.getTime(), pr.getResource(), pr
+              .getException()));
+        }
+      }
+    }
+
+    jsonObj.put("problemDetails", problems);
+
+    return jsonObj;
   }
 
   @GET
