@@ -136,7 +136,7 @@ function createZKTable() {
 function makePlots() {
   var d = new Date();
   var n = d.getTimezoneOffset()*60000; // Obtains the offset in minutes and converts to milliseconds
-  var tz = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];// TODO Obtain the timezone string to display
+  var tz = new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2] // Obtains short version of timezone
   var tzFormat = "%H:%M<br />"+tz;
   
   var ingestRate = [];

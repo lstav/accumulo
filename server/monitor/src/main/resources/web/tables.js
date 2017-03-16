@@ -66,30 +66,21 @@ function createNamespacesDropdown() {
     html: caption.join("")
   }).appendTo("#filters");
   
-  var all = "*&nbsp;(All&nbsp;Tables)";
-  $("#namespaces").html("");
-
-  $("<option/>", {
-    html: "*&nbsp;(All&nbsp;Tables)",
-    val: "*"
-  }).appendTo("#namespaces");
-  
+  var data2 = [{ id: "*", text: "* (All Tables)"}];
   $.each(data, function(key, val) {
-    var namespace = val === "" ? "-&nbsp;(DEFAULT)" : val;
-    
-    $("<option/>", {
-      html: namespace,
-      val: val === "" ? "-" : val
-    }).appendTo("#namespaces");
-    
+    var namespace = val === "" ? "- (DEFAULT)" : val;
+    data2.push({id: val === "" ? "-" : val, text: namespace});
   });  
-  $("#namespaces").select2();
+  
+  $("#namespaces").select2({
+    data: data2
+  });
   
   namespaceChanged();
 }
 
 function populateTable(ns) {  
-  var tmpArr = JSON.parse(sessionStorage.namespaces);
+  var tmpArr = sessionStorage.namespaces === undefined ? [] : JSON.parse(sessionStorage.namespaces);
   sessionStorage.namespaceChanged = true;
   var namespaces = JSON.parse(NAMESPACES).namespaces;
   
@@ -120,7 +111,7 @@ function populateTable(ns) {
     }
   }
 
-  $("#namespaces").select2().val(tmpArr).trigger("change");
+  $("#namespaces").select2().val(tmpArr).trigger("change"); // TODO Fix this, causes null dataAdapter
     
   sessionStorage.namespaces = JSON.stringify(tmpArr);
   

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 
 import org.apache.accumulo.monitor.rest.api.LogEvent;
 import org.apache.accumulo.server.monitor.DedupedLogEvent;
@@ -50,5 +51,10 @@ public class LogResource extends BasicResource {
     }
 
     return logEvents;
+  }
+  
+  @POST
+  public void clearLogs() {
+	LogService.getInstance().clear();
   }
 }

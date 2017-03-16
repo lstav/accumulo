@@ -23,8 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 
 import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.monitor.Monitor;
@@ -34,6 +37,8 @@ import org.apache.accumulo.server.client.HdfsZooInstance;
 import org.apache.accumulo.server.problems.ProblemReport;
 import org.apache.accumulo.server.problems.ProblemReports;
 import org.apache.accumulo.server.problems.ProblemType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProblemsResource extends BasicResource {
 
@@ -73,6 +78,20 @@ public class ProblemsResource extends BasicResource {
 
     return jsonObj;
   }
+  
+  @POST
+  @Consumes("text/plain")
+  @Path("/summary")
+  public void clearTableProblems(@QueryParam("s") String table) {
+	  Logger log = LoggerFactory.getLogger(Monitor.class);
+	  try {
+	    ProblemReports.getInstance(Monitor.getContext()).deleteProblemReports(table);
+	  } catch (Exception e) {
+		log.error("Failed to delete problem reports for table " + table, e);
+	  }
+  }
+  
+  
 
   @GET
   @Path("/details")

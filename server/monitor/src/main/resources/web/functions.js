@@ -308,9 +308,17 @@ function getLogs() {
   });
 }
 
+function clearLogs() {
+  $.post("/rest/logs");
+}
+
 function getProblems() {
   getProblemSummary();
   getProblemDetails();
+}
+
+function clearTableProblems(problem) {
+  $.post("/rest/problem/summary", { s: problem });
 }
 
 function getProblemSummary() {

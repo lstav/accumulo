@@ -42,6 +42,12 @@ function refresh() {
   }
 }
 
+function clearTableProblemsTable(problem) {
+  //var rest = "/rest/problem/summary/"+problem;
+  clearTableProblems(problem);
+  refreshProblemSummaryTable();
+}
+
 function refreshProblemSummaryTable() {
   clearTable("problemSummary");
   var data = sessionStorage.problemSummary === undefined ? undefined : JSON.parse(sessionStorage.problemSummary);
@@ -59,7 +65,7 @@ function refreshProblemSummaryTable() {
       items.push("<td class='right'>" + bigNumberForQuantity(val.fileRead) + "</td>");
       items.push("<td class='right'>" + bigNumberForQuantity(val.fileWrite) + "</td>");
       items.push("<td class='right'>" + bigNumberForQuantity(val.tableLoad) + "</td>");
-      items.push("<td><a href='/op?table=%2" + val.tableID + "&amp;action=clearTableProblems&amp;redir=%2Fproblems'>clear ALL "+val.tableName +" problems</a></td>");
+      items.push("<td><a href='javascript:clearTableProblemsTable(\"" + val.tableID + "\");'>clear ALL "+val.tableName +" problems</a></td>");
       
       $("<tr/>", {
         html: items.join("")

@@ -41,6 +41,11 @@ function refresh() {
   }
 }
 
+function clearLogTable() {
+  clearLogs();
+  refreshLogs();
+}
+
 function createLogsTable() {
   
   clearTable("logTable");
@@ -103,7 +108,7 @@ function createHeader() {
 
   var data = JSON.parse(sessionStorage.logs);
   if (data.length !== 0) {
-    caption.push("<a href='/op?action=clearLog&amp;redir=%2Flog'>Clear&nbsp;All&nbsp;Events</a>");
+    caption.push("<a href='javascript:clearLogTable();'>Clear&nbsp;All&nbsp;Events</a>");
   }
 
   $("<caption/>", {

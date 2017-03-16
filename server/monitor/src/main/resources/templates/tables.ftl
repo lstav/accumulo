@@ -25,7 +25,7 @@
       <div class="center-block">
 
         <div>
-          <select id="namespaces" class="namespace-select" multiple="multiple">
+          <select id="namespaces" class="namespace-select" data-placeholder="Select a namespace" multiple="multiple">
 
           </select>
         </div>
