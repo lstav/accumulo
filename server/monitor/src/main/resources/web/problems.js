@@ -43,16 +43,20 @@ function refresh() {
 }
 
 function clearTableProblemsTable(problem) {
-  //var rest = "/rest/problem/summary/"+problem;
   clearTableProblems(problem);
+  refreshProblemSummaryTable();
+}
+
+function clearDetailsProblemsTable(table, resource, type) {
+  clearDetailsProblems(table, resource, type);
   refreshProblemSummaryTable();
 }
 
 function refreshProblemSummaryTable() {
   clearTable("problemSummary");
-  var data = sessionStorage.problemSummary === undefined ? undefined : JSON.parse(sessionStorage.problemSummary);
+  var data = sessionStorage.problemSummary === undefined ? [] : JSON.parse(sessionStorage.problemSummary);
   
-  if (data === undefined || Object.keys(data.problemSummary).length === 0) {
+  if (data.length === 0 || Object.keys(data.problemSummary).length === 0) {
     var items = [];
     items.push("<td class='center' colspan='5'><i>Empty</i></td>");
     $("<tr/>", {
@@ -77,9 +81,9 @@ function refreshProblemSummaryTable() {
 
 function refreshProblemDetailsTable() {
   clearTable("problemDetails"); // TODO This probably requires the table to be selected from the summary
-  var data = sessionStorage.problemDetails === undefined ? undefined : JSON.parse(sessionStorage.problemDetails);
+  var data = sessionStorage.problemDetails === undefined ? [] : JSON.parse(sessionStorage.problemDetails);
 
-  if (data === undefined || Object.keys(data.problemDetails).length === 0) {
+  if (data.length === 0 || Object.keys(data.problemDetails).length === 0) {
     var items = [];
     items.push("<td class='center' colspan='7'><i>Empty</i></td>");
     $("<tr/>", {
@@ -95,7 +99,7 @@ function refreshProblemDetailsTable() {
       items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocaleString() + "</td>");
       items.push("<td class='right' data-value='" + val.resource + "'>" + val.resource + "</td>");
       items.push("<td class='right' data-value='" + val.exception + "'>" + val.exception + "</td>");
-      items.push("<td><a href='/op?table=" + val.tableName + "&amp;action=clearProblem&amp;redir=%2Fproblems&amp;resource=" + val.resource + "&amp;ptype=" + val.type + "'>clear this problem</a></td>");
+      items.push("<td><a href='javascript:clearDetailsProblemsTable(\"" + val.tableName + "\", \"" + val.resource + "\", \"" + val.type + "\")'>clear this problem</a></td>");
       
       $("<tr/>", {
         html: items.join("")
@@ -106,10 +110,8 @@ function refreshProblemDetailsTable() {
 }
 
 function sortTable(n) {
-  if (!JSON.parse(sessionStorage.namespaceChanged)) {
-    if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
-    }
+  if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
+    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
   } else {
     direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
   }
@@ -141,7 +143,7 @@ function createSummaryHeader() {
   }).appendTo("#problemSummary");
 }
 
-function createDetailsHeader() {	
+function createDetailsHeader() {
   var caption = [];
   
   caption.push("<span class='table-caption'>Problem&nbsp;Details</span><br />");

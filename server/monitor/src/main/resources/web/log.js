@@ -50,7 +50,7 @@ function createLogsTable() {
   
   clearTable("logTable");
   
-  var data = JSON.parse(sessionStorage.logs);
+  var data = sessionStorage.logs === undefined ? [] : JSON.parse(sessionStorage.logs);
 
   $.each(data, function(key, val) {
     var items = [];
@@ -87,10 +87,9 @@ function levelFormat(level) {
 }
 
 function sortTable(n) {
-  if (!JSON.parse(sessionStorage.namespaceChanged)) {
-    if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
-    }
+  if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
+    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+  
   } else {
     direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
   }
@@ -106,7 +105,7 @@ function createHeader() {
   
   caption.push("<span class='table-caption'>Recent Logs</span><br />");
 
-  var data = JSON.parse(sessionStorage.logs);
+  var data = sessionStorage.logs === undefined ? [] : JSON.parse(sessionStorage.logs);
   if (data.length !== 0) {
     caption.push("<a href='javascript:clearLogTable();'>Clear&nbsp;All&nbsp;Events</a>");
   }

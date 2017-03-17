@@ -123,14 +123,14 @@ function populateTable(ns) {
     async: true
   });
   
-  var data = JSON.parse(sessionStorage.tables); // TODO Fix this so that it gets the data
+  var data = sessionStorage.tables === undefined ? [] : JSON.parse(sessionStorage.tables);
   clearTable("tableList");
       
   var numTables = 0;
     
-  $.each(data.tables, function(keyT, tab) {    
+  $.each(data.tables, function(keyT, tab) {
     if (tmpArr.indexOf(tab.namespace === "" ? "-" : tab.namespace) !== -1 || tmpArr.indexOf("*") !== -1) {
-      $.each(tab.table, function(key, val) {        
+      $.each(tab.table, function(key, val) {
         
         var row = [];
         row.push("<td class='firstcell left' data-value='" + val.tablename + "'><a href='/tables/" + val.tableId + "'>" + val.tablename + "</a></td>");
@@ -213,9 +213,9 @@ $(function() {
   $(document).tooltip();
 });
 
-function createHeader() {	
+function createHeader() {
   var items = [];
-                  
+  
   items.push("<th class='firstcell' onclick='sortTable(0)'>Table&nbsp;Name&nbsp;</th>");
   items.push("<th onclick='sortTable(1)'>State&nbsp;</th>");
   items.push("<th onclick='sortTable(2)' title='"+descriptions["# Tablets"]+"'>#&nbsp;Tablets&nbsp;</th>");

@@ -15,8 +15,8 @@
 * limitations under the License.
 */
 
-var QUANTITY_SUFFIX = ["", "K", "M", "B", "T", "e15", "e18", "e21"]
-var SIZE_SUFFIX = ["", "K", "M", "G", "T", "P", "E", "Z"]
+var QUANTITY_SUFFIX = ['', 'K', 'M', 'B', 'T', 'e15', 'e18', 'e21'];
+var SIZE_SUFFIX = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z'];
 
 function toggle(selection) {
   var p = document.getElementById(selection);
@@ -318,7 +318,14 @@ function getProblems() {
 }
 
 function clearTableProblems(problem) {
-  $.post("/rest/problem/summary", { s: problem });
+  var call = "/rest/problems/summary?s=" + problem;
+  //$.post("/rest/problems/summary", { s: problem });
+  $.post(call);
+}
+
+function clearDetailsProblems(table, resource, type) {
+  var call = "/rest/problems/details?table=" + table + "&resource=" + resource + "&ptype=" + type;
+  $.post(call);
 }
 
 function getProblemSummary() {

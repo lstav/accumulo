@@ -52,9 +52,9 @@ public class LogResource extends BasicResource {
 
     return logEvents;
   }
-  
+
   @POST
   public void clearLogs() {
-	LogService.getInstance().clear();
+    LogService.getInstance().clear();
   }
 }

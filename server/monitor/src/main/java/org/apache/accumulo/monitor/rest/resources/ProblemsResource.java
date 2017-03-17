@@ -28,6 +28,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.monitor.Monitor;
@@ -78,20 +79,18 @@ public class ProblemsResource extends BasicResource {
 
     return jsonObj;
   }
-  
+
   @POST
-  @Consumes("text/plain")
+  @Consumes(MediaType.TEXT_PLAIN)
   @Path("/summary")
   public void clearTableProblems(@QueryParam("s") String table) {
-	  Logger log = LoggerFactory.getLogger(Monitor.class);
-	  try {
-	    ProblemReports.getInstance(Monitor.getContext()).deleteProblemReports(table);
-	  } catch (Exception e) {
-		log.error("Failed to delete problem reports for table " + table, e);
-	  }
+    Logger log = LoggerFactory.getLogger(Monitor.class);
+    try {
+      ProblemReports.getInstance(Monitor.getContext()).deleteProblemReports(table);
+    } catch (Exception e) {
+      log.error("Failed to delete problem reports for table " + table, e);
+    }
   }
-  
-  
 
   @GET
   @Path("/details")
@@ -122,6 +121,18 @@ public class ProblemsResource extends BasicResource {
     jsonObj.put("problemDetails", problems);
 
     return jsonObj;
+  }
+  
+  @POST
+  @Consumes(MediaType.TEXT_PLAIN)
+  @Path("/details")
+  public void clearDetailsProblems(@QueryParam("table") String table, @QueryParam("resource") String resource, @QueryParam("ptype") String ptype) {
+    Logger log = LoggerFactory.getLogger(Monitor.class);
+    try {
+      ProblemReports.getInstance(Monitor.getContext()).deleteProblemReport(table, ProblemType.valueOf(ptype), resource);
+    } catch (Exception e) {
+      log.error("Failed to delete problem reports for table " + table, e);
+    }
   }
 
   @GET

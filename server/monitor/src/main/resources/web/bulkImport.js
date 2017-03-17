@@ -46,10 +46,10 @@ function refreshBulkImportTable() {
   
   clearTable("masterBulkImportStatus");
   
-  var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
+  var data = sessionStorage.bulkImports === undefined ? [] : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
-  if (sessionStorage.bulkImports === undefined || data.bulkImport.length === 0) {
+  if (data.length === 0 || data.bulkImport.length === 0) {
     items.push("<td class='center' colspan='3'><i>Empty</i></td>");
   } else {
     $.each(data.bulkImport, function(key, val) {
@@ -68,10 +68,10 @@ function refreshServerBulkTable() {
   
   clearTable("bulkImportStatus");
   
-  var data = sessionStorage.bulkImports === undefined ? undefined : JSON.parse(sessionStorage.bulkImports);
+  var data = sessionStorage.bulkImports === undefined ? [] : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
-  if (sessionStorage.bulkImports === undefined || data.tabletServerBulkImport.length === 0) {
+  if (data.length === 0 || data.tabletServerBulkImport.length === 0) {
     items.push("<td class='center' colspan='3'><i>Empty</i></td>");
   } else {
     $.each(data.tabletServerBulkImport, function(key, val) {

@@ -43,9 +43,9 @@ function refreshScansTable() {
   
   clearTable("scanStatus");
   
-  var data = sessionStorage.scans === undefined ? undefined : JSON.parse(sessionStorage.scans);
+  var data = sessionStorage.scans === undefined ? [] : JSON.parse(sessionStorage.scans);
   
-  if (sessionStorage.scans === undefined || data.scans.length === 0) {
+  if (data.length === 0 || data.scans.length === 0) {
     var items = "<td class='center' colspan='3'><i>Empty</i></td>";
     
     $("<tr/>", {

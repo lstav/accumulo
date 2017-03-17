@@ -43,36 +43,35 @@ function refreshReplicationsTable() {
   
   clearTable("replicationStats");
   
-  var data = JSON.parse(sessionStorage.replication);
+  var data = sessionStorage.replication === undefined ? [] : JSON.parse(sessionStorage.replication);
 
-  $.each(data, function(key, val) {
-    var items = [];
-    items.push("<td class='firstcell left' data-value='" + val.tableName + "'>" + val.tableName + "</td>");
-    items.push("<td class='right' data-value='" + val.peerName + "'>" + val.peerName + "</td>");
-    items.push("<td class='right' data-value='" + val.remoteIdentifier + "'>" + val.remoteIdentifier + "</td>");
-    items.push("<td class='right' data-value='" + val.replicaSystemType + "'>" + val.replicaSystemType + "</td>");
-    items.push("<td class='right' data-value='" + val.filesNeedingReplication + "'>" + bigNumberForQuantity(val.filesNeedingReplication) + "</td>");
-              
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#replicationStats");
-              
-  });
-  
   if (data.length === 0) {
     var items = [];
     items.push("<td class='center' colspan='5'><i>Replication table is offline</i></td>");
     $("<tr/>", {
       html: items.join("")
     }).appendTo("#replicationStats");
+  } else {
+    $.each(data, function(key, val) {
+      var items = [];
+      items.push("<td class='firstcell left' data-value='" + val.tableName + "'>" + val.tableName + "</td>");
+      items.push("<td class='right' data-value='" + val.peerName + "'>" + val.peerName + "</td>");
+      items.push("<td class='right' data-value='" + val.remoteIdentifier + "'>" + val.remoteIdentifier + "</td>");
+      items.push("<td class='right' data-value='" + val.replicaSystemType + "'>" + val.replicaSystemType + "</td>");
+      items.push("<td class='right' data-value='" + val.filesNeedingReplication + "'>" + bigNumberForQuantity(val.filesNeedingReplication) + "</td>");
+                
+      $("<tr/>", {
+        html: items.join("")
+      }).appendTo("#replicationStats");
+                
+    });
   }
 }
 
 function sortTable(n) {
-  if (!JSON.parse(sessionStorage.namespaceChanged)) {
-    if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
-    }
+
+  if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
+    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
   } else {
     direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
   }

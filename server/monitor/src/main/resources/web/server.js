@@ -47,15 +47,19 @@ function refreshDetailTable() {
   
   $("#tServerDetail tr:gt(0)").remove();
   
-  var data = JSON.parse(sessionStorage.server);
+  var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
   var items = [];
   
-  items.push("<td class='firstcell right' data-value='" + data.details.hostedTablets + "'>" + bigNumberForQuantity(data.details.hostedTablets) + "</td>");
-  items.push("<td class='right' data-value='" + data.details.entries + "'>" + bigNumberForQuantity(data.details.entries) + "</td>");
-  items.push("<td class='right' data-value='" + data.details.minors + "'>" + bigNumberForQuantity(data.details.minors) + "</td>");
-  items.push("<td class='right' data-value='" + data.details.majors + "'>" + bigNumberForQuantity(data.details.majors) + "</td>");
-  items.push("<td class='right' data-value='" + data.details.splits + "'>" + bigNumberForQuantity(data.details.splits) + "</td>");
+  if (data.length === 0) {
+    items.push("<td class='center' colspan='5'><i>Empty</i></td>");
+  } else {
+    items.push("<td class='firstcell right' data-value='" + data.details.hostedTablets + "'>" + bigNumberForQuantity(data.details.hostedTablets) + "</td>");
+    items.push("<td class='right' data-value='" + data.details.entries + "'>" + bigNumberForQuantity(data.details.entries) + "</td>");
+    items.push("<td class='right' data-value='" + data.details.minors + "'>" + bigNumberForQuantity(data.details.minors) + "</td>");
+    items.push("<td class='right' data-value='" + data.details.majors + "'>" + bigNumberForQuantity(data.details.majors) + "</td>");
+    items.push("<td class='right' data-value='" + data.details.splits + "'>" + bigNumberForQuantity(data.details.splits) + "</td>");
+  }
   
   $("<tr/>", {
     html: items.join("")
@@ -66,46 +70,60 @@ function refreshHistoryTable() {
   
   $("#opHistoryDetails tr:gt(0)").remove();
 
-  var data = JSON.parse(sessionStorage.server);
+  var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
-  var totalTimeSpent = 0;
-  $.each(data.allTimeTabletResults, function(key, val) {
-    totalTimeSpent += val.timeSpent;
-  })
-            
-  var count = 0;
-  $.each(data.allTimeTabletResults, function(key, val) {
+  if (data.length === 0) {
     var row = [];
     
-    row.push("<td class='firstcell left' data-value='" + val.operation + "'>" + val.operation + "</td>");
-    row.push("<td class='right' data-value='" + val.success + "'>" + bigNumberForQuantity(val.success) + "</td>");
-    row.push("<td class='right' data-value='" + val.failure + "'>" + bigNumberForQuantity(val.failure) + "</td>");
-    row.push("<td class='right' data-value='" + (val.avgQueueTime == null ? "-" : val.avgQueueTime*1000.0) + "'>" + (val.avgQueueTime == null ? "&mdash;" : timeDuration(val.avgQueueTime * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.queueStdDev == null ? "-" : val.queueStdDev*1000.0) + "'>" + (val.queueStdDev == null ? "&mdash;" : timeDuration(val.queueStdDev * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.avgTime == null ? "-" : val.avgTime*1000.0) + "'>" + (val.avgTime == null ? "&mdash;" : timeDuration(val.avgTime * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.stdDev == null ? "-" : val.stdDev*1000.0) + "'>" + (val.stdDev == null ? "&mdash;" : timeDuration(val.stdDev * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + ((val.timeSpent / totalTimeSpent) * 100) +"'><div class='progress'><div class='progress-bar' role='progressbar' style='width:" + Math.floor((val.timeSpent / totalTimeSpent) * 100) + "%;'></div>&nbsp;" + Math.floor((val.timeSpent / totalTimeSpent) * 100) + "%</div></td>");
+    row.push("<td class='center' colspan='8'><i>Empty</i></td>");
     
     $("<tr/>", {
       html: row.join("")
     }).appendTo("#opHistoryDetails");
+  } else {
+    var totalTimeSpent = 0;
+    $.each(data.allTimeTabletResults, function(key, val) {
+      totalTimeSpent += val.timeSpent;
+    })
     
-  });
+    var count = 0;
+    $.each(data.allTimeTabletResults, function(key, val) {
+      var row = [];
+      
+      row.push("<td class='firstcell left' data-value='" + val.operation + "'>" + val.operation + "</td>");
+      row.push("<td class='right' data-value='" + val.success + "'>" + bigNumberForQuantity(val.success) + "</td>");
+      row.push("<td class='right' data-value='" + val.failure + "'>" + bigNumberForQuantity(val.failure) + "</td>");
+      row.push("<td class='right' data-value='" + (val.avgQueueTime == null ? "-" : val.avgQueueTime*1000.0) + "'>" + (val.avgQueueTime == null ? "&mdash;" : timeDuration(val.avgQueueTime * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.queueStdDev == null ? "-" : val.queueStdDev*1000.0) + "'>" + (val.queueStdDev == null ? "&mdash;" : timeDuration(val.queueStdDev * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.avgTime == null ? "-" : val.avgTime*1000.0) + "'>" + (val.avgTime == null ? "&mdash;" : timeDuration(val.avgTime * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.stdDev == null ? "-" : val.stdDev*1000.0) + "'>" + (val.stdDev == null ? "&mdash;" : timeDuration(val.stdDev * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + ((val.timeSpent / totalTimeSpent) * 100) +"'><div class='progress'><div class='progress-bar' role='progressbar' style='width:" + Math.floor((val.timeSpent / totalTimeSpent) * 100) + "%;'></div>&nbsp;" + Math.floor((val.timeSpent / totalTimeSpent) * 100) + "%</div></td>");
+      
+      $("<tr/>", {
+        html: row.join("")
+      }).appendTo("#opHistoryDetails");
+      
+    });
+  }
 }
 
 function refreshCurrentTable() {
   
   $("#currentTabletOps tr:gt(0)").remove();
   
-  var data = JSON.parse(sessionStorage.server);
+  var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
   var items = [];
-  var current = data.currentTabletOperationResults;
-  
-  items.push("<td class='firstcell right' data-value='" + (current.currentMinorAvg == null ? "-" : current.currentMinorAvg * 1000.0) + "'>" + (current.currentMinorAvg == null ? "&mdash;" : timeDuration(current.currentMinorAvg * 1000.0)) + "</td>")
-  items.push("<td class='right' data-value='" + (current.currentMinorStdDev == null ? "-" : current.currentMinorStdDev * 1000.0) + "'>" + (current.currentMinorStdDev == null ? "&mdash;" : timeDuration(current.currentMinorStdDev * 1000.0)) + "</td>")
-  items.push("<td class='right' data-value='" + (current.currentMajorAvg == null ? "-" : current.currentMajorAvg * 1000.0) + "'>" + (current.currentMajorAvg == null ? "&mdash;" : timeDuration(current.currentMajorAvg * 1000.0)) + "</td>")
-  items.push("<td class='right' data-value='" + (current.currentMajorStdDev == null ? "-" : current.currentMajorStdDev * 1000.0) + "'>" + (current.currentMajorStdDev == null ? "&mdash;" : timeDuration(current.currentMajorStdDev * 1000.0)) + "</td>")
+  if (data.length === 0) {
+    items.push("<td class='center' colspan='4'><i>Empty</i></td>");
+  } else {
+    var current = data.currentTabletOperationResults;
+    
+    items.push("<td class='firstcell right' data-value='" + (current.currentMinorAvg == null ? "-" : current.currentMinorAvg * 1000.0) + "'>" + (current.currentMinorAvg == null ? "&mdash;" : timeDuration(current.currentMinorAvg * 1000.0)) + "</td>")
+    items.push("<td class='right' data-value='" + (current.currentMinorStdDev == null ? "-" : current.currentMinorStdDev * 1000.0) + "'>" + (current.currentMinorStdDev == null ? "&mdash;" : timeDuration(current.currentMinorStdDev * 1000.0)) + "</td>")
+    items.push("<td class='right' data-value='" + (current.currentMajorAvg == null ? "-" : current.currentMajorAvg * 1000.0) + "'>" + (current.currentMajorAvg == null ? "&mdash;" : timeDuration(current.currentMajorAvg * 1000.0)) + "</td>")
+    items.push("<td class='right' data-value='" + (current.currentMajorStdDev == null ? "-" : current.currentMajorStdDev * 1000.0) + "'>" + (current.currentMajorStdDev == null ? "&mdash;" : timeDuration(current.currentMajorStdDev * 1000.0)) + "</td>")
+  }
   
   $("<tr/>", {
       html: items.join("")
@@ -117,27 +135,37 @@ function refreshResultsTable() {
   
   $("#perTabletResults tr:gt(0)").remove();
 
-  var data = JSON.parse(sessionStorage.server);
+  var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
-  $.each(data.currentOperations, function(key, val) {
+  if (data.length === 0) {
     var row = [];
     
-    row.push("<td class='firstcell left' data-value='" + val.name + "'><a href='/tables/" + val.tableID + "'>" + val.name + "</a></td>");
-    row.push("<td class='left' data-value='" + val.tablet + "'><code>" + val.tablet + "</code></td>");
-    row.push("<td class='right' data-value='" + (val.entries == null ? 0 : val.entries) + "'>" + bigNumberForQuantity(val.entries) + "</td>");
-    row.push("<td class='right' data-value='" + (val.ingest == null ? 0 : val.ingest) + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.query == null ? 0 : val.query) + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.minorAvg == null ? "-" : val.minorAvg * 1000.0) + "'>" + (val.minorAvg == null ? "&mdash;" : timeDuration(val.minorAvg * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.minorStdDev == null ? "-" : val.minorStdDev * 1000.0) + "'>" + (val.minorStdDev == null ? "&mdash;" : timeDuration(val.minorStdDev * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.minorAvgES == null ? 0 : val.minorAvgES) + "'>" + bigNumberForQuantity(Math.floor(val.minorAvgES)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.majorAvg == null ? "-" : val.majorAvg * 1000.0) + "'>" + (val.majorAvg == null ? "&mdash;" : timeDuration(val.majorAvg * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.majorStdDev == null ? "-" : val.majorStdDev * 1000.0) + "'>" + (val.majorStdDev == null ? "&mdash;" : timeDuration(val.majorStdDev * 1000.0)) + "</td>");
-    row.push("<td class='right' data-value='" + (val.majorAvgES == null ? 0 : val.majorAvgES) +"'>" + bigNumberForQuantity(Math.floor(val.majorAvgES)) + "</td>");
+    row.push("<td class='center' colspan='11'><i>Empty</i></td>");
     
     $("<tr/>", {
       html: row.join("")
     }).appendTo("#perTabletResults");
-  }); 
+  } else {
+    $.each(data.currentOperations, function(key, val) {
+      var row = [];
+      
+      row.push("<td class='firstcell left' data-value='" + val.name + "'><a href='/tables/" + val.tableID + "'>" + val.name + "</a></td>");
+      row.push("<td class='left' data-value='" + val.tablet + "'><code>" + val.tablet + "</code></td>");
+      row.push("<td class='right' data-value='" + (val.entries == null ? 0 : val.entries) + "'>" + bigNumberForQuantity(val.entries) + "</td>");
+      row.push("<td class='right' data-value='" + (val.ingest == null ? 0 : val.ingest) + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.query == null ? 0 : val.query) + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.minorAvg == null ? "-" : val.minorAvg * 1000.0) + "'>" + (val.minorAvg == null ? "&mdash;" : timeDuration(val.minorAvg * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.minorStdDev == null ? "-" : val.minorStdDev * 1000.0) + "'>" + (val.minorStdDev == null ? "&mdash;" : timeDuration(val.minorStdDev * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.minorAvgES == null ? 0 : val.minorAvgES) + "'>" + bigNumberForQuantity(Math.floor(val.minorAvgES)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.majorAvg == null ? "-" : val.majorAvg * 1000.0) + "'>" + (val.majorAvg == null ? "&mdash;" : timeDuration(val.majorAvg * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.majorStdDev == null ? "-" : val.majorStdDev * 1000.0) + "'>" + (val.majorStdDev == null ? "&mdash;" : timeDuration(val.majorStdDev * 1000.0)) + "</td>");
+      row.push("<td class='right' data-value='" + (val.majorAvgES == null ? 0 : val.majorAvgES) +"'>" + bigNumberForQuantity(Math.floor(val.majorAvgES)) + "</td>");
+      
+      $("<tr/>", {
+        html: row.join("")
+      }).appendTo("#perTabletResults");
+    });
+  }
 }
 
 function sortTable(table, n) {
@@ -179,7 +207,7 @@ function createDetailHeader(server) {
   }).appendTo("#tServerDetail");
 }
 
-function createHistoryHeader() {	
+function createHistoryHeader() {
   var caption = [];
   
   caption.push("<span class='table-caption'>All-Time&nbsp;Tablet&nbsp;Operation&nbsp;Results</span><br />");
@@ -204,7 +232,7 @@ function createHistoryHeader() {
   }).appendTo("#opHistoryDetails");
 }
 
-function createCurrentHeader() {	
+function createCurrentHeader() {
   var caption = [];
   
   caption.push("<span class='table-caption'>Current&nbsp;Tablet&nbsp;Operation&nbsp;Results</span><br />");
@@ -225,7 +253,7 @@ function createCurrentHeader() {
   }).appendTo("#currentTabletOps");
 }
 
-function createResultsHeader() {	
+function createResultsHeader() {
   var caption = [];
   
   caption.push("<span class='table-caption'>Detailed&nbsp;Current&nbsp;Operations</span><br />");
@@ -253,6 +281,3 @@ function createResultsHeader() {
     html: items.join("")
   }).appendTo("#perTabletResults");
 }
-		
-
-

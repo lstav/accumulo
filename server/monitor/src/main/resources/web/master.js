@@ -42,31 +42,11 @@ function refresh() {
   }
 }
 
-function logEventBanner() {
-  var data = JSON.parse(sessionStorage.logs);
-  
-  if (data.length > 0) {
-      var error = 0, warning = 0, total = 0;
-      
-      $.each(data, function(key, val) {
-        if (val.level === "ERROR") {
-          error++;
-        } else if (val.level === "WARN") {
-          warning++;
-        }
-        total++;
-      });
-      
-      doBanner("masterBanner", error > 0 ? "danger" : "warning", "<a href='/log'>Log Events: " + error + " Error" + (error == 1 ? "" : "s") + ", " + warning + " Warning" + (warning == 1 ? "" : "s") + ", " + total + " Total</a>");
-  }
-}
-
 function recoveryList() {
-  
+  // TODO Implement recovery list
 }
 
 function refreshMasterTable() {
-  var data = JSON.parse(sessionStorage.master);
   var status = JSON.parse(sessionStorage.status).masterStatus;
   
   $("#masterBanner").hide();

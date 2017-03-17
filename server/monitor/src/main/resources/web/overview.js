@@ -54,12 +54,12 @@ function refresh() {
 }
 
 function refreshMasterTable() {
-  var data = JSON.parse(sessionStorage.master);
+  var data = sessionStorage.master === undefined ? [] : JSON.parse(sessionStorage.master);
   
   $("#master tr td:first").hide();
   $("#master tr td").hide();
   
-  if (data.master === "No Masters running") {
+  if (data.length === 0 || data.master === "No Masters running") {
     $("#master tr td:first").show();
   } else {
     $("#master tr td:not(:first)").show();
@@ -94,12 +94,12 @@ function createMasterTable() {
 }
 
 function refreshZKTable() {
-  var data = JSON.parse(sessionStorage.zk);
+  var data = sessionStorage.zk === undefined ? [] : JSON.parse(sessionStorage.zk);
   
   $("#zookeeper tr td:first").hide();
   $("#zookeeper tr:gt(2)").remove();
   
-  if (data.zkServers.length === 0) {
+  if (data.length === 0 || data.zkServers.length === 0) {
     $("#zookeeper tr td:first").show();
   } else {
     var items = [];
@@ -139,65 +139,85 @@ function makePlots() {
   var tz = new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2] // Obtains short version of timezone
   var tzFormat = "%H:%M<br />"+tz;
   
+  // Create Ingest Rate plot
   var ingestRate = [];
-  $.each(JSON.parse(sessionStorage.ingestRate), function(key, val) {
+  var data = sessionStorage.ingestRate === undefined ? [] : JSON.parse(sessionStorage.ingestRate);
+  $.each(data, function(key, val) {
 
     ingestRate.push([val.first-n, val.second]);
   });
   $.plot($("#ingest_entries"),[{ data: ingestRate, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Scan Entries plot
   var scanEntries = {"Read":[], "Returned":[]};
-  $.each(JSON.parse(sessionStorage.scanEntries), function(key, val) {
+  var data = sessionStorage.scanEntries === undefined ? [] : JSON.parse(sessionStorage.scanEntries);
+  $.each(data, function(key, val) {
     $.each(val.second, function(key2, val2) {
       scanEntries[val.first].push([val2.first-n, val2.second]);
     });           
   });
   $.plot($("#scan_entries"),[{ label: "Read", data: scanEntries.Read, lines: { show: true }, color:"#d9534f" },{ label: "Returned", data: scanEntries.Returned, lines: { show: true }, color:"#337ab7" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Ingest MB plot
   var ingestMB = [];
-  $.each(JSON.parse(sessionStorage.ingestMB), function(key, val) {
+  var data = sessionStorage.ingestMB === undefined ? [] : JSON.parse(sessionStorage.ingestMB);
+  $.each(data, function(key, val) {
     ingestMB.push([val.first-n, val.second]);
   });
   $.plot($("#ingest_mb"),[{ data: ingestMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Query MB plot
   var queryMB = [];
-  $.each(JSON.parse(sessionStorage.queryMB), function(key, val) {
+  var data = sessionStorage.queryMB === undefined ? [] : JSON.parse(sessionStorage.queryMB);
+  $.each(data, function(key, val) {
   queryMB.push([val.first-n, val.second]);
   });
   $.plot($("#scan_mb"),[{ data: queryMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
 
+  // Create Load Average plot
   var loadAvg = [];
-  $.each(JSON.parse(sessionStorage.loadAvg), function(key, val) {
+  var data = sessionStorage.loadAvg === undefined ? [] : JSON.parse(sessionStorage.loadAvg);
+  $.each(data, function(key, val) {
     loadAvg.push([val.first-n, val.second]);
   });
   $.plot($("#load_avg"),[{ data: loadAvg, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Seeks plot
   var lookups = [];
-  $.each(JSON.parse(sessionStorage.lookups), function(key, val) {
+  var data = sessionStorage.lookups === undefined ? [] : JSON.parse(sessionStorage.lookups);
+  $.each(data, function(key, val) {
     lookups.push([val.first-n, val.second]);
   });
   $.plot($("#seeks"),[{ data: lookups, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Minor Compactions plot
   var minor = [];
-  $.each(JSON.parse(sessionStorage.minorCompactions), function(key, val) {
+  var data = sessionStorage.minorCompactions === undefined ? [] : JSON.parse(sessionStorage.minorCompactions);
+  $.each(data, function(key, val) {
     minor.push([val.first-n, val.second]);
   });
   $.plot($("#minor"),[{ data: minor, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Major Compaction plot
   var major = [];
-  $.each(JSON.parse(sessionStorage.majorCompactions), function(key, val) {
+  var data = sessionStorage.majorCompactions === undefined ? [] : JSON.parse(sessionStorage.majorCompactions);
+  $.each(data, function(key, val) {
     major.push([val.first-n, val.second]);
   });
   $.plot($("#major"),[{ data: major, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Index Cache plot
   var indexCache = [];
-  $.each(JSON.parse(sessionStorage.indexCache), function(key, val) {
+  var data = sessionStorage.indexCache === undefined ? [] : JSON.parse(sessionStorage.indexCache);
+  $.each(data, function(key, val) {
     indexCache.push([val.first-n, val.second]);
   });
   $.plot($("#index_cache"),[{ data: indexCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
   
+  // Create Data Cache plot
   var dataCache = [];
-  $.each(JSON.parse(sessionStorage.dataCache), function(key, val) {
+  var data = sessionStorage.dataCache === undefined ? [] : JSON.parse(sessionStorage.dataCache);
+  $.each(data, function(key, val) {
     dataCache.push([val.first-n, val.second]);
   });
   $.plot($("#data_cache"),[{ data: dataCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});

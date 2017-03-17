@@ -41,13 +41,11 @@ function refresh() {
 }
 
 function refreshTServersTable() {
-  var data = JSON.parse(sessionStorage.tservers);
+  var data = sessionStorage.tservers === undefined ? [] : JSON.parse(sessionStorage.tservers);
 
   $("#tservers tr:gt(0)").remove();
   
-  // TODO Add a row for no tservers
-  
-  if (data.servers.length === 0) {
+  if (data.length === || data.servers.length === 0) {
     var item = "<td class='center' colspan='13'><i>Empty</i></td>";
     
     $("<tr/>", {
@@ -74,26 +72,24 @@ function refreshTServersTable() {
       $("<tr/>", {
         html: items.join("")
       }).appendTo("#tservers");
-                
+      
     });
   }
 }
 
 function sortTable(n) {
-  if (!JSON.parse(sessionStorage.namespaceChanged)) {
-    if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
-    }
+  if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
+    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
   } else {
     direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
   }
-      
+  
   sessionStorage.tableColumnSort = n;
-      
+  
   sortTables("tservers", direction, n);
 }
 
-function createHeader() {	
+function createHeader() {
   var caption = [];
   
   caption.push("<span class='table-caption'>Tablet&nbsp;Servers</span><br />");

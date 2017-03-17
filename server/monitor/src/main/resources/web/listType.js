@@ -38,9 +38,9 @@ function refresh() {
 function refreshTypeTraceTable(minutes) {
   clearTable("trace");
   
-  var data = JSON.parse(sessionStorage.traceType);
+  var data = sessionStorage.traceType === undefined ? [] : JSON.parse(sessionStorage.traceType);
   
-  if (data.traces.length === 0) {
+  if (data.length === 0 || data.traces.length === 0) {
     var items = [];
     items.push("<td class='center' colspan='3'><i>No traces in the last " + minutes + " minute(s)</i></td>");
     $("<tr/>", {
