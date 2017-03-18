@@ -19,7 +19,7 @@ function refreshSummary() {
   $.ajaxSetup({
     async: false
   });
-  getTraceSummary("/rest/trace/summary/"+minutes);
+  getTraceSummary('/rest/trace/summary/'+minutes);
   $.ajaxSetup({
     async: true
   });
@@ -28,48 +28,48 @@ function refreshSummary() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshSummary()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshSummary()', 5000);
   } else {
     clearInterval(timer);
   }
 }
 
 function refreshTraceSummaryTable(minutes) {
-  clearTable("traceSummary");
+  clearTable('traceSummary');
   
   var data = JSON.parse(sessionStorage.traceSummary);
   
   if (data.recentTraces.length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='6'><i>No traces in the last " + minutes + " minute(s)</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#traceSummary");
+    items.push('<td class="center" colspan="6"><i>No traces in the last ' + minutes + ' minute(s)</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#traceSummary');
   } else {
     $.each(data.recentTraces, function(key, val) {
       
       var items = [];
       
-      items.push("<td class='firstcell left'><a href='/trace/listType?type=" + val.type + "&minutes=" + minutes + "'>" + val.type + "</a></td>");
-      items.push("<td class ='right'>" + bigNumberForQuantity(val.total) + "</td>");
-      items.push("<td class='right'>" + timeDuration(val.min) + "</td>");
-      items.push("<td class='right'>" + timeDuration(val.max) + "</td>");
-      items.push("<td class='right'>" + timeDuration(val.avg) + "</td>");
-      items.push("<td class='left'>");
-      items.push("<table>");
-      items.push("<tr>");
+      items.push('<td class="firstcell left"><a href="/trace/listType?type=' + val.type + '&minutes=' + minutes + '">' + val.type + '</a></td>');
+      items.push('<td class ="right">' + bigNumberForQuantity(val.total) + '</td>');
+      items.push('<td class="right">' + timeDuration(val.min) + '</td>');
+      items.push('<td class="right">' + timeDuration(val.max) + '</td>');
+      items.push('<td class="right">' + timeDuration(val.avg) + '</td>');
+      items.push('<td class="left">');
+      items.push('<table>');
+      items.push('<tr>');
       
       $.each(val.histogram, function(key2, val2) {
-        items.push("<td style='width:5em'>" + (val2 == 0 ? "-" : val2) + "</td>");
+        items.push('<td style="width:5em">' + (val2 == 0 ? '-' : val2) + '</td>');
       });
-      items.push("</tr>");
-      items.push("</table>");
-      items.push("</td>");
+      items.push('</tr>');
+      items.push('</table>');
+      items.push('</td>');
       
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#traceSummary");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#traceSummary');
         
     });
   } 
@@ -77,14 +77,14 @@ function refreshTraceSummaryTable(minutes) {
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+      direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("traceSummary", direction, n);
+  sortTables('traceSummary', direction, n);
 }
   
 $(function() {
@@ -95,22 +95,22 @@ function createHeader(min) {
   minutes = min;
   var caption = [];
   
-  caption.push("<span class='table-caption'>All Traces</span><br />");
+  caption.push('<span class="table-caption">All Traces</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#traceSummary");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#traceSummary');
 
   var items = [];
 
-  items.push("<th class='firstcell' title='"+descriptions["Trace Type"]+"'>Type&nbsp;</th>");
-  items.push("<th title='"+descriptions["Total Spans"]+"'>Total&nbsp;</th>");
-  items.push("<th title='"+descriptions["Short Span"]+"'>min&nbsp;</th>");
-  items.push("<th title='"+descriptions["Long Span"]+"'>max&nbsp;</th>");
-  items.push("<th title='"+descriptions["Avg Span"]+"'>avg&nbsp;</th>");
-  items.push("<th title='"+descriptions["Histogram"]+"'>Histogram&nbsp;</th>");
+  items.push('<th class="firstcell" title="'+descriptions['Trace Type']+'">Type&nbsp;</th>');
+  items.push('<th title="'+descriptions['Total Spans']+'">Total&nbsp;</th>');
+  items.push('<th title="'+descriptions['Short Span']+'">min&nbsp;</th>');
+  items.push('<th title="'+descriptions['Long Span']+'">max&nbsp;</th>');
+  items.push('<th title="'+descriptions['Avg Span']+'">avg&nbsp;</th>');
+  items.push('<th title="'+descriptions['Histogram']+'">Histogram&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#traceSummary");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#traceSummary');
 }

@@ -32,8 +32,8 @@ function refreshReplication() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshReplication()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshReplication()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -41,28 +41,28 @@ function refresh() {
 
 function refreshReplicationsTable() {
   
-  clearTable("replicationStats");
+  clearTable('replicationStats');
   
   var data = sessionStorage.replication === undefined ? [] : JSON.parse(sessionStorage.replication);
 
   if (data.length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='5'><i>Replication table is offline</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#replicationStats");
+    items.push('<td class="center" colspan="5"><i>Replication table is offline</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#replicationStats');
   } else {
     $.each(data, function(key, val) {
       var items = [];
-      items.push("<td class='firstcell left' data-value='" + val.tableName + "'>" + val.tableName + "</td>");
-      items.push("<td class='right' data-value='" + val.peerName + "'>" + val.peerName + "</td>");
-      items.push("<td class='right' data-value='" + val.remoteIdentifier + "'>" + val.remoteIdentifier + "</td>");
-      items.push("<td class='right' data-value='" + val.replicaSystemType + "'>" + val.replicaSystemType + "</td>");
-      items.push("<td class='right' data-value='" + val.filesNeedingReplication + "'>" + bigNumberForQuantity(val.filesNeedingReplication) + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.tableName + '">' + val.tableName + '</td>');
+      items.push('<td class="right" data-value="' + val.peerName + '">' + val.peerName + '</td>');
+      items.push('<td class="right" data-value="' + val.remoteIdentifier + '">' + val.remoteIdentifier + '</td>');
+      items.push('<td class="right" data-value="' + val.replicaSystemType + '">' + val.replicaSystemType + '</td>');
+      items.push('<td class="right" data-value="' + val.filesNeedingReplication + '">' + bigNumberForQuantity(val.filesNeedingReplication) + '</td>');
                 
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#replicationStats");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#replicationStats');
                 
     });
   }
@@ -71,34 +71,34 @@ function refreshReplicationsTable() {
 function sortTable(n) {
 
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+    direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("replicationStats", direction, n);
+  sortTables('replicationStats', direction, n);
 }
 
 function createHeader() {	
   var caption = [];
   
-  caption.push("<span class='table-caption'>Replication Status</span><br />");
+  caption.push('<span class="table-caption">Replication Status</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#replicationStats");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#replicationStats');
 
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)'>Table&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)'>Peer&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)'>Remote&nbsp;Identifier&nbsp;</th>");
-  items.push("<th onclick='sortTable(3)'>Replica&nbsp;System&nbsp;Type&nbsp;</th>");
-  items.push("<th onclick='sortTable(4)'>Files&nbsp;needing&nbsp;replication&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Table&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)">Peer&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)">Remote&nbsp;Identifier&nbsp;</th>');
+  items.push('<th onclick="sortTable(3)">Replica&nbsp;System&nbsp;Type&nbsp;</th>');
+  items.push('<th onclick="sortTable(4)">Files&nbsp;needing&nbsp;replication&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#replicationStats");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#replicationStats');
 }

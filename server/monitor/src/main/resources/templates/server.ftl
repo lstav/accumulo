@@ -16,32 +16,32 @@
 -->
       <script>
         $(document).ready(function() {
-          createDetailHeader("${server}");
+          createDetailHeader('${server}');
           createHistoryHeader();
           createCurrentHeader();
           createResultsHeader();
-          refreshServer("${server}");
+          refreshServer('${server}');
 
         });
       </script>
       <div><h3>${title}</h3></div>
       <div class="center-block">
-        <table id='tServerDetail' class='table table-bordered table-striped table-condensed'>
+        <table id="tServerDetail" class="table table-bordered table-striped table-condensed">
 
         </table>
       </div>
       <div class="center-block">
-        <table id='opHistoryDetails' class='table table-bordered table-striped table-condensed'>
+        <table id="opHistoryDetails" class="table table-bordered table-striped table-condensed">
           
         </table>
       </div>
       <div class="center-block">
-        <table id='currentTabletOps' class='table table-bordered table-striped table-condensed'>
+        <table id="currentTabletOps" class="table table-bordered table-striped table-condensed">
 
         </table>
       </div>
       <div class="center-block">
-        <table id='perTabletResults' class='table table-bordered table-striped table-condensed'>
+        <table id="perTabletResults" class="table table-bordered table-striped table-condensed">
 
         </table>
       </div>

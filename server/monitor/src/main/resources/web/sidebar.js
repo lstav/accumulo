@@ -31,8 +31,8 @@ function refreshSidebar() {
 
 var timer;
 function refreshNavBar() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshSidebar()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshSidebar()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -40,75 +40,75 @@ function refreshNavBar() {
 
 function refreshSideBarNotifications() {
   
-  $("#currentDate").html(Date());
+  $('#currentDate').html(Date());
   
   var data = sessionStorage.status === undefined ? undefined : JSON.parse(sessionStorage.status);
   
   // Setting individual status notification
-  if (data.masterStatus == "OK") {
-    $("#masterStatusNotification").removeClass("error").addClass("normal");
+  if (data.masterStatus == 'OK') {
+    $('#masterStatusNotification').removeClass('error').addClass('normal');
   } else {
-    $("#masterStatusNotification").removeClass("normal").addClass("error");
+    $('#masterStatusNotification').removeClass('normal').addClass('error');
   }
-  if (data.tServerStatus == "OK") {
-    $("#serverStatusNotification").removeClass("error").removeClass("warning").addClass("normal");
-  } else if (data.tServerStatus == "WARN") {
-    $("#serverStatusNotification").removeClass("error").removeClass("normal").addClass("warning");
+  if (data.tServerStatus == 'OK') {
+    $('#serverStatusNotification').removeClass('error').removeClass('warning').addClass('normal');
+  } else if (data.tServerStatus == 'WARN') {
+    $('#serverStatusNotification').removeClass('error').removeClass('normal').addClass('warning');
   } else {
-    $("#serverStatusNotification").removeClass("normal").removeClass("warning").addClass("error");
+    $('#serverStatusNotification').removeClass('normal').removeClass('warning').addClass('error');
   }
-  if (data.gcStatus == "OK") {
-    $("#gcStatusNotification").removeClass("error").addClass("normal");
+  if (data.gcStatus == 'OK') {
+    $('#gcStatusNotification').removeClass('error').addClass('normal');
   } else {
-    $("#gcStatusNotification").addClass("error").removeClass("normal");
+    $('#gcStatusNotification').addClass('error').removeClass('normal');
   }
   
   // Setting overall status notification
-  if (data.masterStatus == "OK" && data.tServerStatus == "OK" && data.gcStatus == "OK") {
-    $("#statusNotification").removeClass("error").removeClass("warning").addClass("normal");
-  } else if (data.masterStatus == "ERROR" || data.tServerStatus == "ERROR" || data.gcStatus == "ERROR") {
-    $("#statusNotification").removeClass("normal").removeClass("warning").addClass("error");
-  } else if (data.tServerStatus == "WARN") {
-    $("#statusNotification").removeClass("normal").removeClass("error").addClass("warning");
+  if (data.masterStatus == 'OK' && data.tServerStatus == 'OK' && data.gcStatus == 'OK') {
+    $('#statusNotification').removeClass('error').removeClass('warning').addClass('normal');
+  } else if (data.masterStatus == 'ERROR' || data.tServerStatus == 'ERROR' || data.gcStatus == 'ERROR') {
+    $('#statusNotification').removeClass('normal').removeClass('warning').addClass('error');
+  } else if (data.tServerStatus == 'WARN') {
+    $('#statusNotification').removeClass('normal').removeClass('error').addClass('warning');
   }
   
   // Setting individual logs notifications
   // Color
   if (data.logNumber > 0) {
     if (data.logsHaveError) {
-      $("#recentLogsNotifications").removeClass("warning").addClass("error");
+      $('#recentLogsNotifications').removeClass('warning').addClass('error');
     } else {
-      $("#recentLogsNotifications").removeClass("error").addClass("warning");
+      $('#recentLogsNotifications').removeClass('error').addClass('warning');
     }
   } else {
-    $("#recentLogsNotifications").removeClass("error").removeClass("warning");
+    $('#recentLogsNotifications').removeClass('error').removeClass('warning');
   }
   // Number
-  var logNumber = data.logNumber > 99 ? "99+" : data.logNumber;
-  $("#recentLogsNotifications").html(logNumber);
+  var logNumber = data.logNumber > 99 ? '99+' : data.logNumber;
+  $('#recentLogsNotifications').html(logNumber);
   // Color
   if (data.problemNumber > 0) {
-    $("#tableProblemsNotifications").addClass("error");
+    $('#tableProblemsNotifications').addClass('error');
   } else {
-    $("#tableProblemsNotifications").removeClass("error");
+    $('#tableProblemsNotifications').removeClass('error');
   }
   // Number
-  var problemNumber = data.problemNumber > 99 ? "99+" : data.problemNumber;
-  $("#tableProblemsNotifications").html(problemNumber);
+  var problemNumber = data.problemNumber > 99 ? '99+' : data.problemNumber;
+  $('#tableProblemsNotifications').html(problemNumber);
   // Setting overall logs notifications
   // Color
   if (data.logNumber > 0 || data.problemNumber > 0) {
     if (data.logsHaveError || data.problemNumber > 0) {
-      $("#errorsNotification").removeClass("warning").addClass("error");
+      $('#errorsNotification').removeClass('warning').addClass('error');
     } else {
-      $("#errorsNotification").removeClass("error").addClass("warning");
+      $('#errorsNotification').removeClass('error').addClass('warning');
     }
   } else {
-    $("#errorsNotification").removeClass("error").removeClass("warning");
+    $('#errorsNotification').removeClass('error').removeClass('warning');
   }
   
   // Number
-  var totalNumber = data.logNumber + data.problemNumber > 99 ? "99+" : data.logNumber + data.problemNumber;
-  $("#errorsNotification").html(totalNumber);
+  var totalNumber = data.logNumber + data.problemNumber > 99 ? '99+' : data.logNumber + data.problemNumber;
+  $('#errorsNotification').html(totalNumber);
   
 }

@@ -21,27 +21,27 @@ var SIZE_SUFFIX = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z'];
 function toggle(selection) {
   var p = document.getElementById(selection);
   var style = p.className;
-  p.className = style == "hide" ? "show" : "hide";
+  p.className = style == 'hide' ? 'show' : 'hide';
 }
 
 function setupAutoRefresh() {
   if (!sessionStorage.autoRefresh) {
-    sessionStorage.autoRefresh = "false";
+    sessionStorage.autoRefresh = 'false';
   }
-  if (sessionStorage.autoRefresh == "false") {
-    $(".auto-refresh").parent().removeClass("active");
+  if (sessionStorage.autoRefresh == 'false') {
+    $('.auto-refresh').parent().removeClass('active');
   } else {
-    $(".auto-refresh").parent().addClass('active');
+    $('.auto-refresh').parent().addClass('active');
   }
   refresh();
   refreshNavBar();
   $('.auto-refresh').click(function(e){
-    if ($(this).parent().attr("class") == "active") {
-      $(this).parent().removeClass("active");
-      sessionStorage.autoRefresh = "false";
+    if ($(this).parent().attr('class') == 'active') {
+      $(this).parent().removeClass('active');
+      sessionStorage.autoRefresh = 'false';
     } else {
       $(this).parent().addClass('active');
-      sessionStorage.autoRefresh = "true";
+      sessionStorage.autoRefresh = 'true';
     }
     refresh();
     refreshNavBar();
@@ -75,41 +75,41 @@ function timeDuration(time) {
   
   time = Math.floor(time);
   if (time == 0) {
-    return "&mdash;";
+    return '&mdash;';
   }
   
   ms = time % 1000;
   time = Math.floor(time / 1000);
   if (time == 0) {
-    return ms + "ms";
+    return ms + 'ms';
   }
   
   sec = time % 60;
   time = Math.floor(time / 60);
   if (time == 0) {
-    return sec + "s" + "&nbsp;" + ms + "ms";
+    return sec + 's' + '&nbsp;' + ms + 'ms';
   }
     
   min = time % 60;
   time = Math.floor(time / 60);
   if (time == 0) {
-    return min + "m" + "&nbsp;" + sec + "s";
+    return min + 'm' + '&nbsp;' + sec + 's';
   }
     
   hr = time % 24;
   time = Math.floor(time / 24);
   if (time == 0) {
-    return hr + "h" + "&nbsp;" + min + "m";
+    return hr + 'h' + '&nbsp;' + min + 'm';
   }
     
   day = time % 365;
   time = Math.floor(time / 365);
   if (time == 0) {
-    return day + "d" + "&nbsp;" + hr + "h";
+    return day + 'd' + '&nbsp;' + hr + 'h';
   }
     
   yr = Math.floor(time);
-  return yr + "y" + "&nbsp;" + day + "d";
+  return yr + 'y' + '&nbsp;' + day + 'd';
 }
 
 function sortTables(tableID, direction, n) {
@@ -117,31 +117,31 @@ function sortTables(tableID, direction, n) {
   table = document.getElementById(tableID);
   switching = true;
   
-  //Set the sorting direction to ascending:
+  // Set the sorting direction to ascending:
   dir = direction;
   sessionStorage.direction = dir;
   
-  rows = table.getElementsByTagName("TR");
+  rows = table.getElementsByTagName('TR');
   
   var count = 0;
-  while (rows[0].getElementsByTagName("TH").length > count) {
-    var tmpH = rows[0].getElementsByTagName("TH")[count];
-    tmpH.classList.remove("sortable");
+  while (rows[0].getElementsByTagName('TH').length > count) {
+    var tmpH = rows[0].getElementsByTagName('TH')[count];
+    tmpH.classList.remove('sortable');
     if (rows.length > 2) {
-        tmpH.classList.add("sortable");
+        tmpH.classList.add('sortable');
     }
-    $(tmpH.getElementsByTagName("span")).remove();
+    $(tmpH.getElementsByTagName('span')).remove();
     count += 1;
   }
   
   if (rows.length <= 2) {
       switching = false;
   } else {
-    h = rows[0].getElementsByTagName("TH")[n];
-    if (dir == "asc") {
-      $(h).append("<span class='glyphicon glyphicon-chevron-up' width='10px' height='10px' />");
-    } else if (dir == "desc") {
-      $(h).append("<span class='glyphicon glyphicon-chevron-down' width='10px' height='10px' />");
+    h = rows[0].getElementsByTagName('TH')[n];
+    if (dir == 'asc') {
+      $(h).append('<span class="glyphicon glyphicon-chevron-up" width="10px" height="10px" />');
+    } else if (dir == 'desc') {
+      $(h).append('<span class="glyphicon glyphicon-chevron-down" width="10px" height="10px" />');
     }
   }
   
@@ -150,7 +150,7 @@ function sortTables(tableID, direction, n) {
   while (switching) {
     //start by saying: no switching is done:
     switching = false;
-    rows = table.getElementsByTagName("TR");
+    rows = table.getElementsByTagName('TR');
     
     /*Loop through all table rows (except the
     first, which contains table headers):*/
@@ -159,20 +159,20 @@ function sortTables(tableID, direction, n) {
       shouldSwitch = false;
       /*Get the two elements you want to compare,
       one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n].getAttribute("data-value");
-      xFinal = (x === "-" || x === "&mdash;" ? null : (Number(x) == x ? Number(x) : x));
-      y = rows[i + 1].getElementsByTagName("TD")[n].getAttribute("data-value");
-      yFinal = (y === "-" || y === "&mdash;" ? null : (Number(y) == y ? Number(y) : y));
+      x = rows[i].getElementsByTagName('TD')[n].getAttribute('data-value');
+      xFinal = (x === '-' || x === '&mdash;' ? null : (Number(x) == x ? Number(x) : x));
+      y = rows[i + 1].getElementsByTagName('TD')[n].getAttribute('data-value');
+      yFinal = (y === '-' || y === '&mdash;' ? null : (Number(y) == y ? Number(y) : y));
       
       /*check if the two rows should switch place,
       based on the direction, asc or desc:*/
-      if (dir == "asc") {
+      if (dir == 'asc') {
         if (xFinal > yFinal || (xFinal !== null && yFinal === null)) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
           break;
         }
-      } else if (dir == "desc") {
+      } else if (dir == 'desc') {
         if (xFinal < yFinal || (yFinal !== null && xFinal === null)) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
@@ -192,24 +192,24 @@ function sortTables(tableID, direction, n) {
 }
 
 function clearTable(tableID) {      
-  $("#" + tableID).find("tr:not(:first)").remove();
+  $('#' + tableID).find('tr:not(:first)').remove();
 }
 
 ///// REST Calls /////////////
 function getMaster() {
-  $.getJSON("/rest/master", function(data) {
+  $.getJSON('/rest/master', function(data) {
     sessionStorage.master = JSON.stringify(data);
   });
 }    
 
 function getZK() {
-  $.getJSON("/rest/zk", function(data) {
+  $.getJSON('/rest/zk', function(data) {
     sessionStorage.zk = JSON.stringify(data);
   });
 }
 
 function getNamespaces() {
-  $.getJSON("/rest/tables/namespaces", function(data) {
+  $.getJSON('/rest/tables/namespaces', function(data) {
     NAMESPACES = JSON.stringify(data);
   });
 }
@@ -219,12 +219,12 @@ function getNamespaceTables(namespaces) {
   var jsonObj = {};
   jsonObj.tables = [];
   
-  if (namespaces.indexOf("*") != -1) {
+  if (namespaces.indexOf('*') != -1) {
     getTables();
   } else {
     $.each(namespaces, function(key, val) {
-      if (val !== "*") {
-        var call = "/rest/tables/namespace/" + val;
+      if (val !== '*') {
+        var call = '/rest/tables/namespace/' + val;
         $.getJSON(call, function(data) {
           $.each(data.tables, function(key2, val2) {
             jsonObj.tables.push(val2);
@@ -237,13 +237,13 @@ function getNamespaceTables(namespaces) {
 }
 
 function getTables() {
-  $.getJSON("/rest/tables", function(data) {
+  $.getJSON('/rest/tables', function(data) {
     sessionStorage.tables = JSON.stringify(data);
   });
 }    
 
 function getTServers() {
-  $.getJSON("/rest/tservers", function(data) {
+  $.getJSON('/rest/tservers', function(data) {
     sessionStorage.tservers = JSON.stringify(data);
   });
 }
@@ -255,25 +255,25 @@ function getTServer(server) {
 }
 
 function getScans() {
-  $.getJSON("/rest/scans", function(data) {
+  $.getJSON('/rest/scans', function(data) {
     sessionStorage.scans = JSON.stringify(data);
   });
 }
 
 function getBulkImports() {
-  $.getJSON("/rest/bulkImports", function(data) {
+  $.getJSON('/rest/bulkImports', function(data) {
     sessionStorage.bulkImports = JSON.stringify(data);
   });
 }
 
 function getGarbageCollector() {
-  $.getJSON("/rest/gc", function(data) {
+  $.getJSON('/rest/gc', function(data) {
     sessionStorage.gc = JSON.stringify(data);
   });
 }
 
 function getServerStats() {
-  $.getJSON("/rest/tservers/serverStats", function(data) {
+  $.getJSON('/rest/tservers/serverStats', function(data) {
     sessionStorage.serverStats = JSON.stringify(data);
   });
 }
@@ -303,13 +303,13 @@ function getTraceShow(trace) {
 }
 
 function getLogs() {
-  $.getJSON("/rest/logs", function(data) {
+  $.getJSON('/rest/logs', function(data) {
     sessionStorage.logs = JSON.stringify(data);
   });
 }
 
 function clearLogs() {
-  $.post("/rest/logs");
+  $.post('/rest/logs');
 }
 
 function getProblems() {
@@ -318,106 +318,106 @@ function getProblems() {
 }
 
 function clearTableProblems(problem) {
-  var call = "/rest/problems/summary?s=" + problem;
+  var call = '/rest/problems/summary?s=' + problem;
   //$.post("/rest/problems/summary", { s: problem });
   $.post(call);
 }
 
 function clearDetailsProblems(table, resource, type) {
-  var call = "/rest/problems/details?table=" + table + "&resource=" + resource + "&ptype=" + type;
+  var call = '/rest/problems/details?table=' + table + '&resource=' + resource + '&ptype=' + type;
   $.post(call);
 }
 
 function getProblemSummary() {
-  $.getJSON("/rest/problems/summary", function(data) {
+  $.getJSON('/rest/problems/summary', function(data) {
     sessionStorage.problemSummary = JSON.stringify(data);
   });
 }
 
 function getProblemDetails() {
-  $.getJSON("/rest/problems/details", function(data) {
+  $.getJSON('/rest/problems/details', function(data) {
     sessionStorage.problemDetails = JSON.stringify(data);
   });
 }
 
 function getReplication() {
-  $.getJSON("/rest/replication", function(data) {
+  $.getJSON('/rest/replication', function(data) {
     sessionStorage.replication = JSON.stringify(data);
   });
 }
 
 function doBanner(id, bannerClass, text) {
-  $("<div/>", {
+  $('<div/>', {
    html: text,
-   class: "alert alert-" + bannerClass,
-   role: "alert"
-  }).appendTo("#" + id);
+   class: 'alert alert-' + bannerClass,
+   role: 'alert'
+  }).appendTo('#' + id);
 }
 
 //// Overview Plots Rest Calls
 
 function getIngestRate() {
-  $.getJSON("/rest/statistics/time/ingestRate", function(data) {
+  $.getJSON('/rest/statistics/time/ingestRate', function(data) {
     sessionStorage.ingestRate = JSON.stringify(data);
   });
 }
 
 function getScanEntries() {
-  $.getJSON("/rest/statistics/time/scanEntries", function(data) {
+  $.getJSON('/rest/statistics/time/scanEntries', function(data) {
     sessionStorage.scanEntries = JSON.stringify(data);
   });
 }
 
 function getIngestByteRate() {
-  $.getJSON("/rest/statistics/time/ingestByteRate", function(data) {
+  $.getJSON('/rest/statistics/time/ingestByteRate', function(data) {
     sessionStorage.ingestMB = JSON.stringify(data);
   });
 }
 
 function getQueryByteRate() {
-  $.getJSON("/rest/statistics/time/queryByteRate", function(data) {
+  $.getJSON('/rest/statistics/time/queryByteRate', function(data) {
     sessionStorage.queryMB = JSON.stringify(data);
   });
 }
 
 function getLoadAverage() {
-  $.getJSON("/rest/statistics/time/load", function(data) {
+  $.getJSON('/rest/statistics/time/load', function(data) {
     sessionStorage.loadAvg = JSON.stringify(data);
   });
 }
 
 function getLookups() {
-  $.getJSON("/rest/statistics/time/lookups", function(data) {
+  $.getJSON('/rest/statistics/time/lookups', function(data) {
     sessionStorage.lookups = JSON.stringify(data);
   });
 }
 
 function getMinorCompactions() {
-  $.getJSON("/rest/statistics/time/minorCompactions", function(data) {
+  $.getJSON('/rest/statistics/time/minorCompactions', function(data) {
     sessionStorage.minorCompactions = JSON.stringify(data);
   });
 }
 
 function getMajorCompactions() {
-  $.getJSON("/rest/statistics/time/majorCompactions", function(data) {
+  $.getJSON('/rest/statistics/time/majorCompactions', function(data) {
     sessionStorage.majorCompactions = JSON.stringify(data);
   });
 }
 
 function getIndexCacheHitRate() {
-  $.getJSON("/rest/statistics/time/indexCacheHitRate", function(data) {
+  $.getJSON('/rest/statistics/time/indexCacheHitRate', function(data) {
     sessionStorage.indexCache = JSON.stringify(data);
   });
 }
 
 function getDataCacheHitRate() {
-  $.getJSON("/rest/statistics/time/dataCacheHitRate", function(data) {
+  $.getJSON('/rest/statistics/time/dataCacheHitRate', function(data) {
     sessionStorage.dataCache = JSON.stringify(data);
   });
 }
 
 function getStatus() {
-  $.getJSON("/rest/status", function(data) {
+  $.getJSON('/rest/status', function(data) {
     sessionStorage.status = JSON.stringify(data);
   });
 }

@@ -16,14 +16,14 @@
 -->
       <script>
         $(document).ready(function() {
-          createHeader("${type}", "${minutes}");
+          createHeader('${type}', '${minutes}');
           refreshListType();
         });
       </script>
            
       <div><h3>${title}</h3></div>
       <div class="center-block">
-        <table id='trace' class='table table-bordered table-striped table-condensed'>
+        <table id="trace" class="table table-bordered table-striped table-condensed">
 
         </table>
       </div>

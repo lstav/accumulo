@@ -26,7 +26,7 @@
           <a class="navbar-brand" id="headertitle" href="/">${instance_name}</a>
         </div>
         <!-- Nav links -->
-        <div class="collapse navbar-collapse" id='nav-items'>
+        <div class="collapse navbar-collapse" id="nav-items">
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span id="statusNotification" class="icon-dot normal"></span>&nbsp;Servers&nbsp;<span class="caret"></span>
@@ -50,12 +50,12 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Debug&nbsp;<span id="errorsNotification" class='badge'></span><span class="caret"></span>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Debug&nbsp;<span id="errorsNotification" class="badge"></span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li><a href="/trace/summary?minutes=10">Recent&nbsp;Traces</a></li>
-                <li><a href="/log">Recent&nbsp;Logs&nbsp;<span id="recentLogsNotifications" class='badge'></span></a></li>
-                <li><a href="/problems">Table&nbsp;Problems&nbsp;<span id="tableProblemsNotifications" class='badge'></span></a></li>
+                <li><a href="/log">Recent&nbsp;Logs&nbsp;<span id="recentLogsNotifications" class="badge"></span></a></li>
+                <li><a href="/problems">Table&nbsp;Problems&nbsp;<span id="tableProblemsNotifications" class="badge"></span></a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -83,5 +83,5 @@
         </div>
       </div>
       <script>
-        document.getElementById("currentDate").innerHTML = Date();
+        document.getElementById('currentDate').innerHTML = Date();
       </script>

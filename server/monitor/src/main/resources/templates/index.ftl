@@ -17,16 +17,13 @@
 <html>
   <head>
     <title>${title} - Accumulo ${version}</title>
-    <#if refresh gt 0 ><meta http-equiv='refresh' content='${refresh}' /></#if>
-    <meta http-equiv='Content-Type' content='test/html"' />
-    <meta http-equiv='Content-Script-Type' content='text/javascript' />
-    <meta http-equiv='Content-Style-Type' content='text/css' />
-    <link rel='shortcut icon' type='image/jng' href='/web/favicon.png' />
-    <script src='/web/global.js' type='text/javascript'></script>
-    <script src='/web/functions.js' type='text/javascript'></script>
-    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="http://localhost:9995/web/flot/excanvas.min.js"></script><![endif]-->
-    <!--<script language="javascript" type="text/javascript" src="/web/flot/jquery.js"></script>-->
-    
+    <#if refresh gt 0 ><meta http-equiv="refresh" content="${refresh}" /></#if>
+    <meta http-equiv="Content-Type" content="test/html" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="shortcut icon" type="image/jng" href="/web/favicon.png" />
+    <script src="/web/global.js" type="text/javascript"></script>
+    <script src="/web/functions.js" type="text/javascript"></script>
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -41,7 +38,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     
-    <link rel='stylesheet' type='text/css' href='/web/screen.css' media='screen' />
+    <link rel="stylesheet" type="text/css" href="/web/screen.css" media="screen" />
     <script>
       $(document).ready(function() {
         setupAutoRefresh();
@@ -55,14 +52,14 @@
 
   <body>
     <#include "/templates/modals.ftl">
-    <div id='content-wrapper'>
-      <div id='content'>
+    <div id="content-wrapper">
+      <div id="content">
         <div id="sidebar" class="navbar navbar-inverse navbar-fixed-top">
           <!--<#include "/templates/header.ftl">-->
           <#include "/templates/sidebar.ftl">
         </div>
 
-        <div id='main' style='bottom:0'>
+        <div id="main" style="bottom:0">
           <#include "/templates/${template}">
           
         </div>

@@ -16,13 +16,13 @@
 -->
       <script>
         $(document).ready(function() {
-          createHeader("${table}", "${tableID}");
+          createHeader('${table}', '${tableID}');
           refreshTable();
         });
       </script>
       <div><h3>${title}</h3></div>
       <div class="center-block">
-        <table id='participatingTServers' class='table table-bordered table-striped table-condensed'>
+        <table id="participatingTServers" class="table table-bordered table-striped table-condensed">
 
         </table>
       </div>

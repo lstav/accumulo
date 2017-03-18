@@ -32,8 +32,8 @@ function refreshScans() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshScans()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshScans()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -41,41 +41,41 @@ function refresh() {
 
 function refreshScansTable() {
   
-  clearTable("scanStatus");
+  clearTable('scanStatus');
   
   var data = sessionStorage.scans === undefined ? [] : JSON.parse(sessionStorage.scans);
   
   if (data.length === 0 || data.scans.length === 0) {
-    var items = "<td class='center' colspan='3'><i>Empty</i></td>";
+    var items = '<td class="center" colspan="3"><i>Empty</i></td>';
     
-    $("<tr/>", {
+    $('<tr/>', {
       html: items
-    }).appendTo("#scanStatus");
+    }).appendTo('#scanStatus');
   } else {
     $.each(data.scans, function(key, val) {
       var items = [];
       
-      items.push("<td class='firstcell left' data-value='" + val.server + "'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
-      items.push("<td class='right' data-value='" + val.scanCount + "'>" + val.scanCount + "</td>");
-      items.push("<td class='right' data-value='" + val.oldestScan + "'>" + timeDuration(val.oldestScan) + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.server + '"><a href="/tservers?s=' + val.server + '">' + val.server + '</a></td>');
+      items.push('<td class="right" data-value="' + val.scanCount + '">' + val.scanCount + '</td>');
+      items.push('<td class="right" data-value="' + val.oldestScan + '">' + timeDuration(val.oldestScan) + '</td>');
       
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#scanStatus");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#scanStatus');
     });
   }
 }
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+      direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("scanStatus", direction, n);
+  sortTables('scanStatus', direction, n);
 }
   
 $(function() {
@@ -85,19 +85,19 @@ $(function() {
 function createHeader() {	
   var caption = [];
   
-  caption.push("<span class='table-caption'>Scan&nbsp;Status</span><br />");
+  caption.push('<span class="table-caption">Scan&nbsp;Status</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#scanStatus");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#scanStatus');
       
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)'>Server&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)' title='"+descriptions["# Scans"]+"'>#&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)' title='"+descriptions["Oldest Scan"]+"'>Oldest&nbsp;Age&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Server&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)" title="'+descriptions['# Scans']+'">#&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)" title="'+descriptions['Oldest Scan']+'">Oldest&nbsp;Age&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#scanStatus");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#scanStatus');
 }

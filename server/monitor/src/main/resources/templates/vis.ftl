@@ -17,26 +17,26 @@
       <div><h3>${title}</h3></div>
       <div>
         <div>
-          <div id='parameters'>
-            <span class='viscontrol'>Shape: <select id='shape' onchange='setShape(this)'><option>Circles</option><option>Squares</option></select></span>
+          <div id="parameters">
+            <span class="viscontrol">Shape: <select id="shape" onchange="setShape(this)"><option>Circles</option><option>Squares</option></select></span>
             &nbsp;&nbsp;
-            <span class='viscontrol'>Size: <select id='size' onchange='setSize(this)'><option>10</option><option>20</option><option selected='true'>40</option><option>80</option></select></span>
+            <span class="viscontrol">Size: <select id="size" onchange="setSize(this)"><option>10</option><option>20</option><option selected="true">40</option><option>80</option></select></span>
             &nbsp;&nbsp;
-            <span class='viscontrol'>Motion: <select id='motion' onchange='setMotion(this)'></select></span>
+            <span class="viscontrol">Motion: <select id="motion" onchange="setMotion(this)"></select></span>
             &nbsp;&nbsp;
-            <span class='viscontrol'>Color: <select id='color' onchange='setColor(this)'></select></span>
+            <span class="viscontrol">Color: <select id="color" onchange="setColor(this)"></select></span>
           </div>
-          <div id='hoverable'>
-            <div id='vishoverinfo'></div>
+          <div id="hoverable">
+            <div id="vishoverinfo"></div>
             <br />
-            <canvas id='visCanvas' width='640' height='640'>Browser does not support canvas.</canvas>
+            <canvas id="visCanvas" width="640" height="640">Browser does not support canvas.</canvas>
           </div>
           <br />
           <span>Hover for info, click for details</span>
         </div>
       </div>
             
-      <script type='text/javascript'>
+      <script type="text/javascript">
         $(document).ready(function() {
           $.ajaxSetup({
             async: false
@@ -47,7 +47,7 @@
           });
           
           setStats();         
-          setOptions("${shape}", "${size}", "${motion}", "${color}");
+          setOptions('${shape}', '${size}', '${motion}', '${color}');
           setState();
           
           drawGrid();
@@ -57,7 +57,7 @@
         });
       </script>
       
-      <script type='text/javascript'>
+      <script type="text/javascript">
         var numCores = 8;
         var jsonurl = '/rest/json';
         var visurl = '/vis';

@@ -35,8 +35,8 @@ function refreshProblems() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshProblems()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshProblems()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -53,57 +53,57 @@ function clearDetailsProblemsTable(table, resource, type) {
 }
 
 function refreshProblemSummaryTable() {
-  clearTable("problemSummary");
+  clearTable('problemSummary');
   var data = sessionStorage.problemSummary === undefined ? [] : JSON.parse(sessionStorage.problemSummary);
   
   if (data.length === 0 || Object.keys(data.problemSummary).length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='5'><i>Empty</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#problemSummary");
+    items.push('<td class="center" colspan="5"><i>Empty</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#problemSummary');
   } else {
     $.each(data.problemSummary, function(key, val) {
       var items = [];
-      items.push("<td class='firstcell left'><a href='/problems?table=" + val.tableID + "'>" + val.tableName + "</a></td>");
-      items.push("<td class='right'>" + bigNumberForQuantity(val.fileRead) + "</td>");
-      items.push("<td class='right'>" + bigNumberForQuantity(val.fileWrite) + "</td>");
-      items.push("<td class='right'>" + bigNumberForQuantity(val.tableLoad) + "</td>");
-      items.push("<td><a href='javascript:clearTableProblemsTable(\"" + val.tableID + "\");'>clear ALL "+val.tableName +" problems</a></td>");
+      items.push('<td class="firstcell left"><a href="/problems?table=' + val.tableID + '">' + val.tableName + '</a></td>');
+      items.push('<td class="right">' + bigNumberForQuantity(val.fileRead) + '</td>');
+      items.push('<td class="right">' + bigNumberForQuantity(val.fileWrite) + '</td>');
+      items.push('<td class="right">' + bigNumberForQuantity(val.tableLoad) + '</td>');
+      items.push('<td><a href="javascript:clearTableProblemsTable(\'' + val.tableID + '\');">clear ALL '+val.tableName +' problems</a></td>');
       
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#problemSummary");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#problemSummary');
     });
   }
   
 }
 
 function refreshProblemDetailsTable() {
-  clearTable("problemDetails"); // TODO This probably requires the table to be selected from the summary
+  clearTable('problemDetails'); // TODO This probably requires the table to be selected from the summary
   var data = sessionStorage.problemDetails === undefined ? [] : JSON.parse(sessionStorage.problemDetails);
 
   if (data.length === 0 || Object.keys(data.problemDetails).length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='7'><i>Empty</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#problemDetails");
+    items.push('<td class="center" colspan="7"><i>Empty</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#problemDetails');
   } else {
     $.each(data.problemDetails, function(key, val) {
       var items = [];
-      items.push("<td class='firstcell left' data-value='" + val.tableName + "'><a href='/tables/" + val.tableID + "'>" + val.tableName + "</a></td>");
-      items.push("<td class='right' data-value='" + val.type + "'>" + val.type + "</td>");
-      items.push("<td class='right' data-value='" + val.server + "'>" + val.server + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.tableName + '"><a href="/tables/' + val.tableID + '">' + val.tableName + '</a></td>');
+      items.push('<td class="right" data-value="' + val.type + '">' + val.type + '</td>');
+      items.push('<td class="right" data-value="' + val.server + '">' + val.server + '</td>');
       var date = new Date(val.time);
-      items.push("<td class='right' data-value='" + val.time + "'>" + date.toLocaleString() + "</td>");
-      items.push("<td class='right' data-value='" + val.resource + "'>" + val.resource + "</td>");
-      items.push("<td class='right' data-value='" + val.exception + "'>" + val.exception + "</td>");
-      items.push("<td><a href='javascript:clearDetailsProblemsTable(\"" + val.tableName + "\", \"" + val.resource + "\", \"" + val.type + "\")'>clear this problem</a></td>");
+      items.push('<td class="right" data-value="' + val.time + '">' + date.toLocaleString() + '</td>');
+      items.push('<td class="right" data-value="' + val.resource + '">' + val.resource + '</td>');
+      items.push('<td class="right" data-value="' + val.exception + '">' + val.exception + '</td>');
+      items.push('<td><a href="javascript:clearDetailsProblemsTable(\'' + val.tableName + '\', \'' + val.resource + '\', \'' + val.type + '\')">clear this problem</a></td>');
       
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#problemDetails");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#problemDetails');
                 
     });
   }
@@ -111,59 +111,59 @@ function refreshProblemDetailsTable() {
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+    direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("problemDetails", direction, n);
+  sortTables('problemDetails', direction, n);
 }
 
 function createSummaryHeader() {
   var caption = [];
   
-  caption.push("<span class='table-caption'>Problem&nbsp;Summary</span><br />");
+  caption.push('<span class="table-caption">Problem&nbsp;Summary</span><br />');
   
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#problemSummary");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#problemSummary');
   
   var items = [];
   
-  items.push("<th class='firstcell'>Table&nbsp;</th>");
-  items.push("<th>FILE_READ&nbsp;</th>");
-  items.push("<th>FILE_WRITE&nbsp;</th>");
-  items.push("<th>TABLET_LOAD&nbsp;</th>");
-  items.push("<th>Operations&nbsp;</th>");
+  items.push('<th class="firstcell">Table&nbsp;</th>');
+  items.push('<th>FILE_READ&nbsp;</th>');
+  items.push('<th>FILE_WRITE&nbsp;</th>');
+  items.push('<th>TABLET_LOAD&nbsp;</th>');
+  items.push('<th>Operations&nbsp;</th>');
   
-  $("<tr/>", {
-      html: items.join("")
-  }).appendTo("#problemSummary");
+  $('<tr/>', {
+      html: items.join('')
+  }).appendTo('#problemSummary');
 }
 
 function createDetailsHeader() {
   var caption = [];
   
-  caption.push("<span class='table-caption'>Problem&nbsp;Details</span><br />");
-  caption.push("<span class='table-subcaption'>Problems&nbsp;identified&nbsp;with&nbsp;tables.</span><br />");
+  caption.push('<span class="table-caption">Problem&nbsp;Details</span><br />');
+  caption.push('<span class="table-subcaption">Problems&nbsp;identified&nbsp;with&nbsp;tables.</span><br />');
   
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#problemDetails");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#problemDetails');
 
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)'>Table&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)'>Problem&nbsp;Type&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)'>Server&nbsp;</th>");
-  items.push("<th onclick='sortTable(3)'>Time&nbsp;</th>");
-  items.push("<th onclick='sortTable(4)'>Resource&nbsp;</th>");
-  items.push("<th onclick='sortTable(5)'>Exception&nbsp;</th>");
-  items.push("<th>Operations&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Table&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)">Problem&nbsp;Type&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)">Server&nbsp;</th>');
+  items.push('<th onclick="sortTable(3)">Time&nbsp;</th>');
+  items.push('<th onclick="sortTable(4)">Resource&nbsp;</th>');
+  items.push('<th onclick="sortTable(5)">Exception&nbsp;</th>');
+  items.push('<th>Operations&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#problemDetails");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#problemDetails');
 }

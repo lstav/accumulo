@@ -21,7 +21,7 @@
       </style>
       <script type="text/javascript">
         $(document).ready(function() {
-          createHeader("${id}");
+          createHeader('${id}');
           
           refreshTraceShow();
         });
@@ -50,7 +50,7 @@
 
       <div><h3>${title}</h3></div>
       <div class="center-block">
-        <table id="trace" class='table table-bordered table-striped table-condensed'>
+        <table id="trace" class="table table-bordered table-striped table-condensed">
           
         </table>
       </div>

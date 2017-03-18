@@ -33,8 +33,8 @@ function refreshTServers() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshTServers()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshTServers()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -43,35 +43,35 @@ function refresh() {
 function refreshTServersTable() {
   var data = sessionStorage.tservers === undefined ? [] : JSON.parse(sessionStorage.tservers);
 
-  $("#tservers tr:gt(0)").remove();
+  $('#tservers tr:gt(0)').remove();
   
   if (data.length === || data.servers.length === 0) {
-    var item = "<td class='center' colspan='13'><i>Empty</i></td>";
+    var item = '<td class="center" colspan="13"><i>Empty</i></td>';
     
-    $("<tr/>", {
+    $('<tr/>', {
       html: item
-    }).appendTo("#tservers");
+    }).appendTo('#tservers');
   } else {
   
     $.each(data.servers, function(key, val) {
       var items = [];
-      items.push("<td class='firstcell left' data-value='" + val.hostname + "'><a href='/tservers?s=" + val.id + "'>" + val.hostname + "</a></td>");
-      items.push("<td class='right' data-value='" + val.tablets + "'>" + bigNumberForQuantity(val.tablets) + "</td>");
-      items.push("<td class='right' data-value='" + val.lastContact + "'>" + timeDuration(val.lastContact) + "</td>");
-      items.push("<td class='right' data-value='" + val.entries + "'>" + bigNumberForQuantity(val.entries) + "</td>");
-      items.push("<td class='right' data-value='" + val.ingest + "'>" + bigNumberForQuantity(Math.floor(val.ingest)) + "</td>");
-      items.push("<td class='right' data-value='" + val.query + "'>" + bigNumberForQuantity(Math.floor(val.query)) + "</td>");
-      items.push("<td class='right' data-value='" + val.holdtime + "'>" + timeDuration(val.holdtime) + "</td>");
-      items.push("<td class='right' data-value='" + (val.compactions.scans.running + val.compactions.scans.queued) + "'>" + bigNumberForQuantity(val.compactions.scans.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.scans.queued) + ")</td>");
-      items.push("<td class='right' data-value='" + (val.compactions.minor.running + val.compactions.minor.queued) + "'>" + bigNumberForQuantity(val.compactions.minor.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.minor.queued) + ")</td>");
-      items.push("<td class='right' data-value='" + (val.compactions.major.running + val.compactions.major.queued) + "'>" + bigNumberForQuantity(val.compactions.major.running) + "&nbsp;(" + bigNumberForQuantity(val.compactions.major.queued) + ")</td>");
-      items.push("<td class='right' data-value='" + val.indexCacheHitRate*100 + "'>" + Math.round(val.indexCacheHitRate*100) + "%</td>");
-      items.push("<td class='right' data-value='" + val.dataCacheHitRate*100 + "'>" + Math.round(val.dataCacheHitRate*100) + "%</td>");
-      items.push("<td class='right' data-value='" + val.osload + "'>" + bigNumberForQuantity(val.osload) + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.hostname + '"><a href="/tservers?s="' + val.id + '">' + val.hostname + '</a></td>');
+      items.push('<td class="right" data-value="' + val.tablets + '">' + bigNumberForQuantity(val.tablets) + '</td>');
+      items.push('<td class="right" data-value="' + val.lastContact + '">' + timeDuration(val.lastContact) + '</td>');
+      items.push('<td class="right" data-value="' + val.entries + '">' + bigNumberForQuantity(val.entries) + '</td>');
+      items.push('<td class="right" data-value="' + val.ingest + '">' + bigNumberForQuantity(Math.floor(val.ingest)) + '</td>');
+      items.push('<td class="right" data-value="' + val.query + '">' + bigNumberForQuantity(Math.floor(val.query)) + '</td>');
+      items.push('<td class="right" data-value="' + val.holdtime + '">' + timeDuration(val.holdtime) + '</td>');
+      items.push('<td class="right" data-value="' + (val.compactions.scans.running + val.compactions.scans.queued) + '">' + bigNumberForQuantity(val.compactions.scans.running) + '&nbsp;(' + bigNumberForQuantity(val.compactions.scans.queued) + ')</td>');
+      items.push('<td class="right" data-value="' + (val.compactions.minor.running + val.compactions.minor.queued) + '">' + bigNumberForQuantity(val.compactions.minor.running) + '&nbsp;(' + bigNumberForQuantity(val.compactions.minor.queued) + ')</td>');
+      items.push('<td class="right" data-value="' + (val.compactions.major.running + val.compactions.major.queued) + '">' + bigNumberForQuantity(val.compactions.major.running) + '&nbsp;(' + bigNumberForQuantity(val.compactions.major.queued) + ')</td>');
+      items.push('<td class="right" data-value="' + val.indexCacheHitRate*100 + '">' + Math.round(val.indexCacheHitRate*100) + '%</td>');
+      items.push('<td class="right" data-value="' + val.dataCacheHitRate*100 + '">' + Math.round(val.dataCacheHitRate*100) + '%</td>');
+      items.push('<td class="right" data-value="' + val.osload + '">' + bigNumberForQuantity(val.osload) + '</td>');
             
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#tservers");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#tservers');
       
     });
   }
@@ -79,43 +79,43 @@ function refreshTServersTable() {
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+    direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
   
   sessionStorage.tableColumnSort = n;
   
-  sortTables("tservers", direction, n);
+  sortTables('tservers', direction, n);
 }
 
 function createHeader() {
   var caption = [];
   
-  caption.push("<span class='table-caption'>Tablet&nbsp;Servers</span><br />");
-  caption.push("<span class='table-subcaption'>Click on the <span style='color: #0000ff;'>server address</span> to view detailed performance statistics for that server.</span><br />");
+  caption.push('<span class="table-caption">Tablet&nbsp;Servers</span><br />');
+  caption.push('<span class="table-subcaption">Click on the <span style="color: #0000ff;">server address</span> to view detailed performance statistics for that server.</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#tservers");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#tservers');
       
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)'>Server&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)'>Hosted&nbsp;Tablets&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)'>Last&nbsp;Contact&nbsp;</th>");
-  items.push("<th onclick='sortTable(3)' title='"+descriptions["Entries"]+"'>Entries&nbsp;</th>");
-  items.push("<th onclick='sortTable(4)' title='"+descriptions["Ingest"]+"'>Ingest&nbsp;</th>");
-  items.push("<th onclick='sortTable(5)' title='"+descriptions["Query"]+"'>Query&nbsp;</th>");
-  items.push("<th onclick='sortTable(6)' title='"+descriptions["Hold Time"]+"'>Hold&nbsp;Time&nbsp;</th>");
-  items.push("<th onclick='sortTable(7)' title='"+descriptions["Running Scans"]+"'>Running<br />Scans&nbsp;</th>");
-  items.push("<th onclick='sortTable(8)' title='"+descriptions["Minor Compactions"]+"'>Minor<br />Compactions&nbsp;</th>");
-  items.push("<th onclick='sortTable(9)' title='"+descriptions["Major Compactions"]+"'>Major<br />Compactions&nbsp;</th>");
-  items.push("<th onclick='sortTable(10)' title='"+descriptions["Index Cache Hit Rate"]+"'>Index Cache<br />Hit Rate&nbsp;</th>");
-  items.push("<th onclick='sortTable(11)' title='"+descriptions["Data Cache Hit Rate"]+"'>Data Cache<br />Hit Rate&nbsp;</th>");
-  items.push("<th onclick='sortTable(12)' title='"+descriptions["OS Load"]+"'>OS&nbsp;Load&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Server&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)">Hosted&nbsp;Tablets&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)">Last&nbsp;Contact&nbsp;</th>');
+  items.push('<th onclick="sortTable(3)" title="'+descriptions['Entries']+'">Entries&nbsp;</th>');
+  items.push('<th onclick="sortTable(4)" title="'+descriptions['Ingest']+'">Ingest&nbsp;</th>');
+  items.push('<th onclick="sortTable(5)" title="'+descriptions['Query']+'">Query&nbsp;</th>');
+  items.push('<th onclick="sortTable(6)" title="'+descriptions['Hold Time']+'">Hold&nbsp;Time&nbsp;</th>');
+  items.push('<th onclick="sortTable(7)" title="'+descriptions['Running Scans']+'">Running<br />Scans&nbsp;</th>');
+  items.push('<th onclick="sortTable(8)" title="'+descriptions['Minor Compactions']+'">Minor<br />Compactions&nbsp;</th>');
+  items.push('<th onclick="sortTable(9)" title="'+descriptions['Major Compactions']+'">Major<br />Compactions&nbsp;</th>');
+  items.push('<th onclick="sortTable(10)" title="'+descriptions['Index Cache Hit Rate']+'">Index Cache<br />Hit Rate&nbsp;</th>');
+  items.push('<th onclick="sortTable(11)" title="'+descriptions['Data Cache Hit Rate']+'">Data Cache<br />Hit Rate&nbsp;</th>');
+  items.push('<th onclick="sortTable(12)" title="'+descriptions['OS Load']+'">OS&nbsp;Load&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#tservers");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#tservers');
 }

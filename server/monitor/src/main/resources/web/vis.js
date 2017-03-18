@@ -19,26 +19,26 @@ var statNames = {}, maxStatValues = {}, adjustMax = {}, significance = {};
  
 function setOptions(shape, size, motion, color) {
   var data = sessionStorage.serverStats === undefined ? {} : JSON.parse(sessionStorage.serverStats);
-  $("#motion").empty();
-  $("#color").empty();
+  $('#motion').empty();
+  $('#color').empty();
   
   $.each(data.serverStats, function(key, val) {
     var item = val.description;
 
-    $("#motion").append("<option " + (motion === val.name ? "selected" : "") + ">" + item + "</option>");
-    $("#color").append("<option " + (color === val.name ? "selected" : "") + ">" + item + "</option>");
+    $('#motion').append('<option ' + (motion === val.name ? 'selected' : '') + '>' + item + '</option>');
+    $('#color').append('<option ' + (color === val.name ? 'selected' : '') + '>' + item + '</option>');
        
   });
   if (speedStatType === undefined) {
-    speedStatType = motion !== undefined && motion !== "" ? motion : "";
-    speedDisabled = motion !== "" ? false : true;
+    speedStatType = motion !== undefined && motion !== '' ? motion : '';
+    speedDisabled = motion !== '' ? false : true;
   }
-  if (speedStatType !== motion && motion !== undefined && motion !== "osload" && motion !== "") {
+  if (speedStatType !== motion && motion !== undefined && motion !== 'osload' && motion !== '') {
     speedStatType = motion;
     speedDisabled = false;
   }
   if (colorStatType === undefined) {
-    colorStatType = color !== undefined ? color : "osload";
+    colorStatType = color !== undefined ? color : 'osload';
   }
   if (colorStatType !== color && color !== undefined) {
     colorStatType = color;
@@ -106,9 +106,9 @@ xmlhttp.onreadystatechange=function() {
 }
 
 function refresh() {
-  self.setInterval("getXML()",5000);
+  self.setInterval('getXML()',5000);
 }
-//self.setInterval("drawDots()",20);
+//self.setInterval('drawDots()',20);
 
 window.requestAnimFrame = (function(callback){
   return window.requestAnimationFrame ||

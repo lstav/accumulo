@@ -21,7 +21,7 @@
         });
       </script>
       <div><h3>${title}</h3></div>
-      <div id='tablesBanner'></div>
+      <div id="tablesBanner"></div>
       <div class="center-block">
 
         <div>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="center-block">
-        <table id='tableList' class='table table-bordered table-striped table-condensed'>
+        <table id="tableList" class="table table-bordered table-striped table-condensed">
               
         </table>
       </div>

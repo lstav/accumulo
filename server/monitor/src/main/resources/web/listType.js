@@ -19,7 +19,7 @@ function refreshListType() {
   $.ajaxSetup({
     async: false
   });
-  getTraceOfType("/rest/trace/listType/"+type+"/"+minutes);
+  getTraceOfType('/rest/trace/listType/'+type+'/'+minutes);
   $.ajaxSetup({
     async: true
   });
@@ -28,51 +28,51 @@ function refreshListType() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshListType()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshListType()', 5000);
   } else {
     clearInterval(timer);
   }
 }
 
 function refreshTypeTraceTable(minutes) {
-  clearTable("trace");
+  clearTable('trace');
   
   var data = sessionStorage.traceType === undefined ? [] : JSON.parse(sessionStorage.traceType);
   
   if (data.length === 0 || data.traces.length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='3'><i>No traces in the last " + minutes + " minute(s)</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#trace");
+    items.push('<td class="center" colspan="3"><i>No traces in the last ' + minutes + ' minute(s)</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#trace');
   } else {
     $.each(data.traces, function(key, val) {
     
       var items = [];
     
       var date = new Date(val.start);
-      items.push("<td class='firstcell left'><a href='/trace/show?id=" + val.id + "'>" + date.toLocaleString() + "</a></td>");
-      items.push("<td class ='right'>" + timeDuration(val.ms) + "</td>");
-      items.push("<td class='left'>" + val.source + "</td>");
+      items.push('<td class="firstcell left"><a href="/trace/show?id=' + val.id + '">' + date.toLocaleString() + '</a></td>');
+      items.push('<td class ="right">' + timeDuration(val.ms) + '</td>');
+      items.push('<td class="left">' + val.source + '</td>');
     
-      $("<tr/>", {
-        html: items.join("")
-      }).appendTo("#trace");
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#trace');
     });
   }
 }
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+      direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("trace", direction, n);
+  sortTables('trace', direction, n);
 }
   
 $(function() {
@@ -84,19 +84,19 @@ function createHeader(type, minutes) {
   this.type = type;
   this.minutes = minutes;
   
-  caption.push("<span class='table-caption'>Traces for " + type + "</span><br />");
+  caption.push('<span class="table-caption">Traces for ' + type + '</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#trace");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#trace');
       
   var items = [];
 
-  items.push("<th class='firstcell' title='"+descriptions["Trace Start"]+"'>Start&nbsp;</th>");
-  items.push("<th title='"+descriptions["Span Time"]+"'>ms&nbsp;</th>");
-  items.push("<th title='"+descriptions["Source"]+"'>Source&nbsp;</th>");
+  items.push('<th class="firstcell" title="'+descriptions['Trace Start']+'">Start&nbsp;</th>');
+  items.push('<th title="'+descriptions['Span Time']+'">ms&nbsp;</th>');
+  items.push('<th title="'+descriptions['Source']+'">Source&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#trace");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#trace');
 }

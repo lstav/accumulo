@@ -35,8 +35,8 @@ function refreshBulkImport() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshBulkImport()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshBulkImport()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -44,59 +44,59 @@ function refresh() {
 
 function refreshBulkImportTable() {
   
-  clearTable("masterBulkImportStatus");
+  clearTable('masterBulkImportStatus');
   
   var data = sessionStorage.bulkImports === undefined ? [] : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
   if (data.length === 0 || data.bulkImport.length === 0) {
-    items.push("<td class='center' colspan='3'><i>Empty</i></td>");
+    items.push('<td class="center" colspan="3"><i>Empty</i></td>');
   } else {
     $.each(data.bulkImport, function(key, val) {
-      items.push("<td class='firstcell left' data-value='" + val.filename + "'>" + val.filename + "</td>");
-      items.push("<td class='right' data-value='" + val.age + "'>" + val.age + "</td>");
-      items.push("<td class='right' data-value='" + val.state + "'>" + val.state + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.filename + '">' + val.filename + '</td>');
+      items.push('<td class="right" data-value="' + val.age + '">' + val.age + '</td>');
+      items.push('<td class="right" data-value="' + val.state + '">' + val.state + '</td>');
     });
   }
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#masterBulkImportStatus");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#masterBulkImportStatus');
 }
 
 function refreshServerBulkTable() {
   
-  clearTable("bulkImportStatus");
+  clearTable('bulkImportStatus');
   
   var data = sessionStorage.bulkImports === undefined ? [] : JSON.parse(sessionStorage.bulkImports);
   var items = [];
   
   if (data.length === 0 || data.tabletServerBulkImport.length === 0) {
-    items.push("<td class='center' colspan='3'><i>Empty</i></td>");
+    items.push('<td class="center" colspan="3"><i>Empty</i></td>');
   } else {
     $.each(data.tabletServerBulkImport, function(key, val) {
-      items.push("<td class='firstcell left' data-value='" + val.server + "'><a href='/tservers?s=" + val.server + "'>" + val.server + "</a></td>");
-      items.push("<td class='right' data-value='" + val.importSize + "'>" + val.importSize + "</td>");
-      items.push("<td class='right' data-value='" + val.oldestAge + "'>" + (val.oldestAge > 0 ? val.oldestAge : "&mdash;") + "</td>");
+      items.push('<td class="firstcell left" data-value="' + val.server + '"><a href="/tservers?s=' + val.server + '">' + val.server + '</a></td>');
+      items.push('<td class="right" data-value="' + val.importSize + '">' + val.importSize + '</td>');
+      items.push('<td class="right" data-value="' + val.oldestAge + '">' + (val.oldestAge > 0 ? val.oldestAge : '&mdash;') + '</td>');
     });
   }
   
-  $("<tr/>", {
-   html: items.join("")
-  }).appendTo("#bulkImportStatus");
+  $('<tr/>', {
+   html: items.join('')
+  }).appendTo('#bulkImportStatus');
 }
 
 function sortTable(n) {
 
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-      direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+      direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
       
   sessionStorage.tableColumnSort = n;
       
-  sortTables("bulkImportStatus", direction, n);
+  sortTables('bulkImportStatus', direction, n);
 }
   
 $(function() {
@@ -106,39 +106,39 @@ $(function() {
 function createBulkImportHeader() {	
   var caption = [];
   
-  caption.push("<span class='table-caption'>Bulk&nbsp;Import&nbsp;Status</span><br />");
+  caption.push('<span class="table-caption">Bulk&nbsp;Import&nbsp;Status</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#masterBulkImportStatus");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#masterBulkImportStatus');
   
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)' >Directory&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)' title='"+descriptions["Import Age"]+"'>Age&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)' title='"+descriptions["Import State"]+"'>State&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)" >Directory&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)" title="'+descriptions['Import Age']+'">Age&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)" title="'+descriptions['Import State']+'">State&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#masterBulkImportStatus");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#masterBulkImportStatus');
 }
 
-function createServerBulkHeader() {	
+function createServerBulkHeader() {
   var caption = [];
   
-  caption.push("<span class='table-caption'>TabletServer&nbsp;Bulk&nbsp;Import&nbsp;Status</span><br />");
+  caption.push('<span class="table-caption">TabletServer&nbsp;Bulk&nbsp;Import&nbsp;Status</span><br />');
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#bulkImportStatus");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#bulkImportStatus');
   
   var items = [];
-	
-  items.push("<th class='firstcell' onclick='sortTable(0)' >Server&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)' title='"+descriptions["# Imports"]+"'>#&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)' title='"+descriptions["Oldest Age"]+"'>Oldest&nbsp;Age&nbsp;</th>");
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#bulkImportStatus");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Server&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)" title="'+descriptions['# Imports']+'">#&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)" title="'+descriptions['Oldest Age']+'">Oldest&nbsp;Age&nbsp;</th>');
+  
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#bulkImportStatus');
 }

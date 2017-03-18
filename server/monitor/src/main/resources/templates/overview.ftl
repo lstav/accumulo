@@ -15,10 +15,10 @@
   limitations under the License.
 -->
       <div><h3>${title}</h3></div>
-      <table class='noborder'>
+      <table class="noborder">
         <tr>
-          <td class='noborder' id='master'></td>
-          <td class='noborder' id='zookeeper'></td>
+          <td class="noborder" id="master"></td>
+          <td class="noborder" id="zookeeper"></td>
         </tr>
       </table>
       <br />

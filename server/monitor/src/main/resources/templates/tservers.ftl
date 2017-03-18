@@ -16,7 +16,7 @@
 -->
       <div><h3>${title}</h3></div>
       <div class="center-block">
-        <table id='tservers' class='table table-bordered table-striped table-condensed'>
+        <table id="tservers" class="table table-bordered table-striped table-condensed">
           
         </table>
       </div>

@@ -15,9 +15,9 @@
   limitations under the License.
 -->    
       <div><h3>${title}</h3></div>
-      <div id='gcBanner'></div>
+      <div id="gcBanner"></div>
       <div class="center-block">
-        <table id='gcActivity' class='table table-bordered table-striped table-condensed'>
+        <table id="gcActivity" class="table table-bordered table-striped table-condensed">
           
         </table>
       </div>

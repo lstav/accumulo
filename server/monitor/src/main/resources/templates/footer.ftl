@@ -16,8 +16,8 @@
 -->
     <footer id="footer">
       <div>
-        <div class='input-group input-group-sm' style="float: left; width: 15%;">
-          <span class='smalltext'>Refresh&nbsp;Rate&nbsp;</span>
+        <div class="input-group input-group-sm" style="float: left; width: 15%;">
+          <span class="smalltext">Refresh&nbsp;Rate&nbsp;</span>
           <span class="input-group-btn">
             <button type="button" class="btn btn-default">
               <span class="glyphicon glyphicon-minus-sign"></span>
@@ -30,17 +30,14 @@
             </button>
           </span>
         </div>
-        <!--<div class='smalltext'>[<a href='/op?action=refresh&value=<#if refresh < 1>5<#else>-1</#if><#if redirect??>&redir=${redirect}</#if>'>
-          <#if refresh < 1>enable<#else>disable</#if>&nbsp;auto-refresh</a>]
-        </div>-->
         <div style="float: left; width: 70%;">
-          <div class='smalltext'><a href='https://accumulo.apache.org/' target='_blank'>Apache&nbsp;Accumulo</a>&nbsp;
+          <div class="smalltext"><a href="https://accumulo.apache.org/" target="_blank">Apache&nbsp;Accumulo</a>&nbsp;
           ${version}
           </div>
-          <div class='smalltext'>${instance_id}</div>
-          <div class='smalltext' id='currentDate'></div>
+          <div class="smalltext">${instance_id}</div>
+          <div class="smalltext" id="currentDate"></div>
           <script>
-            document.getElementById("currentDate").innerHTML = Date();
+            document.getElementById('currentDate').innerHTML = Date();
           </script>
         </div>
       </div>

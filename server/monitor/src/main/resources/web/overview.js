@@ -46,8 +46,8 @@ function refreshOverview() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshOverview()", 10000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshOverview()', 10000);
   } else {
     clearInterval(timer);
   }
@@ -56,14 +56,14 @@ function refresh() {
 function refreshMasterTable() {
   var data = sessionStorage.master === undefined ? [] : JSON.parse(sessionStorage.master);
   
-  $("#master tr td:first").hide();
-  $("#master tr td").hide();
+  $('#master tr td:first').hide();
+  $('#master tr td').hide();
   
-  if (data.length === 0 || data.master === "No Masters running") {
-    $("#master tr td:first").show();
+  if (data.length === 0 || data.master === 'No Masters running') {
+    $('#master tr td:first').show();
   } else {
-    $("#master tr td:not(:first)").show();
-    var table = $("#master td.right");
+    $('#master tr td:not(:first)').show();
+    var table = $('#master td.right');
     
     table.eq(0).html(bigNumberForQuantity(data.tables));
     table.eq(1).html(bigNumberForQuantity(data.totalTabletServers));
@@ -77,58 +77,58 @@ function refreshMasterTable() {
 
 function createMasterTable() {
   var items = [];
-  items.push("<tr><th colspan='2'><a href='/master'>Accumulo&nbsp;Master</a></th></tr>");
-  items.push("<tr><td colspan='2' class='center'><span class='label label-danger'>Master is Down</span></td></tr>");
-  items.push("<tr><td class='left'><a href='/tables'>Tables</a></td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'><a href='/tservers'>Tablet&nbsp;Servers</a></td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'><a href='/tservers'>Dead&nbsp;Tablet&nbsp;Servers</a></td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'>Tablets</td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'>Entries</td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'>Lookups</td><td class='right'></td></tr>");
-  items.push("<tr><td class='left'>Uptime</td><td class='right'></td></tr>");
+  items.push('<tr><th colspan="2"><a href="/master">Accumulo&nbsp;Master</a></th></tr>');
+  items.push('<tr><td colspan="2" class="center"><span class="label label-danger">Master is Down</span></td></tr>');
+  items.push('<tr><td class="left"><a href="/tables">Tables</a></td><td class="right"></td></tr>');
+  items.push('<tr><td class="left"><a href="/tservers">Tablet&nbsp;Servers</a></td><td class="right"></td></tr>');
+  items.push('<tr><td class="left"><a href="/tservers">Dead&nbsp;Tablet&nbsp;Servers</a></td><td class="right"></td></tr>');
+  items.push('<tr><td class="left">Tablets</td><td class="right"></td></tr>');
+  items.push('<tr><td class="left">Entries</td><td class="right"></td></tr>');
+  items.push('<tr><td class="left">Lookups</td><td class="right"></td></tr>');
+  items.push('<tr><td class="left">Uptime</td><td class="right"></td></tr>');
 
-  $("<table/>", {
-    html: items.join(""),
-    class: "table table-bordered table-striped table-condensed"
-  }).appendTo("#master");
+  $('<table/>', {
+    html: items.join(''),
+    class: 'table table-bordered table-striped table-condensed'
+  }).appendTo('#master');
 }
 
 function refreshZKTable() {
   var data = sessionStorage.zk === undefined ? [] : JSON.parse(sessionStorage.zk);
   
-  $("#zookeeper tr td:first").hide();
-  $("#zookeeper tr:gt(2)").remove();
+  $('#zookeeper tr td:first').hide();
+  $('#zookeeper tr:gt(2)').remove();
   
   if (data.length === 0 || data.zkServers.length === 0) {
-    $("#zookeeper tr td:first").show();
+    $('#zookeeper tr td:first').show();
   } else {
     var items = [];
     $.each(data.zkServers, function(key, val) {
       if (val.clients >= 0) {
-        items.push("<td class='left'>" + val.server + "</td>");
-        items.push("<td class='left'>" + val.mode + "</td>");
-        items.push("<td class='right'>" + val.clients + "</td></tr>");
+        items.push('<td class="left">' + val.server + '</td>');
+        items.push('<td class="left">' + val.mode + '</td>');
+        items.push('<td class="right">' + val.clients + '</td></tr>');
       } else {
-        items.push("<tr><td class='left'>" + val.server + "</td>");
-        items.push("<td class='left'><span class='error'>Down</span></td>");
-        items.push("<td class='right'></td>");
+        items.push('<tr><td class="left">' + val.server + '</td>');
+        items.push('<td class="left"><span class="error">Down</span></td>');
+        items.push('<td class="right"></td>');
       }
     });
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#zookeeper table");
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#zookeeper table');
   }
 }
 
 function createZKTable() {
   var items = [];
-  items.push("<tr><th colspan='3'>Zookeeper</th></tr>");
-  items.push("<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>");
-  items.push("<td class='center' colspan='3'><i>No Zookeepers</i></td>");
-  $("<table/>", {
-    html: items.join(""),
-    class: "table table-bordered table-striped table-condensed"
-  }).appendTo("#zookeeper");
+  items.push('<tr><th colspan="3">Zookeeper</th></tr>');
+  items.push('<tr><th>Server</th><th>Mode</th><th>Clients</th></tr>');
+  items.push('<td class="center" colspan="3"><i>No Zookeepers</i></td>');
+  $('<table/>', {
+    html: items.join(''),
+    class: 'table table-bordered table-striped table-condensed'
+  }).appendTo('#zookeeper');
 }
 
 //// Overview plot creation
@@ -137,7 +137,7 @@ function makePlots() {
   var d = new Date();
   var n = d.getTimezoneOffset()*60000; // Obtains the offset in minutes and converts to milliseconds
   var tz = new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2] // Obtains short version of timezone
-  var tzFormat = "%H:%M<br />"+tz;
+  var tzFormat = '%H:%M<br />'+tz;
   
   // Create Ingest Rate plot
   var ingestRate = [];
@@ -146,17 +146,17 @@ function makePlots() {
 
     ingestRate.push([val.first-n, val.second]);
   });
-  $.plot($("#ingest_entries"),[{ data: ingestRate, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#ingest_entries'),[{ data: ingestRate, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Scan Entries plot
-  var scanEntries = {"Read":[], "Returned":[]};
+  var scanEntries = {'Read':[], 'Returned':[]};
   var data = sessionStorage.scanEntries === undefined ? [] : JSON.parse(sessionStorage.scanEntries);
   $.each(data, function(key, val) {
     $.each(val.second, function(key2, val2) {
       scanEntries[val.first].push([val2.first-n, val2.second]);
     });           
   });
-  $.plot($("#scan_entries"),[{ label: "Read", data: scanEntries.Read, lines: { show: true }, color:"#d9534f" },{ label: "Returned", data: scanEntries.Returned, lines: { show: true }, color:"#337ab7" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#scan_entries'),[{ label: 'Read', data: scanEntries.Read, lines: { show: true }, color:'#d9534f' },{ label: 'Returned', data: scanEntries.Returned, lines: { show: true }, color:'#337ab7' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Ingest MB plot
   var ingestMB = [];
@@ -164,7 +164,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     ingestMB.push([val.first-n, val.second]);
   });
-  $.plot($("#ingest_mb"),[{ data: ingestMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#ingest_mb'),[{ data: ingestMB, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Query MB plot
   var queryMB = [];
@@ -172,7 +172,7 @@ function makePlots() {
   $.each(data, function(key, val) {
   queryMB.push([val.first-n, val.second]);
   });
-  $.plot($("#scan_mb"),[{ data: queryMB, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#scan_mb'),[{ data: queryMB, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
 
   // Create Load Average plot
   var loadAvg = [];
@@ -180,7 +180,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     loadAvg.push([val.first-n, val.second]);
   });
-  $.plot($("#load_avg"),[{ data: loadAvg, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#load_avg'),[{ data: loadAvg, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Seeks plot
   var lookups = [];
@@ -188,7 +188,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     lookups.push([val.first-n, val.second]);
   });
-  $.plot($("#seeks"),[{ data: lookups, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#seeks'),[{ data: lookups, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Minor Compactions plot
   var minor = [];
@@ -196,7 +196,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     minor.push([val.first-n, val.second]);
   });
-  $.plot($("#minor"),[{ data: minor, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#minor'),[{ data: minor, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Major Compaction plot
   var major = [];
@@ -204,7 +204,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     major.push([val.first-n, val.second]);
   });
-  $.plot($("#major"),[{ data: major, lines: { show: true }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#major'),[{ data: major, lines: { show: true }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Index Cache plot
   var indexCache = [];
@@ -212,7 +212,7 @@ function makePlots() {
   $.each(data, function(key, val) {
     indexCache.push([val.first-n, val.second]);
   });
-  $.plot($("#index_cache"),[{ data: indexCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#index_cache'),[{ data: indexCache, points: { show: true, radius: 1 }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
   
   // Create Data Cache plot
   var dataCache = [];
@@ -220,6 +220,6 @@ function makePlots() {
   $.each(data, function(key, val) {
     dataCache.push([val.first-n, val.second]);
   });
-  $.plot($("#data_cache"),[{ data: dataCache, points: { show: true, radius: 1 }, color:"#d9534f" }], {yaxis:{}, xaxis:{mode:"time",minTickSize: [1, "minute"],timeformat: tzFormat, ticks:3}});
+  $.plot($('#data_cache'),[{ data: dataCache, points: { show: true, radius: 1 }, color:'#d9534f' }], {yaxis:{}, xaxis:{mode:'time',minTickSize: [1, 'minute'],timeformat: tzFormat, ticks:3}});
 
 }

@@ -34,8 +34,8 @@ function refreshLogs() {
 
 var timer;
 function refresh() {
-  if (sessionStorage.autoRefresh == "true") {
-    timer = setInterval("refreshLogs()", 5000);
+  if (sessionStorage.autoRefresh == 'true') {
+    timer = setInterval('refreshLogs()', 5000);
   } else {
     clearInterval(timer);
   }
@@ -48,39 +48,39 @@ function clearLogTable() {
 
 function createLogsTable() {
   
-  clearTable("logTable");
+  clearTable('logTable');
   
   var data = sessionStorage.logs === undefined ? [] : JSON.parse(sessionStorage.logs);
 
   $.each(data, function(key, val) {
     var items = [];
     var date = new Date(val.timestamp);
-    items.push("<td class='firstcell left' data-value='" + val.timestamp + "'>" + date.toLocaleString().split(' ').join("&nbsp;") + "</td>");
-    items.push("<td class='center' data-value='" + val.application + "'>" + val.application + "</td>");
-    items.push("<td class='right' data-value='" + val.count + "'>" + bigNumberForQuantity(val.count) + "</td>");
-    items.push("<td class='center' data-value='" + val.level + "'>" + levelFormat(val.level) + "</td>");
-    items.push("<td class='center' data-value='" + val.message + "'>" + val.message + "</td>");
+    items.push('<td class="firstcell left" data-value="' + val.timestamp + '">' + date.toLocaleString().split(' ').join('&nbsp;') + '</td>');
+    items.push('<td class="center" data-value="' + val.application + '">' + val.application + '</td>');
+    items.push('<td class="right" data-value="' + val.count + '">' + bigNumberForQuantity(val.count) + '</td>');
+    items.push('<td class="center" data-value="' + val.level + '">' + levelFormat(val.level) + '</td>');
+    items.push('<td class="center" data-value="' + val.message + '">' + val.message + '</td>');
               
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#logTable");
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#logTable');
               
   });
   
   if (data.length === 0) {
     var items = [];
-    items.push("<td class='center' colspan='5'><i>Empty</i></td>");
-    $("<tr/>", {
-      html: items.join("")
-    }).appendTo("#logTable");
+    items.push('<td class="center" colspan="5"><i>Empty</i></td>');
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#logTable');
   }
 }
 
 function levelFormat(level) {
-  if (level === "WARN") {
-    return "<span class='label label-warning'>" + level + "</span>";
-  } else if (level === "ERROR" || level === "FATAL") {
-    return "<span class='label label-danger'>" + level + "</span>";
+  if (level === 'WARN') {
+    return '<span class="label label-warning">' + level + '</span>';
+  } else if (level === 'ERROR' || level === 'FATAL') {
+    return '<span class="label label-danger">' + level + '</span>';
   } else {
     return level;
   }
@@ -88,41 +88,41 @@ function levelFormat(level) {
 
 function sortTable(n) {
   if (sessionStorage.tableColumnSort !== undefined && sessionStorage.tableColumnSort == n && sessionStorage.direction !== undefined) {
-    direction = sessionStorage.direction === "asc" ? "desc" : "asc";
+    direction = sessionStorage.direction === 'asc' ? 'desc' : 'asc';
   
   } else {
-    direction = sessionStorage.direction === undefined ? "asc" : sessionStorage.direction;
+    direction = sessionStorage.direction === undefined ? 'asc' : sessionStorage.direction;
   }
-      
+  
   sessionStorage.tableColumnSort = n;
-      
-  sortTables("logTable", direction, n);
+  
+  sortTables('logTable', direction, n);
 }
 
 function createHeader() {
-  $("#logTable caption").remove();
+  $('#logTable caption').remove();
   var caption = [];
   
-  caption.push("<span class='table-caption'>Recent Logs</span><br />");
+  caption.push('<span class="table-caption">Recent Logs</span><br />');
 
   var data = sessionStorage.logs === undefined ? [] : JSON.parse(sessionStorage.logs);
   if (data.length !== 0) {
-    caption.push("<a href='javascript:clearLogTable();'>Clear&nbsp;All&nbsp;Events</a>");
+    caption.push('<a href="javascript:clearLogTable();">Clear&nbsp;All&nbsp;Events</a>');
   }
 
-  $("<caption/>", {
-    html: caption.join("")
-  }).appendTo("#logTable");
+  $('<caption/>', {
+    html: caption.join('')
+  }).appendTo('#logTable');
 
   var items = [];
 
-  items.push("<th class='firstcell' onclick='sortTable(0)'>Time&nbsp;</th>");
-  items.push("<th onclick='sortTable(1)'>Application&nbsp;</th>");
-  items.push("<th onclick='sortTable(2)'>Count&nbsp;</th>");
-  items.push("<th onclick='sortTable(3)'>Level&nbsp;</th>");
-  items.push("<th onclick='sortTable(4)'>Message&nbsp;</th>");
+  items.push('<th class="firstcell" onclick="sortTable(0)">Time&nbsp;</th>');
+  items.push('<th onclick="sortTable(1)">Application&nbsp;</th>');
+  items.push('<th onclick="sortTable(2)">Count&nbsp;</th>');
+  items.push('<th onclick="sortTable(3)">Level&nbsp;</th>');
+  items.push('<th onclick="sortTable(4)">Message&nbsp;</th>');
   
-  $("<tr/>", {
-    html: items.join("")
-  }).appendTo("#logTable");
+  $('<tr/>', {
+    html: items.join('')
+  }).appendTo('#logTable');
 }
