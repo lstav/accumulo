@@ -51,7 +51,7 @@ function refreshDetailTable() {
   
   var items = [];
   
-  if (data.length === 0) {
+  if (data.length === 0 || data.details === undefined) {
     items.push('<td class="center" colspan="5"><i>Empty</i></td>');
   } else {
     items.push('<td class="firstcell right" data-value="' + data.details.hostedTablets + '">' + bigNumberForQuantity(data.details.hostedTablets) + '</td>');
@@ -72,7 +72,7 @@ function refreshHistoryTable() {
 
   var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
-  if (data.length === 0) {
+  if (data.length === 0 || data.allTimeTabletResults === undefined) {
     var row = [];
     
     row.push('<td class="center" colspan="8"><i>Empty</i></td>');
@@ -114,7 +114,7 @@ function refreshCurrentTable() {
   var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
   var items = [];
-  if (data.length === 0) {
+  if (data.length === 0 || data.currentTabletOperationResults === undefined) {
     items.push('<td class="center" colspan="4"><i>Empty</i></td>');
   } else {
     var current = data.currentTabletOperationResults;
@@ -137,7 +137,7 @@ function refreshResultsTable() {
 
   var data = sessionStorage.server === undefined ? [] : JSON.parse(sessionStorage.server);
   
-  if (data.length === 0) {
+  if (data.length === 0 || data.currentOperations === undefined) {
     var row = [];
     
     row.push('<td class="center" colspan="11"><i>Empty</i></td>');

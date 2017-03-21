@@ -439,36 +439,8 @@ pre.logevent {
   /*float: left;*/
 }
 
-#namespaces {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  background-color: #FFF;
-}
-
-#namespaces li a {
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-#namespaces li a:hover:not(.active) {
-  background-color: #eee;
-}
-
-/*.active {
-  background-color: #cef4b5;
-}*/
-
 .center-block {
   width: 80%;
-}
-
-.select2-container {
-  display: inline;
 }
 
 .nav-pills > li > a {

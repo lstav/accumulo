@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-      <script>
+      <script type="text/javascript">
         $(document).ready(function() {
           createHeader();
           refreshTables();
@@ -25,8 +25,7 @@
       <div class="center-block">
 
         <div>
-          <select id="namespaces" class="namespace-select" data-placeholder="Select a namespace" multiple="multiple">
-
+          <select id="namespaces" data-placeholder="Select a namespace" multiple="multiple" style="width: 100%;">
           </select>
         </div>
       </div>

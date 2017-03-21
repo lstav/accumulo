@@ -22,7 +22,7 @@ function refreshTables() {
   getNamespaces();
   $.ajaxSetup({
     async: true
-  });          
+  });
 
   createNamespacesDropdown();
   if (sessionStorage.namespaces === undefined) {
@@ -45,6 +45,8 @@ function refresh() {
 function namespaceChanged() {
   var $namespaceSelect = $('#namespaces');
   
+  $namespaceSelect.off();
+  
   $namespaceSelect.on('select2:select', function (e) {
     var id = e.params === null ? undefined : e.params['data']['id'];
     populateTable(id);
@@ -60,7 +62,7 @@ function createNamespacesDropdown() {
   var data = JSON.parse(NAMESPACES).namespaces;
   var caption = [];
   
-  caption.push('<span class='table-caption'>Table&nbsp;List</span><br />');
+  caption.push('<span class="table-caption">Table&nbsp;List</span><br />');
 
   $('<caption/>', {
     html: caption.join('')
@@ -73,9 +75,9 @@ function createNamespacesDropdown() {
   });  
   
   $('#namespaces').select2({
-    data: data2
+    data: data2,
+    allowClear: true
   });
-  
   namespaceChanged();
 }
 
@@ -110,7 +112,7 @@ function populateTable(ns) {
       }
     }
   }
-
+  
   $('#namespaces').select2().val(tmpArr).trigger('change'); // TODO Fix this, causes null dataAdapter
     
   sessionStorage.namespaces = JSON.stringify(tmpArr);
@@ -125,7 +127,7 @@ function populateTable(ns) {
   
   var data = sessionStorage.tables === undefined ? [] : JSON.parse(sessionStorage.tables);
   clearTable('tableList');
-      
+  
   var numTables = 0;
     
   $.each(data.tables, function(keyT, tab) {

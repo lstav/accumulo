@@ -45,7 +45,7 @@ function refreshTServersTable() {
 
   $('#tservers tr:gt(0)').remove();
   
-  if (data.length === || data.servers.length === 0) {
+  if (data.length === 0 || data.servers.length === 0) {
     var item = '<td class="center" colspan="13"><i>Empty</i></td>';
     
     $('<tr/>', {
@@ -55,7 +55,7 @@ function refreshTServersTable() {
   
     $.each(data.servers, function(key, val) {
       var items = [];
-      items.push('<td class="firstcell left" data-value="' + val.hostname + '"><a href="/tservers?s="' + val.id + '">' + val.hostname + '</a></td>');
+      items.push('<td class="firstcell left" data-value="' + val.hostname + '"><a href="/tservers?s=' + val.id + '">' + val.hostname + '</a></td>');
       items.push('<td class="right" data-value="' + val.tablets + '">' + bigNumberForQuantity(val.tablets) + '</td>');
       items.push('<td class="right" data-value="' + val.lastContact + '">' + timeDuration(val.lastContact) + '</td>');
       items.push('<td class="right" data-value="' + val.entries + '">' + bigNumberForQuantity(val.entries) + '</td>');
