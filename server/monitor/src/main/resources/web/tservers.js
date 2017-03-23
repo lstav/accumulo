@@ -27,7 +27,8 @@ function refreshTServers() {
   $.ajaxSetup({
     async: true
   });
-
+  refreshBadTServersTable();
+  refreshDeadTServersTable();
   refreshTServersTable();
 }
 
@@ -37,6 +38,99 @@ function refresh() {
     timer = setInterval('refreshTServers()', 5000);
   } else {
     clearInterval(timer);
+  }
+}
+
+function refreshBadTServersTable() {
+  var data = sessionStorage.tservers === undefined ? [] : JSON.parse(sessionStorage.tservers);
+
+  $('#badtservers tr').remove();
+  
+  if (data.length === 0 || data.badServers.length === 0) {
+    
+    $('#badtservers').hide();
+  } else {
+    
+    $('#badtservers').show();
+    
+    var caption = [];
+  
+    caption.push('<span class="table-caption">Non-Functioning&nbsp;Tablet&nbsp;Servers</span><br />');
+    caption.push('<span class="table-subcaption">The following tablet servers reported a status other than Online</span><br />');
+
+    $('<caption/>', {
+      html: caption.join('')
+    }).appendTo('#badtservers');
+    
+    var items = [];
+
+    items.push('<th class="firstcell" onclick="sortTable(0)">Tablet&nbsp;Server&nbsp;</th>');
+    items.push('<th onclick="sortTable(1)">Tablet&nbsp;Server&nbsp;Status&nbsp;</th>');
+    
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#badtservers');
+    
+    $.each(data.badServers, function(key, val) {
+      var items = [];
+      items.push('<td class="firstcell left" data-value="' + val.id + '">' + val.id + '</td>');
+      items.push('<td class="right" data-value="' + val.status + '">' + val.status + '</td>');
+      
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#badtservers');
+      
+    });
+  }
+}
+
+function refreshDeadTServersTable() {
+  var data = sessionStorage.tservers === undefined ? [] : JSON.parse(sessionStorage.tservers);
+
+  $('#deadtservers tr').remove();
+  
+  if (data.length === 0 || data.deadServers.length === 0) {
+    
+    $('#deadtservers').hide();
+  } else {
+    
+    $('#deadtservers').show();
+  
+  
+    var caption = [];
+  
+    caption.push('<span class="table-caption">Dead&nbsp;Tablet&nbsp;Servers</span><br />');
+    caption.push('<span class="table-subcaption">The following tablet servers are no longer reachable.</span><br />');
+
+    $('<caption/>', {
+      html: caption.join('')
+    }).appendTo('#deadtservers');
+    
+    var items = [];
+
+    items.push('<th class="firstcell" onclick="sortTable(0)">Server&nbsp;</th>');
+    items.push('<th onclick="sortTable(1)">Last&nbsp;Updated&nbsp;</th>');
+    items.push('<th onclick="sortTable(2)">Event&nbsp;</th>');
+    items.push('<th>Clear</th>');
+    
+    $('<tr/>', {
+      html: items.join('')
+    }).appendTo('#deadtservers');
+    
+    $.each(data.deadServers, function(key, val) {
+      var items = [];
+      items.push('<td class="firstcell left" data-value="' + val.server + '">' + val.server + '</td>');
+      var date = new Date(val.lastStatus);
+      date = date.toLocaleString().split(' ').join('&nbsp;');
+      items.push('<td class="right" data-value="' + val.lastStatus + '">' + date + '</td>');
+      items.push('<td class="right" data-value="' + val.status + '">' + val.status + '</td>');
+      items.push('<td class="right"> <a href="javascript:clearDeadServers(\'' + val.server + '\')">clear</a></td>');
+      
+      $('<tr/>', {
+        html: items.join('')
+      }).appendTo('#deadtservers');
+      
+    });
   }
 }
 

@@ -22,6 +22,8 @@ import java.util.List;
 public class TabletServers {
 
   public List<TabletServerInformation> servers;
+  public List<BadTabletServerInformation> badServers;
+  public List<DeadServerInformation> deadServers;
 
   public TabletServers() {
     servers = new ArrayList<>();
@@ -29,6 +31,11 @@ public class TabletServers {
 
   public TabletServers(int size) {
     servers = new ArrayList<>(size);
+  }
+
+  public void addBadTabletServer(MasterInformation info) {
+    badServers = info.badTabletServers.badTabletServer;
+    deadServers = info.deadTabletServers.deadTabletServer;
   }
 
   public void addTablet(TabletServer tablet) {

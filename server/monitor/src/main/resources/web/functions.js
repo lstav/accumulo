@@ -242,6 +242,11 @@ function getTables() {
   });
 }    
 
+function clearDeadServers(server) {
+  var call = '/rest/tservers?server=' + server;
+  $.post(call);
+}
+
 function getTServers() {
   $.getJSON('/rest/tservers', function(data) {
     sessionStorage.tservers = JSON.stringify(data);

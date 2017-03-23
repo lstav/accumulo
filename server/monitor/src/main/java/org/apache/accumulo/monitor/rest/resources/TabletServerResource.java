@@ -23,12 +23,17 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.accumulo.core.Constants;
 import org.apache.accumulo.core.client.impl.ClientContext;
 import org.apache.accumulo.core.client.impl.Tables;
 import org.apache.accumulo.core.conf.Property;
@@ -40,6 +45,7 @@ import org.apache.accumulo.core.tabletserver.thrift.ActionStats;
 import org.apache.accumulo.core.tabletserver.thrift.TabletClientService;
 import org.apache.accumulo.core.tabletserver.thrift.TabletStats;
 import org.apache.accumulo.core.trace.Tracer;
+import org.apache.accumulo.core.zookeeper.ZooUtil;
 import org.apache.accumulo.monitor.Monitor;
 import org.apache.accumulo.monitor.rest.api.AllTimeTabletResults;
 import org.apache.accumulo.monitor.rest.api.CurrentOperations;
@@ -51,6 +57,7 @@ import org.apache.accumulo.monitor.rest.api.TabletServerDetailInformation;
 import org.apache.accumulo.monitor.rest.api.TabletServerSummary;
 import org.apache.accumulo.monitor.rest.api.TabletServers;
 import org.apache.accumulo.server.client.HdfsZooInstance;
+import org.apache.accumulo.server.master.state.DeadServerList;
 import org.apache.accumulo.server.util.ActionStatsUpdator;
 
 import com.google.common.net.HostAndPort;
@@ -71,7 +78,16 @@ public class TabletServerResource extends BasicResource {
       tserverInfo.addTablet(new TabletServer(status));
     }
 
+    tserverInfo.addBadTabletServer(new MasterResource().getTables());
+
     return tserverInfo;
+  }
+
+  @POST
+  @Consumes(MediaType.TEXT_PLAIN)
+  public void clearDeadServer(@QueryParam("server") String server) throws Exception {
+    DeadServerList obit = new DeadServerList(ZooUtil.getRoot(Monitor.getContext().getInstance()) + Constants.ZDEADTSERVERS);
+    obit.delete(server);
   }
 
   @Path("/{address}")

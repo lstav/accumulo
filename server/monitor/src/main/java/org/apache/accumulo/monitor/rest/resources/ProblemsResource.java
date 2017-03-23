@@ -122,7 +122,7 @@ public class ProblemsResource extends BasicResource {
 
     return jsonObj;
   }
-  
+
   @POST
   @Consumes(MediaType.TEXT_PLAIN)
   @Path("/details")

@@ -57,12 +57,13 @@ public class StatusResource extends BasicResource {
 
       masterStatus = masters.size() == 0 ? "ERROR" : "OK";
 
-      int tServerUp = Monitor.getMmi().tServerInfo.size();
-      int tServerDown = Monitor.getMmi().deadTabletServers.size();
+      int tServerUp = Monitor.getMmi().getTServerInfoSize();
+      int tServerDown = Monitor.getMmi().getDeadTabletServersSize();
+      int tServerBad = Monitor.getMmi().getBadTServersSize();
 
-      if (tServerDown > 0 && tServerUp > 0) {
+      if ((tServerDown > 0 || tServerBad > 0) && tServerUp > 0) {
         tServerStatus = "WARN";
-      } else if (tServerDown == 0 && tServerUp > 0) {
+      } else if ((tServerDown == 0 || tServerBad > 0) && tServerUp > 0) {
         tServerStatus = "OK";
       } else if (tServerUp == 0) {
         tServerStatus = "ERROR";
