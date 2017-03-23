@@ -32,12 +32,10 @@ function refreshTServers() {
   refreshTServersTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshTServers()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshTServers()', 5000);
   }
 }
 
@@ -124,7 +122,7 @@ function refreshDeadTServersTable() {
       date = date.toLocaleString().split(' ').join('&nbsp;');
       items.push('<td class="right" data-value="' + val.lastStatus + '">' + date + '</td>');
       items.push('<td class="right" data-value="' + val.status + '">' + val.status + '</td>');
-      items.push('<td class="right"> <a href="javascript:clearDeadServers(\'' + val.server + '\')">clear</a></td>');
+      items.push('<td class="right"> <a href="javascript:clearDeadTServers(\'' + val.server + '\')">clear</a></td>');
       
       $('<tr/>', {
         html: items.join('')
@@ -132,6 +130,10 @@ function refreshDeadTServersTable() {
       
     });
   }
+}
+
+function clearDeadTServers(server) {
+  clearDeadServers(server);
 }
 
 function refreshTServersTable() {

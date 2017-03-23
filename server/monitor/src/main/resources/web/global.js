@@ -56,4 +56,6 @@ var descriptions = {
   'Histogram' : 'Counts of spans of different duration. Columns start at milliseconds, and each column is ten times longer: tens of milliseconds, seconds, tens of seconds, etc.'
 };
 
-var NAMESPACES = ''
+var NAMESPACES = '';
+
+var TIMER;

@@ -44,12 +44,10 @@ function refreshOverview() {
   makePlots();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshOverview()', 10000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshOverview()', 10000);
   }
 }
 

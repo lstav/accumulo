@@ -30,12 +30,10 @@ function refreshReplication() {
   refreshReplicationsTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshReplication()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshReplication()', 5000);
   }
 }
 

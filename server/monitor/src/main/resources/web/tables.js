@@ -33,12 +33,10 @@ function refreshTables() {
   sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshTables()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshTables()', 5000);
   }
 }
 

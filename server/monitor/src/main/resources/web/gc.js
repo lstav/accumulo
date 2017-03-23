@@ -32,12 +32,10 @@ function refreshGC() {
   refreshGCTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshGC()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshGC()', 5000);
   }
 }
 

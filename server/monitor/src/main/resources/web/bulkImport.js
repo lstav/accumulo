@@ -33,12 +33,10 @@ function refreshBulkImport() {
   refreshServerBulkTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshBulkImport()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshBulkImport()', 5000);
   }
 }
 

@@ -26,12 +26,10 @@ function refreshTraceShow() {
   refreshTraceShowTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshTraceShow()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshTraceShow()', 5000);
   }
 }
 

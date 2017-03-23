@@ -32,12 +32,10 @@ function refreshLogs() {
   //sortTable(sessionStorage.tableColumnSort === undefined ? 0 : sessionStorage.tableColumnSort);
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshLogs()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshLogs()', 5000);
   }
 }
 

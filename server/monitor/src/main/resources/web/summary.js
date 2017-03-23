@@ -26,12 +26,10 @@ function refreshSummary() {
   refreshTraceSummaryTable(minutes);
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshSummary()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshSummary()', 5000);
   }
 }
 

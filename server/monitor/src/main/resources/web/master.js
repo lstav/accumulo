@@ -33,12 +33,10 @@ function refreshMaster() {
   //recoveryList(); // TODO Implement this
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshMaster()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshMaster()', 5000);
   }
 }
 

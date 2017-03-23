@@ -30,12 +30,10 @@ function refreshScans() {
   refreshScansTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshScans()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshScans()', 5000);
   }
 }
 

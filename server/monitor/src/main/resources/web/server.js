@@ -34,12 +34,10 @@ function refreshServer() {
   refreshResultsTable();
 }
 
-var timer;
 function refresh() {
+  clearInterval(TIMER);
   if (sessionStorage.autoRefresh == 'true') {
-    timer = setInterval('refreshServer()', 5000);
-  } else {
-    clearInterval(timer);
+    TIMER = setInterval('refreshServer()', 5000);
   }
 }
 
