@@ -67,9 +67,6 @@
                 <li><a href="/rest/tservers">JSON</a></li>
               </ul>
             </li>
-            <#if is_ssl>
-              <li><a href="/shell">Shell</a></li>
-            </#if>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-option-vertical"></span>
